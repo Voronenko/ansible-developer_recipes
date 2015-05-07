@@ -1,0 +1,88 @@
+  - name: LAMP | FAST-CGI configuration for php
+    template: src=files/apache2/conf/fastcgi.conf.j2 dest=/etc/apache2/conf-available/fastcgi.conf
+    when: "apache_mode == 'worker'"          
+    sudo: yes
+    tags: setup
+
+  - name: LAMP | a2enconf fastcgi
+    command: a2enconf fastcgi
+    when: "apache_mode == 'worker'"              
+    sudo: yes
+    args:
+      creates: /etc/apache2/conf-enabled/fastcgi.conf
+    notify:
+      - restart apache2        
+    tags: setup
+
+  - name: LAMP | Install PHP FPM
+    apt: name=php5-fpm state=latest
+    when: "apache_mode == 'worker'"                  
+    tags: setup
+    sudo: yes      
+
+  - name: LAMP | Install PHP and associated packages
+    apt: name=php5 state=latest
+    tags: setup
+    sudo: yes    
+
+  - name: LAMP | Install PHP5-cli 
+    apt: name=php5-cli state=latest
+    when: "apache_mode == 'worker'"                  
+    tags: setup
+    sudo: yes    
+
+  - name: LAMP | Install composer
+    shell: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin creates=/usr/local/bin/composer
+    sudo: yes
+    tags: 
+      -setup 
+      -composer
+
+  - name: LAMP | rename composer.phar to composer
+    shell: mv /usr/local/bin/composer.phar /usr/local/bin/composer creates=/usr/local/bin/composer
+    sudo: yes
+    tags: 
+      -setup 
+      -composer
+
+  - name: LAMP | Install PHP GD library
+    apt: name=php5-gd state=latest
+    tags: setup
+    sudo: yes        
+    notify:
+      - restart apache2        
+
+  - name: LAMP | Install PHP Curl
+    apt: name=php5-curl state=latest
+    tags: setup
+    sudo: yes        
+    notify:
+      - restart apache2        
+
+  - name: LAMP | Install MCrypt extension
+    apt: name=php5-mcrypt state=latest
+    tags: setup
+    sudo: yes        
+    notify:
+      - restart apache2        
+
+  - name: LAMP | Enable MCrypt extension
+    shell: php5enmod mcrypt
+    sudo: yes
+    tags: 
+      -setup 
+    notify:
+      - restart apache2        
+
+  - name: LAMP | Install PHP MySQL extension
+    apt: name=php5-mysql state=latest
+    tags: setup
+    sudo: yes        
+    notify:
+      - restart apache2       
+
+  - name: LAMP | fxp/composer-asset-plugin for YII
+    shell: composer global require "fxp/composer-asset-plugin:1.0.0"
+    tags: 
+      -setup 
+      -composer
