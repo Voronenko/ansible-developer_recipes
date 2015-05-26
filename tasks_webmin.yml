@@ -1,0 +1,25 @@
+  - name: Webmin | Add apt repository
+    template: src=files/webmin/apt_source.j2 dest=/etc/apt/sources.list.d/webmin.list mode=644
+    when: ansible_os_family == "Debian" 
+    sudo: yes
+    tags: 
+        -webmin
+        -setup
+
+  - name: Webmin | Add Webmin key
+    apt_key: url='http://www.webmin.com/jcameron-key.asc' state=present
+    sudo: yes
+
+  - name: Webmin | Install Webmin and prerequisites
+    apt: update_cache=yes  pkg={{ item }} state=installed
+    sudo: yes
+    with_items:
+      - perl
+      - libnet-ssleay-perl
+      - openssl
+      - libauthen-pam-perl
+      - libpam-runtime
+      - libio-pty-perl
+      - apt-show-versions
+      - python
+      - webmin

@@ -1,0 +1,38 @@
+# Ansible is not available in the default repositories that apt-get uses. Therefore, add the repository ppa:rquillo/ansible.
+# sudo add-apt-repository ppa:rquillo/ansible
+# Press ENTER when prompted.
+# Update the package lists.
+# sudo apt-get update
+# Install Ansible.
+# sudo apt-get install ansible
+# In case of ansible install issues try the following
+# sudo apt-get install software-properties-common
+# sudo apt-add-repository ppa:ansible/ansible
+# sudo apt-get update
+# sudo apt-get install ansible
+#
+#
+# ansible-playbook prod.yml
+# make sure hosts points to right server
+# 
+# Make sure user is able to run sudo w/o password
+# 
+# Use "sudo visudo" to edit sudoers!
+# #Allow members of group sudo to execute any command without asking password 
+# #%sudo  ALL=(ALL:ALL) ALL
+# %sudo   ALL=(ALL) NOPASSWD:ALL
+# #allow specific user to do so without password, where slavko is  the username
+# slavko ALL=(ALL) NOPASSWD: ALL
+
+- hosts: prod
+  vars:
+    deploy_user: "{{ansible_ssh_user}}"
+  
+  tasks:
+
+    - include: tasks_webmin.yml
+
+  handlers:
+    - name: restart apache2
+      service: name=apache2 state=restarted      
+
