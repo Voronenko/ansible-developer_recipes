@@ -1,0 +1,52 @@
+
+  - name: MailCatcher | Check is running
+    shell: ps ax | grep -v grep | grep mailcatcher
+    register: mailcatcher_is_installed
+    ignore_errors: yes
+    tags:
+      - mailcatcher
+      - setup
+
+
+  - name: MailCatcher | sqlite3
+    apt: pkg=sqlite3 state=latest
+    sudo: yes
+    tags:
+      - mailcatcher
+      - setup
+
+
+  - name: MailCatcher | libsqlite3-dev
+    apt: pkg=libsqlite3-dev state=latest
+    sudo: yes
+    tags:
+      - mailcatcher
+      - setup
+
+
+  - name: MailCatcher | Install MailCatcher
+    action: command gem install mailcatcher creates=/usr/local/bin/mailcatcher
+    sudo: yes
+    tags:
+      - mailcatcher
+      - setup
+
+
+  - name: MailCatcher | Configure PHP.ini
+    command: sed -ir "s/;\?sendmail_path =.*/sendmail_path = \/usr\/bin\/env \/usr\/local\/bin\/catchmail/" /etc/php5/fpm/php.ini
+    command: sed -ir "s/;\?sendmail_path =.*/sendmail_path = \/usr\/bin\/env \/usr\/local\/bin\/catchmail/" /etc/php5/cli/php.ini
+    when: install_php == "yes"
+    sudo: yes
+    tags:
+      - mailcatcher
+      - setup
+
+
+  - name: MailCatcher | Configure Autostart
+    sudo: yes
+    template: src=files/mailcatcher/mailcatcher_upstart.sh.j2 dest=/etc/init.d/mailcatcher_upstart.sh owner=root group=root mode=0755
+
+  - name: MailCatcher | Start MailCatcher
+    command: mailcatcher --ip=0.0.0.0 --smtp-port 25
+    sudo: yes
+    when: mailcatcher_is_installed | failed
