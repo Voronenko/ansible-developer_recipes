@@ -9,6 +9,10 @@
   - name: Webmin | Add Webmin key
     apt_key: url='http://www.webmin.com/jcameron-key.asc' state=present
     sudo: yes
+    tags: 
+        -webmin
+        -setup
+
 
   - name: Webmin | Install Webmin and prerequisites
     apt: update_cache=yes  pkg={{ item }} state=installed
@@ -23,3 +27,7 @@
       - apt-show-versions
       - python
       - webmin
+    tags: 
+        -webmin
+        -setup
+      
