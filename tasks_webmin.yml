@@ -1,5 +1,5 @@
   - name: Webmin | Add apt repository
-    template: src=files/webmin/apt_source.j2 dest=/etc/apt/sources.list.d/webmin.list mode=644
+    template: src={{root_dir}}/files/webmin/apt_source.j2 dest=/etc/apt/sources.list.d/webmin.list mode=644
     when: ansible_os_family == "Debian" 
     sudo: yes
     tags: 

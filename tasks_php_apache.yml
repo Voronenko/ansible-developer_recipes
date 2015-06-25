@@ -1,5 +1,5 @@
   - name: LAMP | FAST-CGI configuration for php
-    template: src=files/apache2/conf/fastcgi.conf.j2 dest=/etc/apache2/conf-available/fastcgi.conf
+    template: src={{root_dir}}/files/apache2/conf/fastcgi.conf.j2 dest=/etc/apache2/conf-available/fastcgi.conf
     when: "apache_mode == 'worker'"          
     sudo: yes
     tags: setup

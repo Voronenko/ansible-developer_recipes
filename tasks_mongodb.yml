@@ -16,7 +16,7 @@
         -setup
 
   - name: MongoDB | Add apt repository
-    copy: src=files/mongodb/apt-source dest=/etc/apt/sources.list.d/mongodb.list mode=644
+    copy: src={{root_dir}}/files/mongodb/apt-source dest=/etc/apt/sources.list.d/mongodb.list mode=644
     when: ansible_os_family == "Debian" and mongo_present|failed
     sudo: yes
     tags: 

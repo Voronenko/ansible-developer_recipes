@@ -27,6 +27,8 @@
 - hosts: prod
   vars:
     deploy_user: "{{ansible_ssh_user}}"
+    install_php: "no"  # Notifies additional tools to integrate with php ; set to yes when playing with lamp
+    root_dir: .
   
   tasks:
 

@@ -44,7 +44,7 @@
 
   - name: MailCatcher | Configure Autostart
     sudo: yes
-    template: src=files/mailcatcher/mailcatcher_upstart.sh.j2 dest=/etc/init.d/mailcatcher_upstart.sh owner=root group=root mode=0755
+    template: src={{root_dir}}/files/mailcatcher/mailcatcher_upstart.sh.j2 dest=/etc/init.d/mailcatcher_upstart.sh owner=root group=root mode=0755
 
   - name: MailCatcher | Start MailCatcher
     command: mailcatcher --ip=0.0.0.0 --smtp-port 25

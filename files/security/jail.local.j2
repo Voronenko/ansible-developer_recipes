@@ -1,0 +1,19 @@
+[ssh]
+
+enabled  = true
+
+port     = ssh
+
+filter   = sshd
+
+logpath  = /var/log/auth.log
+
+action   = hostsdeny[file=/etc/hosts.deny]
+
+maxretry = 3
+
+ignoreip = 127.0.0.1/8 {% if whitelistedips is defined %} {% for host in whitelistedips %} {{host}} {% endfor %} {% endif %}
+
+findtime = 300
+
+bantime  = -1

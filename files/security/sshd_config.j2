@@ -1,0 +1,12 @@
+Protocol 2
+PermitRootLogin no
+RSAAuthentication yes
+PubkeyAuthentication yes
+ChallengeResponseAuthentication no
+{% if whitelisted_ssh_users_no_interactive is defined %}
+PasswordAuthentication no
+{% endif %}
+{% if whitelisted_ssh_users is defined %}
+AllowUsers {% for user in whitelisted_ssh_users %} {{user}} {% endfor %}
+{% endif %}
+MaxAuthTries 10
