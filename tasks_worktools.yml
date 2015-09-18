@@ -1,0 +1,41 @@
+  - name: Worktools | Midnight Commander
+    apt: state=present pkg=mc
+    sudo: yes
+    tags:
+      -worktools
+      -setup
+
+  - name: Worktools | unzip
+    apt: state=present pkg=unzip         
+    sudo: yes
+    tags:
+      -worktools
+      -setup
+
+  - name: Worktools | p7zip             
+    apt: name=p7zip-full update_cache=yes state=latest
+    sudo: yes      
+    tags:
+      -worktools
+      -setup
+
+  - name: Worktools | Check if sublime is installed
+    command: dpkg-query -W sublime-text
+    register: sublime_check_deb
+    failed_when: sublime_check_deb.rc > 1
+    changed_when: sublime_check_deb.rc == 1
+
+  - name: Download sublime-text
+    get_url: 
+      url="http://c758482.r82.cf2.rackcdn.com/sublime-text_build-3059_i386.deb"
+      dest="/home/{{ ansible_env.USER }}/Downloads/sublime-text.deb"
+    when: sublime_check_deb.rc == 1
+
+  - name: Install sublime-text
+    apt: deb="/home/{{ ansible_env.USER }}/Downloads/sublime-text.deb"
+    sudo: true
+    when: sublime_check_deb.rc == 1
+
+
+
+

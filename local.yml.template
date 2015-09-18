@@ -1,0 +1,16 @@
+- hosts: localhost
+  vars:
+    root_dir: "."
+    deploy_user: "{{ansible_user_id}}"
+    mysql_root_user: root
+    mysql_root_password: devroot
+    apache_mode: worker # use prefork or worker variables
+    java_version: 8
+
+  tasks:
+
+#    - include: tasks_mongodb.yml
+#    - include: tasks_java.yml
+#    - include: tasks_nginx.yml
+#    - include: tasks_nodejs.yml
+#    - include: tasks_worktools.yml
