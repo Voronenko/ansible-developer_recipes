@@ -41,3 +41,19 @@ Helper ansible repository for my devbox box configuration. Suitable for: LAMP, M
 #     - include: tasks_docker.yml # docker
 
 </pre>
+
+# Defaults
+
+<pre>
+    apps_dir: "/home/YOURUSER/apps"
+    mysql_root_user: root
+    mysql_root_password: devroot
+    apache_mode: worker # use prefork or worker variables
+    java_version: 8
+    phpstorm_version: 9.0.2
+    pycharm_version: 4.5.4
+    rubymine_version: 7.1.4
+    intellij_version: 14.1.4
+    robomongo_version: 0.8.5
+    dbeawer_version: 3.4.5
+</pre>    
