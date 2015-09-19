@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
  
 if [ "$(id -u)" == "0" ]; then
 echo "Installation must NOT be done under sudo"
@@ -11,7 +11,8 @@ sudo apt-get -y install git curl
 SUDOERUSER="$(whoami)"
 SUDOERFILE="/etc/sudoers.d/$SUDOERUSER"
 
-sudo bash -c 'echo $SUDOERUSER ALL=\(ALL\) NOPASSWD: ALL >$SUDOERFILE'
+sudo bash -c "touch $SUDOERFILE"
+sudo bash -c "echo $SUDOERUSER ALL=\(ALL\) NOPASSWD: ALL > $SUDOERFILE"
 
 sudo apt-get -y install software-properties-common
 sudo apt-add-repository ppa:ansible/ansible
