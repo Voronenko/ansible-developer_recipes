@@ -1,0 +1,30 @@
+    - name: Python | install python-pip
+      apt: name=python-pip update_cache=yes state=latest
+      sudo: yes
+      tags: 
+        -setup      
+        -python 
+
+    - name: Python | Update pip
+      shell: pip install -U pip
+      sudo: yes
+      tags: 
+        -setup      
+        -python 
+
+    - name: Python | install python-dev
+      apt: name=python-dev update_cache=yes state=latest   
+      sudo: yes
+      tags: 
+        -setup      
+        -python 
+
+    - name: Python | Fix ssl security for pip install
+      shell: pip install pyopenssl ndg-httpsclient pyasn1
+      sudo: yes
+      tags: 
+        -setup      
+        -python 
+
+
+        
