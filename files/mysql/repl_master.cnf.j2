@@ -1,0 +1,7 @@
+#  https://docs.google.com/document/d/1Z91eMKqHLYK3MKXtcMDVE_WmGtv0Kfo2E6zX5r5iYe0/edit
+[mysqld]
+server-id = 1
+log-bin = mysql-bin
+binlog_do_db = {{item.repl_db}}
+expire_logs_days = 7
+

@@ -1,0 +1,7 @@
+#  https://docs.google.com/document/d/1Z91eMKqHLYK3MKXtcMDVE_WmGtv0Kfo2E6zX5r5iYe0/edit
+[mysqld]
+server-id = {{item.mysql_server_id}}
+log_bin = mysql-bin
+binlog_do_db = {{item.repl_db}}
+relay-log = /var/log/mysql/mysql-relay-bin.log
+relay_log_space_limit=2G

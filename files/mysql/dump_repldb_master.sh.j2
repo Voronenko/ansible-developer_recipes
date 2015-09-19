@@ -1,0 +1,26 @@
+#!/bin/sh
+
+set -e
+
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+CONF=/etc/mysql/conf.d/repl_master.cnf
+CMD=mysqldump
+MYSQL_USER=root
+MYSQL_PASS=devroot
+MYSQL_OUT=repl.sql
+
+ARG="$@ -u$MYSQL_USER -p$MYSQL_PASS --routines --triggers --single-transaction --master-data=1 --databases"
+
+for DB in `grep ^binlog_do_db $CONF | awk '{print $3}'`; do
+  ARG="$ARG $DB"
+done
+
+for IGNORE_TABLE in `grep ^replicate-ignore-table $CONF | awk '{print $3}'`; do
+  ARG="$ARG --ignore-table=$IGNORE_TABLE"
+done
+
+echo $CMD $ARG > $MYSQL_OUT
+$CMD $ARG > $MYSQL_OUT
+echo use command like "scp repl.sql slavko@192.168.0.17:~" to move that file to SLAVE box
+
+

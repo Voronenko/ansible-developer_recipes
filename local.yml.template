@@ -11,10 +11,12 @@
     pycharm_version: 4.5.4
     rubymine_version: 7.1.4
     intellij_version: 14.1.4
+    robomongo_version: 0.8.5
+    dbeawer_version: 3.4.5
 
   tasks:
 
-     - include: tasks_worktools.yml
+#     - include: tasks_worktools.yml
 
 #     - include: tasks_mongodb.yml
 #     - include: tasks_nginx.yml
@@ -25,4 +27,16 @@
 #     - include: tasks_jetbrains_phpstorm.yml
 #     - include: tasks_jetbrains_pycharm_community.yml
 #     - include: tasks_jetbrains_rubymine.yml
-     - include: tasks_jetbrains_intellij_community.yml
+#     - include: tasks_jetbrains_intellij_community.yml
+#     - include: tasks_robomongo.yml
+#     - include: tasks_dbeawer.yml
+
+#     - include: tasks_apache.yml
+
+#     - include: tasks_mysql.yml
+#     - include: tasks_percona_toolkit.yml
+#     - include: tasks_php_apache.yml
+
+  handlers:
+    - name: restart apache2
+      service: name=apache2 state=restarted      

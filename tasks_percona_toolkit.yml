@@ -10,7 +10,7 @@
         -setup
 
   - name: Percona | Add GPG key to apt keyring
-    shell: apt-key adv --keyserver keys.gnupg.net --recv-keys 1C4CBDCDCD2EFD
+    shell: gpg --keyserver  hkp://keys.gnupg.net --recv-keys 1C4CBDCDCD2EFD2A
     when: ansible_os_family == "Debian" and percona_present|failed
     sudo: yes
     tags: 
@@ -18,7 +18,7 @@
         -setup
 
   - name: Percona | Add apt repository
-    template: src={{root_dir}}/files/mongodb/apt-source.j2 dest=/etc/apt/sources.list.d/percona.list mode=644
+    template: src={{root_dir}}/files/percona/apt_source.j2 dest=/etc/apt/sources.list.d/percona.list mode=644
     when: ansible_os_family == "Debian" and percona_present|failed
     sudo: yes
     tags: 

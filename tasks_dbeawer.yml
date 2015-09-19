@@ -1,0 +1,30 @@
+- name: DBeawer | Check if my_package is installed
+  command: dpkg-query -W dbeaver
+  register: dbeawer_check_deb
+  sudo: yes
+  failed_when: dbeawer_check_deb.rc > 1
+  changed_when: dbeawer_check_deb.rc == 1
+  tags:
+    -worktools
+    -dbeawer
+
+
+- name: DBeawer | download package
+  get_url: 
+    url="http://dbeaver.jkiss.org/files/dbeaver_{{ dbeawer_version }}_amd64.deb"
+    dest="/home/{{ deploy_user }}/Downloads/dbeawer.deb"
+  when: dbeawer_check_deb.rc == 1
+  tags:
+    -worktools
+    -dbeawer  
+
+- name: DBeawer | install package
+  apt: deb="/home/{{ deploy_user }}/Downloads/dbeawer.deb"
+  sudo: true
+  when: dbeawer_check_deb.rc == 1
+  tags:
+    -worktools
+    -dbeawer  
+
+
+

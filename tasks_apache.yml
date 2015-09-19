@@ -1,0 +1,86 @@
+    - name: Apache | install apache2
+      apt: name=apache2 update_cache=yes state=latest
+      sudo: yes
+      tags: 
+        - setup 
+        - apache2         
+
+    - name: Apache | install apache2 MPM Worker
+      apt: name=apache2-mpm-worker state=latest
+      when: "apache_mode == 'worker'"
+      sudo: yes
+      tags: 
+        - setup 
+        - apache2         
+
+    - name: Apache |install libapache2-mod-wsgi
+      apt: name=libapache2-mod-wsgi state=latest
+      sudo: yes
+      tags: 
+        - setup 
+        - apache2         
+
+    - name: Apache |install libapache2-mod-fastcgi
+      apt: name=libapache2-mod-fastcgi state=latest
+      when: "apache_mode == 'worker'"      
+      sudo: yes
+      tags: 
+        - setup 
+        - apache2         
+
+    - name: Apache |enabled mod_rewrite
+      apache2_module: name=rewrite state=present
+      sudo: yes
+      notify:
+        - restart apache2
+      tags: 
+        - setup 
+        - apache2         
+
+    - name: Apache |enabled mod_wsgi
+      apache2_module: name=wsgi state=present
+      sudo: yes
+      notify:
+        - restart apache2
+      tags: 
+        - setup 
+        - apache2         
+
+    - name: Apache |enabled mod_actions
+      apache2_module: name=actions state=present
+      when: "apache_mode == 'worker'"            
+      sudo: yes
+      notify:
+        - restart apache2
+      tags: 
+        - setup 
+        - apache2         
+
+    - name: Apache |enabled mod_alias
+      apache2_module: name=alias state=present
+      when: "apache_mode == 'worker'"                  
+      sudo: yes
+      notify:
+        - restart apache2
+      tags: 
+        - setup 
+        - apache2         
+
+    - name: Apache |enabled mod_fastcgi
+      apache2_module: name=fastcgi state=present
+      when: "apache_mode == 'worker'"                        
+      sudo: yes
+      notify:
+        - restart apache2
+      tags: 
+        - setup 
+        - apache2         
+
+
+    - name: Apache |restart apache2
+      service: name=apache2 state=restarted      
+      sudo: yes      
+      tags: 
+        - setup 
+        - apache2         
+
