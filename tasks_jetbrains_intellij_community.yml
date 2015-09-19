@@ -1,0 +1,97 @@
+- name: JetBrains| ensure apps folder exists
+  shell: 
+    mkdir -p {{apps_dir}}
+    creates="{{apps_dir}}"
+
+- name: JetBrains IntelliJ| Test if folder exist
+  stat:
+    path={{apps_dir}}/intellij
+  register: intellij_exist
+  tags: 
+    -jetbrains
+    -intellij    
+    -setup
+
+- name: JetBrains IntelliJ| Download IntelliJ archive
+  get_url:
+    url=http://download.jetbrains.com/idea/ideaIC-{{intellij_version}}.tar.gz
+    dest={{apps_dir}}/intellij.tar.gz
+  when: intellij_exist.stat.exists == False
+  tags: 
+    -jetbrains
+    -intellij    
+    -setup
+
+
+- name: JetBrains IntelliJ| Decompress IntelliJ archive
+  unarchive:
+    src={{apps_dir}}/intellij.tar.gz
+    dest={{apps_dir}}
+    copy=no
+  when: intellij_exist.stat.exists == False
+  tags: 
+    -jetbrains
+    -intellij    
+    -setup
+
+- shell: ls -d {{apps_dir}}/idea-IC-*
+  register: intellij_version    
+  when: intellij_exist.stat.exists == False
+  tags: 
+    -jetbrains
+    -intellij    
+    -setup
+
+
+- name: JetBrains IntelliJ| Move IntelliJ folder
+  command: "mv {{intellij_version.stdout}} {{apps_dir}}/intellij"
+  when: intellij_exist.stat.exists == False  
+  args:
+    chdir: "{{apps_dir}}"
+  tags: 
+    -jetbrains
+    -intellij    
+    -setup
+  ignore_errors: true  
+
+
+- name: JetBrains IntelliJ| Create symlink
+  file:
+    src={{apps_dir}}/intellij/bin/idea.sh
+    dest=/usr/bin/idea
+    state=link
+  sudo: yes  
+  tags: 
+    -jetbrains
+    -intellij    
+    -setup
+
+- name: JetBrains IntelliJ| Create desktop entry
+  template:
+    src={{root_dir}}/files/jetbrains/desktopentry.j2
+    dest=/home/{{deploy_user}}/Desktop/IntelliJ.desktop
+    mode=755
+  with_items:
+    - {
+    	name: "IntelliJ",
+    	exec: "{{apps_dir}}/intellij/bin/idea.sh",
+    	icon: "{{apps_dir}}/intellij/bin/idea.png",
+    	comment: "Develop with IntelliJ!",
+    	categories: "Development;IDE;",
+    	startupwmclass: "jetbrains-intellij" 
+    }
+  tags: 
+    -jetbrains
+    -intellij    
+    -setup
+
+#- name:JetBrains IntelliJ| Remove phpStorm archive
+#  file:
+#    path={{apps_dir}}/intellij.tar.gz
+#    state=absent
+#  tags: 
+#    -jetbrains
+#    -intellij    
+#    -setup
+
+

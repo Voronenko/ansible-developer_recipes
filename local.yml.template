@@ -1,16 +1,28 @@
 - hosts: localhost
   vars:
-    root_dir: "."
+    root_dir: "{{playbook_dir}}"
     deploy_user: "{{ansible_user_id}}"
+    apps_dir: "/home/{{ansible_user_id}}/apps"
     mysql_root_user: root
     mysql_root_password: devroot
     apache_mode: worker # use prefork or worker variables
     java_version: 8
+    phpstorm_version: 9.0.2
+    pycharm_version: 4.5.4
+    rubymine_version: 7.1.4
+    intellij_version: 14.1.4
 
   tasks:
 
-#    - include: tasks_mongodb.yml
-#    - include: tasks_java.yml
-#    - include: tasks_nginx.yml
-#    - include: tasks_nodejs.yml
-#    - include: tasks_worktools.yml
+     - include: tasks_worktools.yml
+
+#     - include: tasks_mongodb.yml
+#     - include: tasks_nginx.yml
+#     - include: tasks_nodejs.yml
+
+
+#     - include: tasks_java.yml
+#     - include: tasks_jetbrains_phpstorm.yml
+#     - include: tasks_jetbrains_pycharm_community.yml
+#     - include: tasks_jetbrains_rubymine.yml
+     - include: tasks_jetbrains_intellij_community.yml

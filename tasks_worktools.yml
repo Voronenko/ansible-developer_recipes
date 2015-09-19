@@ -19,22 +19,94 @@
       -worktools
       -setup
 
+  - name: Worktools | terminator
+    apt: name=p7zip-full update_cache=yes state=latest
+    sudo: yes      
+    tags:
+      -worktools
+      -setup
+
   - name: Worktools | Check if sublime is installed
     command: dpkg-query -W sublime-text
     register: sublime_check_deb
     failed_when: sublime_check_deb.rc > 1
     changed_when: sublime_check_deb.rc == 1
+    tags:
+      -sublime
+      -setup
 
-  - name: Download sublime-text
-    get_url: 
-      url="http://c758482.r82.cf2.rackcdn.com/sublime-text_build-3059_i386.deb"
-      dest="/home/{{ ansible_env.USER }}/Downloads/sublime-text.deb"
-    when: sublime_check_deb.rc == 1
 
-  - name: Install sublime-text
-    apt: deb="/home/{{ ansible_env.USER }}/Downloads/sublime-text.deb"
-    sudo: true
+  - name: Worktools | Add sublime ppa
+    apt_repository: repo=ppa:webupd8team/sublime-text-2 state=present
+    sudo: yes
     when: sublime_check_deb.rc == 1
+    tags:
+      -sublime  
+      -setup
+
+  - name: Worktools | Install Sublime
+    apt: update_cache=yes pkg=sublime-text state=installed
+    sudo: yes
+    tags:
+      -sublime 
+      -setup
+
+  - name: Worktools | Check if zeal is installed
+    command: dpkg-query -W zeal
+    register: zeal_check_deb
+    failed_when: zeal_check_deb.rc > 1
+    changed_when: zeal_check_deb.rc == 1
+    tags:
+      -zeal
+      -setup
+
+
+  - name: Worktools | Add zeal ppa
+    apt_repository: repo=ppa:zeal-developers/ppa state=present
+    sudo: yes
+    when: zeal_check_deb.rc == 1
+    tags:
+      -zeal
+      -setup
+
+  - name: Worktools | Install zeal
+    apt: update_cache=yes pkg=zeal state=installed
+    sudo: yes
+    tags:
+      -zeal 
+      -setup
+
+  - name: Worktools | Check google apt
+    command: test -f /etc/apt/sources.list.d/google-chrome.list
+    register: google_apt_exists
+    ignore_errors: True
+    tags:
+      -chrome
+      -setup
+
+
+  - name: Worktools | Add Google Chrome key
+    shell: wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+    sudo: yes
+    when: google_apt_exists.rc == 1
+    tags:
+      -chrome 
+      -setup
+
+  - name: Worktools | Add Google Chrome repo
+    copy: content="deb http://dl.google.com/linux/chrome/deb/ stable main" dest=/etc/apt/sources.list.d/google-chrome.list owner=root group=root mode=644
+    when: google_apt_exists.rc == 1
+    sudo: yes
+    tags:
+      -chrome 
+      -setup
+
+  - name: Install Google Chrome
+    apt: update_cache=yes pkg=google-chrome-stable state=installed
+    sudo: yes
+    tags:
+      -chrome 
+      -setup
 
 
 

@@ -1,0 +1,97 @@
+- name: JetBrains| ensure apps folder exists
+  shell: 
+    mkdir -p {{apps_dir}}
+    creates="{{apps_dir}}"
+
+- name: JetBrains RubyMine| Test if folder exist
+  stat:
+    path={{apps_dir}}/rubymine
+  register: rubymine_exist
+  tags: 
+    -jetbrains
+    -rubymine    
+    -setup
+
+- name: JetBrains RubyMine| Download RubyMine archive
+  get_url:
+    url=http://download.jetbrains.com/ruby/RubyMine-{{rubymine_version}}.tar.gz
+    dest={{apps_dir}}/rubymine.tar.gz
+  when: rubymine_exist.stat.exists == False
+  tags: 
+    -jetbrains
+    -rubymine    
+    -setup
+
+
+- name: JetBrains RubyMine| Decompress RubyMine archive
+  unarchive:
+    src={{apps_dir}}/rubymine.tar.gz
+    dest={{apps_dir}}
+    copy=no
+  when: rubymine_exist.stat.exists == False
+  tags: 
+    -jetbrains
+    -rubymine    
+    -setup
+
+- shell: ls -d {{apps_dir}}/RubyMine-*
+  register: rubymine_version    
+  when: rubymine_exist.stat.exists == False
+  tags: 
+    -jetbrains
+    -rubymine    
+    -setup
+
+
+- name: JetBrains RubyMine| Move RubyMine folder
+  command: "mv {{rubymine_version.stdout}} {{apps_dir}}/rubymine"
+  when: rubymine_exist.stat.exists == False  
+  args:
+    chdir: "{{apps_dir}}"
+  tags: 
+    -jetbrains
+    -rubymine    
+    -setup
+  ignore_errors: true  
+
+
+- name: JetBrains RubyMine| Create symlink
+  file:
+    src={{apps_dir}}/rubymine/bin/rubymine.sh
+    dest=/usr/bin/rubymine
+    state=link
+  sudo: yes  
+  tags: 
+    -jetbrains
+    -rubymine    
+    -setup
+
+- name: JetBrains RubyMine| Create desktop entry
+  template:
+    src={{root_dir}}/files/jetbrains/desktopentry.j2
+    dest=/home/{{deploy_user}}/Desktop/RubyMine.desktop
+    mode=755
+  with_items:
+    - {
+    	name: "RubyMine",
+    	exec: "{{apps_dir}}/rubymine/bin/rubymine.sh",
+    	icon: "{{apps_dir}}/rubymine/bin/rubymine.png",
+    	comment: "Develop with RubyMine!",
+    	categories: "Development;IDE;",
+    	startupwmclass: "jetbrains-rubymine" 
+    }
+  tags: 
+    -jetbrains
+    -rubymine    
+    -setup
+
+#- name:JetBrains RubyMine| Remove phpStorm archive
+#  file:
+#    path={{apps_dir}}/rubymine.tar.gz
+#    state=absent
+#  tags: 
+#    -jetbrains
+#    -rubymine    
+#    -setup
+
+
