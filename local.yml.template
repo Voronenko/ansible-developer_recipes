@@ -37,6 +37,8 @@
 #     - include: tasks_percona_toolkit.yml
 #     - include: tasks_php_apache.yml
 
+#     - include: tasks_docker.yml
+
   handlers:
     - name: restart apache2
       service: name=apache2 state=restarted      
