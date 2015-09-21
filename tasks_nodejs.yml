@@ -43,3 +43,11 @@
        -setup
 
 
+  - name: NodeJS | Install gulp tool
+    shell: npm install -g gulp
+    when: ansible_os_family == "Debian" and node_present|failed
+    sudo: yes
+    tags:
+       -nodejs
+       -setup
+
