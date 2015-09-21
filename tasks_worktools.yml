@@ -27,7 +27,7 @@
       -setup
 
   - name: Worktools | terminator
-    apt: name=p7zip-full update_cache=yes state=latest
+    apt: name=terminator update_cache=yes state=latest
     sudo: yes      
     tags:
       -worktools
