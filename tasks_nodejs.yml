@@ -34,3 +34,12 @@
        -setup
 
 
+  - name: NodeJS | Self update npm to most recent one
+    shell: npm install -g npm
+    when: ansible_os_family == "Debian" and node_present|failed
+    sudo: yes
+    tags:
+       -nodejs
+       -setup
+
+
