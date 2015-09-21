@@ -1,0 +1,21 @@
+- name: Vagrant | Install base package
+  apt:  pkg=vagrant state=installed
+  sudo: yes
+  tags:
+    -vagrant
+    -setup
+
+- name: Vagrant | update dkms
+  apt:  update_cache=yes pkg=dkms state=installed
+  sudo: yes
+  tags:
+    -vagrant
+    -setup
+
+
+- name: Vagrant | install vbguest plugin
+  shell: vagrant plugin install vagrant-vbguest
+  sudo: yes
+  tags:
+    -vagrant
+    -setup

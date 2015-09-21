@@ -13,6 +13,7 @@
     intellij_version: 14.1.4
     robomongo_version: 0.8.5
     dbeawer_version: 3.4.5
+    oracle_vbox_version: "5.0"
 
   tasks:
 
@@ -40,6 +41,9 @@
 #     - include: tasks_dbeawer.yml                         # mysql | postgre GUI tool
 
 #     - include: tasks_docker.yml # docker
+
+#     - include: tasks_oracle_virtualbox.yml               # Oracle Virtual Box
+#     - include: tasks_vagrant.yml                         # Vagrant
 
   handlers:
     - name: restart apache2
