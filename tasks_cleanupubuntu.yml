@@ -1,0 +1,39 @@
+  - name: Ubuntu | Uninstall games
+    apt: pkg={{item}} state=absent
+    with_items:
+       - gnome-sudoku
+       - mahjongg
+       - ace-of-penguins
+       - gnomine
+       - gbrainy
+    sudo: yes
+    tags:
+      - cleanup
+      - setup 
+
+  - name: Ubuntu | Uninstall lengs
+    apt: pkg={{item}} state=absent
+    with_items:
+       - unity-scope-gdocs
+       - unity-lens-photos
+       - unity-scope-video-remote
+       - unity-scope-musicstores
+       - unity-lens-shopping
+    sudo: yes
+    tags:
+      - cleanup
+      - setup 
+
+
+  - name: Ubuntu | Uninstall libre office
+    apt: pkg={{item}} state=absent
+    with_items:
+       - libreoffice-core
+       - openoffice
+    sudo: yes
+    tags:
+      - cleanup
+      - setup 
+
+
+
