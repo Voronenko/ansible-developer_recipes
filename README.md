@@ -28,7 +28,7 @@ Helper ansible repository for my devbox box configuration. Suitable for: LAMP, M
 
 #     - include: tasks_nodejs.yml                          # node 0.10.*
 #     - include: tasks_java.yml                            # java 6-7-8
-#     - include: tasks_php_apache.yml # php 5.5 for apache
+#     - include: tasks_php_apache.yml                      # php 5.5 for apache
 
 #     - include: tasks_jetbrains_phpstorm.yml              # PHP IDE 
 #     - include: tasks_jetbrains_pycharm_community.yml     # PY IDE 
