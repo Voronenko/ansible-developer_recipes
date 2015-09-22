@@ -1,0 +1,27 @@
+---
+  # Parameters:
+  #  prudentia_dir (provided)
+
+  - name: MongoDB | Check if is present
+    command: test -x /usr/bin/mongo
+    when: ansible_system == "Linux"
+    ignore_errors: yes
+    register: mongo_present
+    tags: mongodb3
+
+  - name: MongoDB | Add GPG key to apt keyring
+    apt_key: id=7F0CEB10 url=http://docs.mongodb.org/10gen-gpg-key.asc
+    sudo: yes
+    tags: mongodb3
+
+  - name: MongoDB | Add Debian apt repository
+    apt_repository: repo="deb http://repo.mongodb.org/apt/ubuntu {{ ansible_distribution_release }}/mongodb-org/3.0 multiverse"
+    when: ansible_os_family == "Debian" and mongo_present|failed
+    tags: mongodb3
+    sudo: yes
+
+  - name: MongoDB | Install
+    apt: update-cache=yes force=yes state=present pkg=mongodb-org
+    when: ansible_os_family == "Debian" and mongo_present|failed
+    sudo: yes
+    tags: mongodb3

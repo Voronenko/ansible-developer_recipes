@@ -14,6 +14,7 @@
     robomongo_version: 0.8.5
     dbeawer_version: 3.4.5
     oracle_vbox_version: "5.0"
+    mongo_version: "3"
 
   tasks:
 
@@ -21,7 +22,7 @@
 #     - include: tasks_python.yml                          # basic updates to py & pip
 #     - include: tasks_worktools.yml                       # swiss knife for desktop utilities
 
-#     - include: tasks_mongodb.yml                         # mongodb 2.6
+#     - include: tasks_mongodb_{{mongo_version}}.yml       # mongodb 2.6 | 3
 #     - include: tasks_mysql.yml                           # MYSQL 5.5
 #     - include: tasks_percona_toolkit.yml                 # percona tools for mysql
 
