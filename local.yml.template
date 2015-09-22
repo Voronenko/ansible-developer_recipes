@@ -13,8 +13,10 @@
     intellij_version: 14.1.4
     robomongo_version: 0.8.5
     dbeawer_version: 3.4.5
-    oracle_vbox_version: "4.3"
-    mongo_version: "3"
+    oracle_vbox_version: 4.3
+    mongo_version: 3
+    vagrant_version: 1.7.4
+
 
   tasks:
 
