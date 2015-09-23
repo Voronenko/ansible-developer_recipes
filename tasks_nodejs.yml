@@ -1,4 +1,3 @@
-  
   - name: NodeJS | Check if is present
     command: test -x /usr/bin/node
     when: ansible_system == "Linux"
@@ -8,27 +7,55 @@
         -nodejs
         -setup
 
-  - name: NodeJS | Install ppa key
-    apt_key: id=C7917B12 url=http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0xB9316A7BC7917B12 state=present
+  - name: NodeJS | Check nodejs_version variable
+    assert:
+      that: nodejs_version in [ "0.10", "0.12" ]
     when: ansible_os_family == "Debian" and node_present|failed
+    tags: 
+       -nodejs
+       -setup
+
+  - name: NodeJS | Import the NodeSource GPG key into apt
+    apt_key: url=https://deb.nodesource.com/gpgkey/nodesource.gpg.key state=present
     sudo: yes
+    when: ansible_os_family == "Debian" and node_present|failed
     tags: 
        -nodejs
        -setup
 
 
-  - name: NodeJS | Install ppa
-    apt_repository: repo=ppa:chris-lea/node.js state=present
-    when: ansible_os_family == "Debian" and node_present|failed
+  - name: NodeJS | Add NodeSource deb repository
+    apt_repository: repo='deb https://deb.nodesource.com/node_{{ nodejs_version }} {{ ansible_distribution_release }} main' state=present
     sudo: yes
+    when: ansible_os_family == "Debian" and node_present|failed
     tags: 
        -nodejs
        -setup
 
-  - name: NodeJS | Install package
-    apt: name=nodejs state=present
-    when: ansible_os_family == "Debian" and node_present|failed
+
+  - name: NodeJS | Add NodeSource deb-src repository
+    apt_repository: repo='deb-src https://deb.nodesource.com/node_{{ nodejs_version }} {{ ansible_distribution_release }} main' state=present
     sudo: yes
+    when: ansible_os_family == "Debian" and node_present|failed
+    tags: 
+       -nodejs
+       -setup
+
+
+  - name: NodeJS | Add NodeSource repository preferences
+    template:
+      src: "{{root_dir}}/files/nodejs/deb_nodesource_com_node.pref.j2"
+      dest: /etc/apt/preferences.d/deb_nodesource_com_node.pref
+    sudo: yes
+    when: ansible_os_family == "Debian" and node_present|failed
+    tags: 
+       -nodejs
+       -setup
+
+  - name: NodeJS | Install Node.js
+    apt: pkg=nodejs={{ nodejs_version }}.* state=installed update_cache=yes
+    sudo: yes
+    when: ansible_os_family == "Debian" and node_present|failed
     tags: 
        -nodejs
        -setup

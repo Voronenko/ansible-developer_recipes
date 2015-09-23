@@ -16,6 +16,7 @@
     oracle_vbox_version: 4.3
     mongo_version: 3
     vagrant_version: 1.7.4
+    nodejs_version: "0.12" # 0.10 0.12
 
     php_family: default # 5.4 | 5.5 | 5.6 | default
 
@@ -34,7 +35,7 @@
 #     - include: tasks_nginx.yml                           # nginx
 #     - include: tasks_apache.yml                          # apache prefork|worker
 
-#     - include: tasks_nodejs.yml                          # node 0.10.*
+     - include: tasks_nodejs.yml                          # node 0.10.* 0.12.*
 #     - include: tasks_java.yml                            # java 6-7-8
 #     - include: tasks_php_apache.yml                      # php 5.5 for apache
 
