@@ -1,7 +1,7 @@
 <VirtualHost *:{{item.port | default('80')}}>
 	ServerName {{item.name}}.lvh.me
 	WSGIScriptAlias / {{item.path}}/{{item.wsgi_name | default('vagrant.wsgi')}}
-	WSGIDaemonProcess {{item.name}}.lvh.me  processes=2 threads=1
+	WSGIDaemonProcess {{item.name}}.lvh.me  processes=2 threads=1 python-path={{item.path}}:{{item.path}}/p-env/lib/python2.7/site-packages
 	WSGIProcessGroup {{item.name}}.lvh.me
 	<Directory {{item.path}}>
 		Order allow,deny
@@ -9,3 +9,5 @@
 		Require all granted
 	</Directory>
 </VirtualHost>
+
+
