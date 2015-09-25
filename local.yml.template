@@ -35,7 +35,7 @@
 #     - include: tasks_nginx.yml                           # nginx
 #     - include: tasks_apache.yml                          # apache prefork|worker
 
-     - include: tasks_nodejs.yml                          # node 0.10.* 0.12.*
+#     - include: tasks_nodejs.yml                          # node 0.10.* 0.12.*
 #     - include: tasks_java.yml                            # java 6-7-8
 #     - include: tasks_php_apache.yml                      # php 5.5 for apache
 
@@ -51,6 +51,9 @@
 
 #     - include: tasks_oracle_virtualbox.yml               # Oracle Virtual Box
 #     - include: tasks_vagrant.yml                         # Vagrant
+
+
+#     - include: tools/tasks_expect.yml                         # expect tool
 
   handlers:
     - name: restart apache2
