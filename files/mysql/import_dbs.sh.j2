@@ -1,0 +1,19 @@
+#!/bin/sh
+
+HOMEDIR=${PWD}
+
+if [ -f .nodbs ] ; then
+    echo ".nodbs flag present, db import skipped";
+    exit 0
+fi
+
+for d in */ ; do
+    DBNAME="$(echo $d | cut -d '=' -f 2 | sed 's/\/$//')"
+    echo "IMPORTING DB: $DBNAME"
+    cd "$HOMEDIR/$DBNAME"
+    mysqladmin -u{{mysql_root_user}} -p{{mysql_root_password}} drop $DBNAME
+    last_dump=$(find ./*.sql -type f -exec stat -c "%n" {} + | sort -r | head -n1)
+    mysql --user={{mysql_root_user}} --password={{mysql_root_password}} < $last_dump
+done
+
+touch "$HOMEDIR/.nodbs"

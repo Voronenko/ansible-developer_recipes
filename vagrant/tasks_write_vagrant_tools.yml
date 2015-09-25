@@ -1,0 +1,13 @@
+- name: Vagrant tools| batch db import
+  template:
+    src={{root_dir}}/files/mysql/import_dbs.sh.j2
+    dest=/usr/bin/vagrant_importdbs
+    mode=755
+  sudo: yes  
+
+- name: Vagrant tools| initialize py virtual env
+  template:
+    src={{root_dir}}/files/apache2/vagrant/py_init_venv.sh
+    dest=/usr/bin/vagrant_init_venv
+    mode=755
+  sudo: yes    
