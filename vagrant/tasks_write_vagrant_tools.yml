@@ -11,3 +11,7 @@
     dest=/usr/bin/vagrant_init_venv
     mode=755
   sudo: yes    
+
+- name: Vagrant tools | Generate default snakeoil ssl certificate
+  shell: make-ssl-cert generate-default-snakeoil --force-overwrite
+  sudo: yes 
