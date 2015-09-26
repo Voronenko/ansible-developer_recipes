@@ -1,0 +1,71 @@
+<VirtualHost *:80>
+  ServerName {{ item.name }}
+  DocumentRoot {{ item.path }}
+  RewriteEngine On
+
+  <Directory {{ item.path }} >
+    Options FollowSymLinks
+    AllowOverride All
+    Order allow,deny
+    Allow from all
+  </Directory>
+
+  <Directory />
+    Options FollowSymLinks
+    AllowOverride None
+  </Directory>
+
+  <Location /server-status>
+    SetHandler server-status
+
+    Order Allow,Deny
+    Allow from all
+  </Location>
+
+  LogLevel info
+  ErrorLog /var/log/apache2/{{ item.name }}-error.log
+  CustomLog /var/log/apache2/{{ item.name }}-access.log combined
+
+  RewriteEngine On
+  RewriteLog /var/log/apache2/{{ item.name }}-rewrite.log
+  # level 0 => Do not log rewrite
+  RewriteLogLevel 0
+</VirtualHost>
+
+<VirtualHost *:443>
+  ServerName {{ item.name }}
+  DocumentRoot {{ item.path }}
+  RewriteEngine On
+
+  <Directory {{ item.path }} >
+    Options FollowSymLinks
+    AllowOverride All
+    Order allow,deny
+    Allow from all
+  </Directory>
+
+  <Directory />
+    Options FollowSymLinks
+    AllowOverride None
+  </Directory>
+
+  <Location /server-status>
+    SetHandler server-status
+
+    Order Allow,Deny
+    Allow from all
+  </Location>
+
+  LogLevel info
+  ErrorLog /var/log/apache2/{{ item.name }}-error.log
+  CustomLog /var/log/apache2/{{ item.name }}-access.log combined
+
+  RewriteEngine On
+  RewriteLog /var/log/apache2/{{ item.name }}-rewrite.log
+  # level 0 => Do not log rewrite
+  RewriteLogLevel 0
+
+  SSLEngine on
+  SSLCertificateFile /etc/ssl/certs/ssl-cert-snakeoil.pem
+  SSLCertificateKeyFile /etc/ssl/private/ssl-cert-snakeoil.key
+</VirtualHost>
