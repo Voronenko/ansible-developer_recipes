@@ -1,9 +1,9 @@
 <VirtualHost *:80>
   ServerName {{ item.name }}.lvh.me
-  DocumentRoot {{ item.path }}
+  DocumentRoot {{ item.path }}{{ item.docroot | default('')}}
   RewriteEngine On
 
-  <Directory {{ item.path }} >
+  <Directory {{ item.path }}{{ item.docroot | default('')}} >
     Options FollowSymLinks
     AllowOverride All
     Order allow,deny
@@ -37,10 +37,10 @@
 
 <VirtualHost *:443>
   ServerName {{ item.name }}.lvh.me
-  DocumentRoot {{ item.path }}
+  DocumentRoot {{ item.path }}{{ item.docroot | default('')}}
   RewriteEngine On
 
-  <Directory {{ item.path }} >
+  <Directory {{ item.path }}{{ item.docroot | default('')}} >
     Options FollowSymLinks
     AllowOverride All
     Order allow,deny

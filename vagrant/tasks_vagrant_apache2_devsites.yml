@@ -3,7 +3,6 @@
       when: item.type=="wsgi"
       with_items: vagrant_lvh_sites
       sudo: yes 
-      tags: setup
       tags:
         -vagrant
 
@@ -20,13 +19,21 @@
       tags:
         -vagrant
 
-    - name: Vagrant | Apache WEB |create virtual host file {{item.name}}.lvh.me.conf
+    - name: Vagrant | Apache WEB |create (default) virtual host file {{item.name}}.lvh.me.conf
       template: src={{root_dir}}/files/apache2/vagrant/web_app.lvh.me.conf.j2 dest=/etc/apache2/sites-available/{{item.name}}.lvh.me.conf
-      when: item.type=="web"
+      when: item.type=="web" and item.template is not defined
       with_items: vagrant_lvh_sites
       sudo: yes 
       tags:
         -vagrant
+
+    - name: Vagrant | Apache WEB |create (custom) virtual host file {{item.name}}.lvh.me.conf
+      template: src={{item.template}} dest=/etc/apache2/sites-available/{{item.name}}.lvh.me.conf
+      when: item.type=="web" and item.template is defined
+      with_items: vagrant_lvh_sites
+      sudo: yes 
+      tags:
+        -vagrant        
 
     - name: Vagrant | Apache WEB |a2ensite {{item.name}}.lvh.me
       command: a2ensite {{item.name}}.lvh.me
