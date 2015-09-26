@@ -11,9 +11,10 @@ for d in */ ; do
     DBNAME="$(echo $d | cut -d '=' -f 2 | sed 's/\/$//')"
     echo "IMPORTING DB: $DBNAME"
     cd "$HOMEDIR/$DBNAME"
-    mysql -{{mysql_root_user}}  -p{{mysql_root_password}} -e "drop database if exists $DBNAME"
+    mysql -u{{mysql_root_user}}  -p{{mysql_root_password}} -e "drop database if exists $DBNAME"
+    mysql -u{{mysql_root_user}}  -p{{mysql_root_password}} -e "create database if not exists $DBNAME CHARACTER SET utf8 COLLATE utf8_general_ci"    
     last_dump=$(find ./*.sql -type f -exec stat -c "%n" {} + | sort -r | head -n1)
-    mysql --user={{mysql_root_user}} --password={{mysql_root_password}} < $last_dump
+    mysql -u{{mysql_root_user}} -p{{mysql_root_password}} $DBNAME< $last_dump
 done
 
 touch "$HOMEDIR/.nodbs"
