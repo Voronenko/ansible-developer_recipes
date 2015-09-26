@@ -81,6 +81,16 @@
         - setup 
         - apache2         
 
+    - name: Apache |enabled mod_proxy_http
+      apache2_module: name=proxy_http state=present
+      sudo: yes
+      notify:
+        - restart apache2
+      tags: 
+        - setup 
+        - apache2         
+
+
     - name: Apache |enabled mod_headers
       apache2_module: name=headers state=present
       sudo: yes
