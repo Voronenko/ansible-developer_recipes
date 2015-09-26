@@ -4,6 +4,9 @@
     dest=/usr/bin/vagrant_importdbs
     mode=755
   sudo: yes  
+  tags:
+    -vagrant
+
 
 - name: Vagrant tools| initialize py virtual env
   template:
@@ -11,7 +14,13 @@
     dest=/usr/bin/vagrant_init_venv
     mode=755
   sudo: yes    
+  tags:
+    -vagrant
+
 
 - name: Vagrant tools | Generate default snakeoil ssl certificate
   shell: make-ssl-cert generate-default-snakeoil --force-overwrite
   sudo: yes 
+  tags:
+    -vagrant
+  

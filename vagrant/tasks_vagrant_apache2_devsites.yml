@@ -1,0 +1,41 @@
+    - name: Vagrant | Apache WSGI | create virtual host file {{item.name}}.lvh.me.conf
+      template: src={{root_dir}}/files/apache2/vagrant/wsgi_app.lvh.me.conf.j2 dest=/etc/apache2/sites-available/{{item.name}}.lvh.me.conf
+      when: item.type=="wsgi"
+      with_items: vagrant_lvh_sites
+      sudo: yes 
+      tags: setup
+      tags:
+        -vagrant
+
+
+    - name: Vagrant | Apache WSGI | a2ensite {{item.name}}.lvh.me
+      command: a2ensite {{item.name}}.lvh.me
+      sudo: yes
+      when: item.type=="wsgi"      
+      with_items: vagrant_lvh_sites
+      args:
+        creates: /etc/apache2/sites-enabled/{{item.name}}.lvh.me.conf
+      notify:
+        - restart apache2        
+      tags:
+        -vagrant
+
+    - name: Vagrant | Apache WEB |create virtual host file {{item.name}}.lvh.me.conf
+      template: src={{root_dir}}/files/apache2/vagrant/web_app.lvh.me.conf.j2 dest=/etc/apache2/sites-available/{{item.name}}.lvh.me.conf
+      when: item.type=="web"
+      with_items: vagrant_lvh_sites
+      sudo: yes 
+      tags:
+        -vagrant
+
+    - name: Vagrant | Apache WEB |a2ensite {{item.name}}.lvh.me
+      command: a2ensite {{item.name}}.lvh.me
+      sudo: yes
+      when: item.type=="web"      
+      with_items: vagrant_lvh_sites
+      args:
+        creates: /etc/apache2/sites-enabled/{{item.name}}.lvh.me.conf
+      notify:
+        - restart apache2        
+      tags:
+        -vagrant

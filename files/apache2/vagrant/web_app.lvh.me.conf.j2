@@ -1,5 +1,5 @@
 <VirtualHost *:80>
-  ServerName {{ item.name }}
+  ServerName {{ item.name }}.lvh.me
   DocumentRoot {{ item.path }}
   RewriteEngine On
 
@@ -8,11 +8,15 @@
     AllowOverride All
     Order allow,deny
     Allow from all
+    # New directive needed in Apache 2.4.3: 
+    Require all granted    
   </Directory>
 
   <Directory />
     Options FollowSymLinks
     AllowOverride None
+    # New directive needed in Apache 2.4.3: 
+    Require all granted    
   </Directory>
 
   <Location /server-status>
@@ -20,6 +24,8 @@
 
     Order Allow,Deny
     Allow from all
+    # New directive needed in Apache 2.4.3: 
+    Require all granted    
   </Location>
 
   LogLevel info
@@ -27,13 +33,10 @@
   CustomLog /var/log/apache2/{{ item.name }}-access.log combined
 
   RewriteEngine On
-  RewriteLog /var/log/apache2/{{ item.name }}-rewrite.log
-  # level 0 => Do not log rewrite
-  RewriteLogLevel 0
 </VirtualHost>
 
 <VirtualHost *:443>
-  ServerName {{ item.name }}
+  ServerName {{ item.name }}.lvh.me
   DocumentRoot {{ item.path }}
   RewriteEngine On
 
@@ -42,11 +45,15 @@
     AllowOverride All
     Order allow,deny
     Allow from all
+    # New directive needed in Apache 2.4.3: 
+    Require all granted    
   </Directory>
 
   <Directory />
     Options FollowSymLinks
     AllowOverride None
+    # New directive needed in Apache 2.4.3: 
+    Require all granted    
   </Directory>
 
   <Location /server-status>
@@ -54,6 +61,8 @@
 
     Order Allow,Deny
     Allow from all
+    # New directive needed in Apache 2.4.3: 
+    Require all granted    
   </Location>
 
   LogLevel info
@@ -61,9 +70,6 @@
   CustomLog /var/log/apache2/{{ item.name }}-access.log combined
 
   RewriteEngine On
-  RewriteLog /var/log/apache2/{{ item.name }}-rewrite.log
-  # level 0 => Do not log rewrite
-  RewriteLogLevel 0
 
   SSLEngine on
   SSLCertificateFile /etc/ssl/certs/ssl-cert-snakeoil.pem
