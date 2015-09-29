@@ -78,3 +78,20 @@
        -nodejs
        -setup
 
+
+  - name: NodeJS | Install bower tool
+    shell: npm install -g bower
+    when: ansible_os_family == "Debian" and node_present|failed
+    sudo: yes
+    tags:
+       -nodejs
+       -setup
+
+  - name: NodeJS | Install grunt tool
+    shell: npm install -g grunt
+    when: ansible_os_family == "Debian" and node_present|failed
+    sudo: yes
+    tags:
+       -nodejs
+       -setup
+
