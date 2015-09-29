@@ -70,28 +70,15 @@
        -setup
 
 
-  - name: NodeJS | Install gulp tool
-    shell: npm install -g gulp
+  - name: NodeJS | Install gulp, bower, grunt, grunt-cli tools tool
+    shell: npm install -g {{ item }}
     when: ansible_os_family == "Debian" and node_present|failed
+    with_items:
+      - gulp
+      - bower
+      - grunt
+      - grunt-cli
     sudo: yes
     tags:
        -nodejs
        -setup
-
-
-  - name: NodeJS | Install bower tool
-    shell: npm install -g bower
-    when: ansible_os_family == "Debian" and node_present|failed
-    sudo: yes
-    tags:
-       -nodejs
-       -setup
-
-  - name: NodeJS | Install grunt tool
-    shell: npm install -g grunt
-    when: ansible_os_family == "Debian" and node_present|failed
-    sudo: yes
-    tags:
-       -nodejs
-       -setup
-
