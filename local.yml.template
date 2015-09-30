@@ -53,8 +53,14 @@
 #     - include: tasks_vagrant.yml                         # Vagrant
 
 
-#     - include: tools/tasks_expect.yml                         # expect tool
+#     - include: tools/tasks_expect.yml                    # expect tool
+
+
+#     VMWARE
+#     - include: vmware/tasks_vmware_tools.yml             # ESX vmware tools
 
   handlers:
     - name: restart apache2
       service: name=apache2 state=restarted      
+    - name: restart vmtoolsd
+      service: name=vmtoolsd state=restarted      
