@@ -1,5 +1,8 @@
 <VirtualHost *:80>
   ServerName {{ item.name }}.lvh.me
+  {% for alias in item.aliases|default([]) %}
+  ServerAlias {{alias}}
+  {% endfor %}
   DocumentRoot {{ item.path }}{{ item.docroot | default('')}}
   RewriteEngine On
 
