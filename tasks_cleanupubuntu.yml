@@ -63,4 +63,11 @@
       - setup 
 
 
+  - name: Ubuntu | Cleanup space
+    shell: apt-get -y autoremove
+    sudo: yes
+    tags:
+      - cleanup
+      - setup 
+
 
