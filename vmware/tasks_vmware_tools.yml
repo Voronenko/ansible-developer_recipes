@@ -1,38 +1,69 @@
 - name: VMWare| Open VMW tools
   apt: name=open-vm-tools state=present
-  when: ansible_os_family == "Debian"
+  when: ansible_os_family == "Debian" and hypervisor!='esx'
   sudo: yes
   tags:
-    -vmwave
+    -vmware
     -esx 
 
 - name: VMWare| Add GPG key DSA to apt keyring
   apt_key: url=http://packages.vmware.com/tools/keys/VMWARE-PACKAGING-GPG-DSA-KEY.pub state=present
   sudo: yes
   tags:
-    -vmwave
+    -vmware
     -esx 
 
 - name: VMWare| Add GPG key DSA to apt keyring
   apt_key: url=http://packages.vmware.com/tools/keys/VMWARE-PACKAGING-GPG-RSA-KEY.pub state=present
   sudo: yes
   tags:
-    -vmwave
+    -vmware
     -esx 
 
 
-- name: VMWare| Add Debian apt repository
+- name: VMWare| Add Debian apt repository for open VMWare tools
   apt_repository: repo="deb http://packages.vmware.com/packages/ubuntu {{ ansible_distribution_release }} main"
-  when: ansible_os_family == "Debian"
+  when: ansible_os_family == "Debian" and hypervisor!='esx'
   sudo: yes
   tags:
-    -vmwave
+    -vmware
     -esx 
+
+
+- name: VMWare| Add Debian apt repository for ESX
+  apt_repository: repo="deb http://packages.vmware.com/tools/esx/5.5/ubuntu precise main"
+  when: ansible_os_family == "Debian" and hypervisor=='esx'
+  sudo: yes
+  tags:
+    -vmware
+    -esx
+
+- name: VMWare| Install vmware-tools-esx-kmods-3.2.0-29-generic
+  apt: name=vmware-tools-esx-kmods-3.2.0-29-generic state=present
+  when: ansible_os_family == "Debian" and hypervisor=='esx'
+  sudo: yes
+  tags:
+    -vmware
+    -esx
+
+- name: VMWare| Install vmware-tools-esx-nox vmware-tools-esx
+  apt: name={{ item }} state=present
+  when: ansible_os_family == "Debian" and hypervisor=='esx'
+  with_items:
+    - vmware-tools-esx
+    - vmware-tools-esx-nox
+  sudo: yes
+  tags:
+    -vmware
+    -esx
 
 - name: VMWare| Install open-vm-tools-deploypkg
   apt: name=open-vm-tools-deploypkg state=present
-  when: ansible_os_family == "Debian"
+  when: ansible_os_family == "Debian" and hypervisor!='esx'
   sudo: yes
   tags:
-    -vmwave
+    -vmware
     -esx 
+
+
+
