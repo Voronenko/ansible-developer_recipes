@@ -2,10 +2,13 @@
     apt: pkg={{item}} state=absent
     with_items:
        - gnome-sudoku
-       - mahjongg
        - ace-of-penguins
        - gnomine
+       - gnome-mines
        - gbrainy
+       - gnome-mahjongg
+       - aisleriot
+       - 
     sudo: yes
     tags:
       - cleanup
@@ -19,6 +22,30 @@
        - unity-scope-video-remote
        - unity-scope-musicstores
        - unity-lens-shopping
+       - unity-scope-zotero
+       - unity-webapps-common
+       - printer-driver-foo2zjs-common
+       - onboard 
+       - gnome-orca
+       - cheese
+       - totem
+       - brasero
+       - rhythmbox
+       - unity-scope-gdrive
+       - transmission-gtk
+       - thunderbird
+       - empathy
+       - xul-ext-ubufox
+       - shotwell-common
+       - simple-scan
+       - shotwell-common
+       - gnome-contacts
+       - yelp
+       - deja-dup
+       - activity-log-manager      
+       - webbrowser-app
+       - ibus-pinyin
+       - evolution-data-server-online-accounts
     sudo: yes
     tags:
       - cleanup

@@ -23,11 +23,11 @@
 
   tasks:
 
-#     - include: tasks_cleanubuntu.yml                     # removes games, lens
+#     - include: tasks_cleanupubuntu.yml                     # removes games, lens
 #     - include: tasks_python.yml                          # basic updates to py & pip
 #     - include: tasks_worktools.yml                       # swiss knife for desktop utilities
 
-#     - include: tasks_mongodb.yml                         # mongodb 2.6
+#     - include: tasks_mongodb_3.yml                         # mongodb 2.6
 #     - include: tasks_mysql.yml                           # MYSQL 5.5
 #     - include: tasks_percona_toolkit.yml                 # percona tools for mysql
 
