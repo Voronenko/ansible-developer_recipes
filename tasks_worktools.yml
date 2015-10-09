@@ -5,6 +5,13 @@
       -worktools
       -setup
 
+  - name: Worktools | Git-Flow
+    apt: state=present pkg=git-flow
+    sudo: yes
+    tags:
+      -worktools
+      -setup
+
   - name: Worktools | action "open in terminal" for Nautilus
     apt: state=present pkg=nautilus-open-terminal
     sudo: yes
