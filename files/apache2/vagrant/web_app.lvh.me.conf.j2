@@ -6,20 +6,24 @@
   DocumentRoot {{ item.path }}{{ item.docroot | default('')}}
   RewriteEngine On
 
+  {% for settings_param in item.vhost_overrides|default([]) %}
+  {{settings_param}}
+  {% endfor %}
+
   <Directory {{ item.path }}{{ item.docroot | default('')}} >
     Options FollowSymLinks
     AllowOverride All
     Order allow,deny
     Allow from all
-    # New directive needed in Apache 2.4.3: 
-    Require all granted    
+    # New directive needed in Apache 2.4.3:
+    Require all granted
   </Directory>
 
   <Directory />
     Options FollowSymLinks
     AllowOverride None
-    # New directive needed in Apache 2.4.3: 
-    Require all granted    
+    # New directive needed in Apache 2.4.3:
+    Require all granted
   </Directory>
 
   <Location /server-status>
@@ -27,8 +31,8 @@
 
     Order Allow,Deny
     Allow from all
-    # New directive needed in Apache 2.4.3: 
-    Require all granted    
+    # New directive needed in Apache 2.4.3:
+    Require all granted
   </Location>
 
   LogLevel info
@@ -43,20 +47,25 @@
   DocumentRoot {{ item.path }}{{ item.docroot | default('')}}
   RewriteEngine On
 
+  {% for settings_param in item.vhost_overrides|default([]) %}
+  {{settings_param}}
+  {% endfor %}
+
+
   <Directory {{ item.path }}{{ item.docroot | default('')}} >
     Options FollowSymLinks
     AllowOverride All
     Order allow,deny
     Allow from all
-    # New directive needed in Apache 2.4.3: 
-    Require all granted    
+    # New directive needed in Apache 2.4.3:
+    Require all granted
   </Directory>
 
   <Directory />
     Options FollowSymLinks
     AllowOverride None
-    # New directive needed in Apache 2.4.3: 
-    Require all granted    
+    # New directive needed in Apache 2.4.3:
+    Require all granted
   </Directory>
 
   <Location /server-status>
@@ -64,8 +73,8 @@
 
     Order Allow,Deny
     Allow from all
-    # New directive needed in Apache 2.4.3: 
-    Require all granted    
+    # New directive needed in Apache 2.4.3:
+    Require all granted
   </Location>
 
   LogLevel info
