@@ -1,0 +1,29 @@
+- name: Apache | Bind custom aliases to 127.0.0.1 in vagrant
+  lineinfile: dest=/etc/hosts regexp='^127\.0\.0\.1 {{item.aliases[0]}}' line='127.0.0.1 {{item.aliases[0]}}' owner=root group=root mode=0644
+  when: item.aliases[0] is defined
+  sudo: yes
+  with_items: vagrant_lvh_sites
+
+- name: Apache | Bind custom aliases to 127.0.0.1 in vagrant
+  lineinfile: dest=/etc/hosts regexp='^127\.0\.0\.1 {{item.aliases[1]}}' line='127.0.0.1 {{item.aliases[1]}}' owner=root group=root mode=0644
+  when: item.aliases[1] is defined
+  sudo: yes
+  with_items: vagrant_lvh_sites
+
+- name: Apache | Bind custom aliases to 127.0.0.1 in vagrant
+  lineinfile: dest=/etc/hosts regexp='^127\.0\.0\.1 {{item.aliases[2]}}' line='127.0.0.1 {{item.aliases[2]}}' owner=root group=root mode=0644
+  when: item.aliases[2] is defined
+  sudo: yes
+  with_items: vagrant_lvh_sites
+
+- name: Apache | Bind custom aliases to 127.0.0.1 in vagrant
+  lineinfile: dest=/etc/hosts regexp='^127\.0\.0\.1 {{item.aliases[3]}}' line='127.0.0.1 {{item.aliases[3]}}' owner=root group=root mode=0644
+  when: item.aliases[3] is defined
+  sudo: yes
+  with_items: vagrant_lvh_sites
+
+- name: Apache | Bind custom aliases to 127.0.0.1 in vagrant
+  lineinfile: dest=/etc/hosts regexp='^127\.0\.0\.1 {{item.aliases[4]}}' line='127.0.0.1 {{item.aliases[4]}}' owner=root group=root mode=0644
+  when: item.aliases[4] is defined
+  sudo: yes  
+  with_items: vagrant_lvh_sites
