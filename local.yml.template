@@ -21,7 +21,7 @@
     php_family: default # 5.4 | 5.5 | 5.6 | default
     hypervisor: esx
 
-    atom_packages: ["angularjs", "meteor-api", "emmet", "file-icons", "tag", "atom-alignment", "atom-beautify", "minimap", "set-syntax", "jshint", "linter", "linter-jscs", "jscs-fixer", "git-blame", "highlight-line", "autocomplete-plus", "toggle-quotes", "monokai"]
+    atom_packages: ["angularjs", "meteor-api", "emmet", "file-icons", "tag", "expand-region", "atom-alignment", "atom-beautify", "minimap", "set-syntax", "jshint", "linter", "linter-jscs", "jscs-fixer", "git-blame", "highlight-line", "autocomplete-plus", "toggle-quotes", "monokai"]
 
 
   tasks:
@@ -42,12 +42,12 @@
 #     - include: tasks_java.yml                            # java 6-7-8
 #     - include: tasks_php_apache.yml                      # php 5.5 for apache
 
-#     - include: tasks_jetbrains_phpstorm.yml              # PHP IDE 
-#     - include: tasks_jetbrains_pycharm_community.yml     # PY IDE 
+#     - include: tasks_jetbrains_phpstorm.yml              # PHP IDE
+#     - include: tasks_jetbrains_pycharm_community.yml     # PY IDE
 #     - include: tasks_jetbrains_rubymine.yml              # RUBY IDE
 #     - include: tasks_jetbrains_intellij_community.yml    # JAVA IDE
 
-#     - include: tasks_robomongo.yml                       # mongo GUI tool    
+#     - include: tasks_robomongo.yml                       # mongo GUI tool
 #     - include: tasks_dbeawer.yml                         # mysql | postgre GUI tool
 
 #     - include: tasks_docker.yml # docker
@@ -64,6 +64,6 @@
 
   handlers:
     - name: restart apache2
-      service: name=apache2 state=restarted      
+      service: name=apache2 state=restarted
     - name: restart vmtoolsd
-      service: name=vmtoolsd state=restarted      
+      service: name=vmtoolsd state=restarted
