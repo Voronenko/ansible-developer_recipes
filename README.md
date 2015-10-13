@@ -1,6 +1,8 @@
 # ansible-developer_recipes
 Helper ansible repository for my devbox box configuration. Suitable for: LAMP, MEAN stack, Java stack [DevOps, Ansible]
 
+![pack contents](https://raw.githubusercontent.com/Voronenko/ansible-developer_recipes/master/docs/contents.png)
+
 # Installation as simple, as
 - get your brand new ubuntu 14.04 LTS
 - install git, curl: sudo apt-get install curl git
