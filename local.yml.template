@@ -57,7 +57,7 @@
 
 
 #     - include: tools/tasks_expect.yml                    # expect tool
-
+#     - include: tools/tasks_plantuml.yml                  # plant uml
 
 #     VMWARE
 #     - include: vmware/tasks_vmware_tools.yml             # ESX vmware tools
