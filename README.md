@@ -64,7 +64,7 @@ Helper ansible repository for my devbox box configuration. Suitable for: LAMP, M
 ## Table of Contents
 - [My (awesome) developer recipes](#awesome-developer-recipes)
 	- [Documentation tools](#documentation tools)
-        - [GUI tools for databases](#GUI tools for databases) 
+        - [GUI tools for databases](#GUI tools for databases)
 
 ## Documentation tools
 *Tools to ensure your project documentation does not get lost*
