@@ -42,4 +42,13 @@ package "Virtualization support" {
   [Docker]
 }
 
+package "PHPStorm Plugins" {
+  [AngularJS]
+  [NodeJS]
+  [Bash Support]
+  [PlantUML integration]
+
+}
+
+
 @enduml
