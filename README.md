@@ -64,11 +64,18 @@ Helper ansible repository for my devbox box configuration. Suitable for: LAMP, M
 ## Table of Contents
 - [My (awesome) developer recipes](#awesome-developer-recipes)
 	- [Documentation tools](#documentation tools)
+        - [GUI tools for databases](#GUI tools for databases) 
 
 ## Documentation tools
 *Tools to ensure your project documentation does not get lost*
 
-* [Apiary](apiary.io) Markdown based grammar do describe your REST API
+* [Apiary](http://apiary.io) Markdown based grammar do describe your REST API
 * [Aglio](https://github.com/danielgtaylor/aglio) Custom renderer for apiary based syntax for REST API - zero dependency on apiary itself
 * [PlantUML](http://plantuml.com/) - Plain text grammar to describe project UML diagrams
 
+
+## GUI tools for databases
+*When you are tired of console*
+
+* [DBeawer](http://dbeaver.jkiss.org/) Great tool to work with MySQL, Postgres and bunch or another DBs
+* [Robomongo](http://robomongo.org/) Awesome free gui client for MongoDB
