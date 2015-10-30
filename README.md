@@ -59,3 +59,16 @@ Helper ansible repository for my devbox box configuration. Suitable for: LAMP, M
     robomongo_version: 0.8.5
     dbeawer_version: 3.4.5
 </pre>    
+
+
+## Table of Contents
+- [My (awesome) developer recipes](#awesome-developer-recipes)
+	- [Documentation tools](#documentation tools)
+
+## Documentation tools
+*Tools to ensure your project documentation does not get lost*
+
+* [Apiary](apiary.io) Markdown based grammar do describe your REST API
+* [Aglio](https://github.com/danielgtaylor/aglio) Custom renderer for apiary based syntax for REST API - zero dependency on apiary itself
+* [PlantUML](http://plantuml.com/) - Plain text grammar to describe project UML diagrams
+
