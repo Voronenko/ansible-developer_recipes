@@ -80,3 +80,21 @@ Helper ansible repository for my devbox box configuration. Suitable for: LAMP, M
 
 * [DBeawer](http://dbeaver.jkiss.org/) Great tool to work with MySQL, Postgres and bunch or another DBs
 * [Robomongo](http://robomongo.org/) Awesome free gui client for MongoDB
+
+## Workplace handy tools
+
+* [Midnight Commander](https://www.midnight-commander.org/) visual folder structure browsing
+* [Git-Flow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow/) Git-Flow - +- successful git branching model
+* [open in terminal]() action "open in terminal" for Nautilus
+* [unzip]() unzip
+* [p7zip](http://p7zip.sourceforge.net/) p7zip
+* [terminator](https://apps.ubuntu.com/cat/applications/precise/terminator/) terminator
+* [sublime](http://www.sublimetext.com/2) sublime text 2
+* [atom](https://atom.io/) github's atom editor
+* [zeal](https://zealdocs.org/) Zeal offline documentation browser
+* [chrome](https://www.google.com/chrome/) Google chrome stable
+
+
+
+
+
