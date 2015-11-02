@@ -32,8 +32,8 @@ Helper ansible repository for my devbox box configuration. Suitable for: LAMP, M
 #     - include: tasks_java.yml                            # java 6-7-8
 #     - include: tasks_php_apache.yml                      # php 5.5 for apache
 
-#     - include: tasks_jetbrains_phpstorm.yml              # PHP IDE 
-#     - include: tasks_jetbrains_pycharm_community.yml     # PY IDE 
+#     - include: tasks_jetbrains_phpstorm.yml              # PHP IDE
+#     - include: tasks_jetbrains_pycharm_community.yml     # PY IDE
 #     - include: tasks_jetbrains_rubymine.yml              # RUBY IDE
 #     - include: tasks_jetbrains_intellij_community.yml    # JAVA IDE
 
@@ -66,6 +66,9 @@ Helper ansible repository for my devbox box configuration. Suitable for: LAMP, M
  - [Documentation tools](#documentation tools)
  - [GUI tools for databases](#GUI tools for databases)
  - [Workplace handy tools](#Workplace handy tools)
+ - [Collaboration](#Collaboration)
+ - [PDF](#PDF)
+ - [Syncing](#syncing)
 
 ## Documentation tools
 *Tools to ensure your project documentation does not get lost*
@@ -73,6 +76,8 @@ Helper ansible repository for my devbox box configuration. Suitable for: LAMP, M
 * [Apiary](http://apiary.io) Markdown based grammar do describe your REST API
 * [Aglio](https://github.com/danielgtaylor/aglio) Custom renderer for apiary based syntax for REST API - zero dependency on apiary itself
 * [PlantUML](http://plantuml.com/) - Plain text grammar to describe project UML diagrams
+* [Bizagi modeler](http://www.bizagi.com/en/products/bpm-suite/modeler) Bizagi modeler - BMPN2.0 compatible tool for drowing business flow diagrams (Windows only)
+* [Gliffy](https://www.gliffy.com/go/commerce/index) html5 based online diagramming tool with BMPN 2.0 support
 
 
 ## GUI tools for databases
@@ -93,8 +98,17 @@ Helper ansible repository for my devbox box configuration. Suitable for: LAMP, M
 * [atom](https://atom.io/) github's atom editor
 * [zeal](https://zealdocs.org/) Zeal offline documentation browser
 * [chrome](https://www.google.com/chrome/) Google chrome stable
+* [d.pr](http://droplr.com/apps) Cross platform online screenshot capture
+client
+* [Shutter](http://shutter-project.org/) Unix only screenshot capture
 
+## Collaboration
 
+* [HipChat](https://www.hipchat.com/downloads) Crossplatform atlassian HipChat
+* [Slack](https://slack.com/downloads) Crossplatform slack client
 
+## PDF
+* [Bullzip PDF Printer](http://www.bullzip.com/products/pdf/info.php) free PDF printer for windows
 
-
+## Syncing
+* [Sync driver](syncDriver for OneDrive ) Alternative Microsoft OneDrive sync client
