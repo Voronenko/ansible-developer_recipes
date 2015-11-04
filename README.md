@@ -63,12 +63,17 @@ Helper ansible repository for my devbox box configuration. Suitable for: LAMP, M
 
 ## Table of Contents
 - [My (awesome) developer recipes](#awesome-developer-recipes)
- - [Documentation tools](#documentation tools)
- - [GUI tools for databases](#GUI tools for databases)
- - [Workplace handy tools](#Workplace handy tools)
- - [Collaboration](#Collaboration)
- - [PDF](#PDF)
- - [Syncing](#syncing)
+- [Documentation tools](#documentation tools)
+- [Database tools](#Database tools)
+- [Workplace handy tools](#Workplace handy tools)
+- [Collaboration](#Collaboration)
+- [PDF](#PDF)
+- [Syncing](#syncing)
+- [Awesomes](#Awesomes)
+- [Development-LAMP](#Development-LAMP)
+- [Development-JS](#Development-JS)
+- [Algorithms](#Algorithms)
+- [Bookmarklets](#Bookmarklets)
 
 ## Documentation tools
 *Tools to ensure your project documentation does not get lost*
@@ -80,11 +85,12 @@ Helper ansible repository for my devbox box configuration. Suitable for: LAMP, M
 * [Gliffy](https://www.gliffy.com/go/commerce/index) html5 based online diagramming tool with BMPN 2.0 support
 
 
-## GUI tools for databases
+## #Database tools
 *When you are tired of console*
 
 * [DBeawer](http://dbeaver.jkiss.org/) Great tool to work with MySQL, Postgres and bunch or another DBs
 * [Robomongo](http://robomongo.org/) Awesome free gui client for MongoDB
+* [Common schema](https://github.com/shlomi-noach/common_schema) DBA's framework for MySQL
 
 ## Workplace handy tools
 
@@ -106,9 +112,35 @@ client
 
 * [HipChat](https://www.hipchat.com/downloads) Crossplatform atlassian HipChat
 * [Slack](https://slack.com/downloads) Crossplatform slack client
+* [Appear.in](http://appear.in/) Client-less online multiplatform WebRTC collaboration tool with screen sharing support
+* [Speak.io](http://speak.io/) custom video/screen/sound communication for teams. Free unlimited trial period.
+* [Teamviewer](https://www.teamviewer.com/en/index.aspx) Most known tool for screen sharing and remote control
 
 ## PDF
 * [Bullzip PDF Printer](http://www.bullzip.com/products/pdf/info.php) free PDF printer for windows
 
 ## Syncing
 * [Sync driver](syncDriver for OneDrive ) Alternative Microsoft OneDrive sync client
+
+## Awesomes
+
+* [MySQL](http://shlomi-noach.github.io/awesome-mysql/) http://shlomi-noach.github.io/awesome-mysql/
+* [DevOps](https://github.com/kahun/awesome-sysadmin) https://github.com/kahun/awesome-sysadmin
+* [Javascript](https://github.com/sorrycc/awesome-javascript) https://github.com/sorrycc/awesome-javascript
+* [Python](https://github.com/vinta/awesome-python) https://github.com/vinta/awesome-python
+* [PHP](https://github.com/ziadoz/awesome-php) https://github.com/ziadoz/awesome-php
+* [Javascript libraries](http://jster.net/) http://jster.net/ - curated list of libraries
+
+## Development-LAMP
+* [PHP QA Tools](http://phpqatools.org/)
+
+## Development-JS
+* [CasperJS](http://casperjs.org/) http://casperjs.org/CasperJS is an open source navigation scripting & testing utility written in Javascript for the PhantomJS WebKit headless browser and SlimerJS (Gecko). It eases the process of defining a full navigation scenario and provides useful high-level functions, methods & syntactic sugar 
+
+## Algorithms
+* [algolist.manual.ru](http://algolist.manual.ru/)
+* [Algorithms, 4th Edition(princeton)](http://algs4.cs.princeton.edu/home/)
+* [Algorithms in Java](http://underpop.online.fr/j/java/algorithims-in-java-1-4/toc.htm)
+
+## Bookmarklets
+* [Yaml debug](http://debug.yaml.de/)
