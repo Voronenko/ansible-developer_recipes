@@ -1,0 +1,14 @@
+#!/bin/sh
+
+PLANTUML={{plantuml_jar|default('/opt/plantuml/plantuml.jar')}}
+
+if [ -n "${JAVA_HOME}" ] && [ -x "${JAVA_HOME}/bin/java" ] ; then
+    JAVA="${JAVA_HOME}/bin/java"
+elif [ -x /usr/bin/java ] ; then
+    JAVA=/usr/bin/java
+else
+    echo Cannot find JVM
+    exit 1
+fi
+
+$JAVA -jar ${PLANTUML} ${@}

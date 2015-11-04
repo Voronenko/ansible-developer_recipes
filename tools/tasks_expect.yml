@@ -1,0 +1,8 @@
+
+
+- name: Expect | install expect package http://expect.sourceforge.net/
+  apt: state=present pkg=expect
+  sudo: yes
+  tags:
+    -worktools
+    -expect

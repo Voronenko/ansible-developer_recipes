@@ -7,19 +7,30 @@
     mysql_root_password: devroot
     apache_mode: worker # use prefork or worker variables
     java_version: 8
-    phpstorm_version: 9.0.2
+    phpstorm_version: 10.0 # | 9.0.2 | 8.0.3 | 8.0.1 | 7.1.4 | 6.0.3 | 5.0.4
     pycharm_version: 4.5.4
     rubymine_version: 7.1.4
     intellij_version: 14.1.4
     robomongo_version: 0.8.5
     dbeawer_version: 3.4.5
+    oracle_vbox_version: 4.3
+    mongo_version: 3
+    vagrant_version: 1.7.4
+    nodejs_version: "0.12" # 0.10 0.12
+
+    php_family: default # 5.4 | 5.5 | 5.6 | default
+    hypervisor: esx
+
+    atom_packages: ["angularjs", "meteor-api", "emmet", "file-icons", "tag", "expand-region", "atom-alignment", "atom-beautify", "minimap", "set-syntax", "jshint", "linter", "linter-jscs", "jscs-fixer", "git-blame", "highlight-line", "autocomplete-plus", "toggle-quotes", "monokai"]
+
 
   tasks:
 
+#     - include: tasks_cleanupubuntu.yml                     # removes games, lens
 #     - include: tasks_python.yml                          # basic updates to py & pip
 #     - include: tasks_worktools.yml                       # swiss knife for desktop utilities
 
-#     - include: tasks_mongodb.yml                         # mongodb 2.6
+#     - include: tasks_mongodb_3.yml                         # mongodb 2.6
 #     - include: tasks_mysql.yml                           # MYSQL 5.5
 #     - include: tasks_percona_toolkit.yml                 # percona tools for mysql
 
@@ -27,20 +38,34 @@
 #     - include: tasks_nginx.yml                           # nginx
 #     - include: tasks_apache.yml                          # apache prefork|worker
 
-#     - include: tasks_nodejs.yml                          # node 0.10.*
+#     - include: tasks_nodejs.yml                          # node 0.10.* 0.12.*
 #     - include: tasks_java.yml                            # java 6-7-8
-#     - include: tasks_php_apache.yml # php 5.5 for apache
+#     - include: tasks_php_apache.yml                      # php 5.5 for apache
 
-#     - include: tasks_jetbrains_phpstorm.yml              # PHP IDE 
-#     - include: tasks_jetbrains_pycharm_community.yml     # PY IDE 
+#     - include: tasks_jetbrains_phpstorm.yml              # PHP IDE
+#     - include: tasks_jetbrains_pycharm_community.yml     # PY IDE
 #     - include: tasks_jetbrains_rubymine.yml              # RUBY IDE
 #     - include: tasks_jetbrains_intellij_community.yml    # JAVA IDE
 
-#     - include: tasks_robomongo.yml                       # mongo GUI tool    
+#     - include: tasks_robomongo.yml                       # mongo GUI tool
 #     - include: tasks_dbeawer.yml                         # mysql | postgre GUI tool
 
 #     - include: tasks_docker.yml # docker
 
+#     - include: tasks_oracle_virtualbox.yml               # Oracle Virtual Box
+#     - include: tasks_vagrant.yml                         # Vagrant
+
+
+#     - include: tools/tasks_expect.yml                    # expect tool
+#     - include: tools/tasks_plantuml.yml                  # plant uml
+#     - include: tools/tasks_toggle.yml                    # toggle time tracker
+#     - include: tools/tasks_dpr.yml                       # d.pr screenshoting tool
+
+#     VMWARE
+#     - include: vmware/tasks_vmware_tools.yml             # ESX vmware tools
+
   handlers:
     - name: restart apache2
-      service: name=apache2 state=restarted      
+      service: name=apache2 state=restarted
+    - name: restart vmtoolsd
+      service: name=vmtoolsd state=restarted

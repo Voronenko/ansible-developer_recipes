@@ -1,0 +1,6 @@
+    - name: Vagrant | Execute dev site provisioners 
+      shell: vagrant_init_provisioners {{item.path}} {{item.provisioners}}
+      when: item.provisioners is defined
+      with_items: vagrant_lvh_sites
+      tags:
+        -vagrant

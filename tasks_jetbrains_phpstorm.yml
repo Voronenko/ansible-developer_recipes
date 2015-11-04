@@ -1,15 +1,23 @@
 - name: JetBrains| ensure apps folder exists
-  shell: 
+  shell:
     mkdir -p {{apps_dir}}
     creates="{{apps_dir}}"
+
+- name: JetBrains PHPStorm| Check phpstorm_version variable
+  assert:
+    that: phpstorm_version in [ "10.0", "9.0.2", "8.0.3", "8.0.1", "7.1.4", "6.0.3", "5.0.4" ]
+  tags:
+    -jetbrains
+    -phpstorm
+    -setup
 
 - name: JetBrains PHPStorm| Test if folder exist
   stat:
     path={{apps_dir}}/phpstorm
   register: phpstorm_exist
-  tags: 
+  tags:
     -jetbrains
-    -phpstorm    
+    -phpstorm
     -setup
 
 - name: JetBrains PHPStorm| Download phpStorm archive
@@ -17,9 +25,9 @@
     url=http://download.jetbrains.com/webide/PhpStorm-{{ phpstorm_version }}.tar.gz
     dest={{apps_dir}}/phpstorm.tar.gz
   when: phpstorm_exist.stat.exists == False
-  tags: 
+  tags:
     -jetbrains
-    -phpstorm    
+    -phpstorm
     -setup
 
 
@@ -29,30 +37,30 @@
     dest={{apps_dir}}
     copy=no
   when: phpstorm_exist.stat.exists == False
-  tags: 
+  tags:
     -jetbrains
-    -phpstorm    
+    -phpstorm
     -setup
 
 - shell: ls -d {{apps_dir}}/PhpStorm-*
-  register: phpstorm_version    
+  register: phpstorm_version
   when: phpstorm_exist.stat.exists == False
-  tags: 
+  tags:
     -jetbrains
-    -phpstorm    
+    -phpstorm
     -setup
 
 
 - name: JetBrains PHPStorm| Move phpStorm folder
   command: "mv {{phpstorm_version.stdout}} {{apps_dir}}/phpstorm"
-  when: phpstorm_exist.stat.exists == False  
+  when: phpstorm_exist.stat.exists == False
   args:
     chdir: "{{apps_dir}}"
-  tags: 
+  tags:
     -jetbrains
-    -phpstorm    
+    -phpstorm
     -setup
-  ignore_errors: true  
+  ignore_errors: true
 
 
 - name: JetBrains PHPStorm| Create symlink
@@ -60,10 +68,10 @@
     src={{apps_dir}}/phpstorm/bin/phpstorm.sh
     dest=/usr/bin/phpstorm
     state=link
-  sudo: yes  
-  tags: 
+  sudo: yes
+  tags:
     -jetbrains
-    -phpstorm    
+    -phpstorm
     -setup
 
 - name: JetBrains PHPStorm| Create desktop entry
@@ -78,20 +86,18 @@
     	icon: "{{apps_dir}}/phpstorm/bin/webide.png",
     	comment: "Develop with PhpStorm!",
     	categories: "Development;IDE;",
-    	startupwmclass: "jetbrains-phpstorm" 
+    	startupwmclass: "jetbrains-phpstorm"
     }
-  tags: 
+  tags:
     -jetbrains
-    -phpstorm    
+    -phpstorm
     -setup
 
 #- name:JetBrains PHPStorm| Remove phpStorm archive
 #  file:
 #    path={{apps_dir}}/phpstorm.tar.gz
 #    state=absent
-#  tags: 
+#  tags:
 #    -jetbrains
-#    -phpstorm    
+#    -phpstorm
 #    -setup
-
-

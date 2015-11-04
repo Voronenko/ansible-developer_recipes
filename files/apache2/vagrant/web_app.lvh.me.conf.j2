@@ -1,0 +1,89 @@
+<VirtualHost *:80>
+  ServerName {{ item.name }}.lvh.me
+  {% for alias in item.aliases|default([]) %}
+  ServerAlias {{alias}}
+  {% endfor %}
+  DocumentRoot {{ item.path }}{{ item.docroot | default('')}}
+  RewriteEngine On
+
+  {% for settings_param in item.vhost_overrides|default([]) %}
+  {{settings_param}}
+  {% endfor %}
+
+  <Directory {{ item.path }}{{ item.docroot | default('')}} >
+    Options FollowSymLinks
+    AllowOverride All
+    Order allow,deny
+    Allow from all
+    # New directive needed in Apache 2.4.3:
+    Require all granted
+  </Directory>
+
+  <Directory />
+    Options FollowSymLinks
+    AllowOverride None
+    # New directive needed in Apache 2.4.3:
+    Require all granted
+  </Directory>
+
+  <Location /server-status>
+    SetHandler server-status
+
+    Order Allow,Deny
+    Allow from all
+    # New directive needed in Apache 2.4.3:
+    Require all granted
+  </Location>
+
+  LogLevel info
+  ErrorLog /var/log/apache2/{{ item.name }}-error.log
+  CustomLog /var/log/apache2/{{ item.name }}-access.log combined
+
+  RewriteEngine On
+</VirtualHost>
+
+<VirtualHost *:443>
+  ServerName {{ item.name }}.lvh.me
+  DocumentRoot {{ item.path }}{{ item.docroot | default('')}}
+  RewriteEngine On
+
+  {% for settings_param in item.vhost_overrides|default([]) %}
+  {{settings_param}}
+  {% endfor %}
+
+
+  <Directory {{ item.path }}{{ item.docroot | default('')}} >
+    Options FollowSymLinks
+    AllowOverride All
+    Order allow,deny
+    Allow from all
+    # New directive needed in Apache 2.4.3:
+    Require all granted
+  </Directory>
+
+  <Directory />
+    Options FollowSymLinks
+    AllowOverride None
+    # New directive needed in Apache 2.4.3:
+    Require all granted
+  </Directory>
+
+  <Location /server-status>
+    SetHandler server-status
+
+    Order Allow,Deny
+    Allow from all
+    # New directive needed in Apache 2.4.3:
+    Require all granted
+  </Location>
+
+  LogLevel info
+  ErrorLog /var/log/apache2/{{ item.name }}-error.log
+  CustomLog /var/log/apache2/{{ item.name }}-access.log combined
+
+  RewriteEngine On
+
+  SSLEngine on
+  SSLCertificateFile /etc/ssl/certs/ssl-cert-snakeoil.pem
+  SSLCertificateKeyFile /etc/ssl/private/ssl-cert-snakeoil.key
+</VirtualHost>

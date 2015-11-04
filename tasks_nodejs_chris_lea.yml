@@ -1,0 +1,53 @@
+  
+  - name: NodeJS | Check if is present
+    command: test -x /usr/bin/node
+    when: ansible_system == "Linux"
+    ignore_errors: yes
+    register: node_present
+    tags: 
+        -nodejs
+        -setup
+
+  - name: NodeJS | Install ppa key
+    apt_key: id=C7917B12 url=http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0xB9316A7BC7917B12 state=present
+    when: ansible_os_family == "Debian" and node_present|failed
+    sudo: yes
+    tags: 
+       -nodejs
+       -setup
+
+
+  - name: NodeJS | Install ppa
+    apt_repository: repo=ppa:chris-lea/node.js state=present
+    when: ansible_os_family == "Debian" and node_present|failed
+    sudo: yes
+    tags: 
+       -nodejs
+       -setup
+
+  - name: NodeJS | Install package
+    apt: name=nodejs state=present
+    when: ansible_os_family == "Debian" and node_present|failed
+    sudo: yes
+    tags: 
+       -nodejs
+       -setup
+
+
+  - name: NodeJS | Self update npm to most recent one
+    shell: npm install -g npm
+    when: ansible_os_family == "Debian" and node_present|failed
+    sudo: yes
+    tags:
+       -nodejs
+       -setup
+
+
+  - name: NodeJS | Install gulp tool
+    shell: npm install -g gulp
+    when: ansible_os_family == "Debian" and node_present|failed
+    sudo: yes
+    tags:
+       -nodejs
+       -setup
+

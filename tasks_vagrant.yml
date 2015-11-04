@@ -1,0 +1,40 @@
+- name: Check if Vagrant is already installed
+  command: test -x /usr/bin/vagrant
+  when: ansible_system == "Linux"
+  ignore_errors: yes
+  register: vagrant_present
+  tags:
+    -vagrant
+    -setup
+
+- name: Download Vagrant
+  get_url: url=https://dl.bintray.com/mitchellh/vagrant/vagrant_{{ vagrant_version }}_x86_64.deb
+           dest=/var/cache/apt/archives/vagrant_{{ vagrant_version }}_x86_64.deb
+  when: vagrant_present | failed
+  sudo: yes
+  tags:
+    -vagrant
+    -setup
+
+- name: Install Vagrant
+  apt: deb=/var/cache/apt/archives/vagrant_{{ vagrant_version }}_x86_64.deb state=installed
+  when: vagrant_present | failed  
+  sudo: yes
+  tags:
+    -vagrant
+    -setup
+
+- name: Vagrant | update dkms
+  apt:  update_cache=yes pkg=dkms state=installed
+  sudo: yes
+  tags:
+    -vagrant
+    -setup
+
+
+- name: Vagrant | install vbguest plugin
+  shell: vagrant plugin install vagrant-vbguest
+  sudo: yes
+  tags:
+    -vagrant
+    -setup

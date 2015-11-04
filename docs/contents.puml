@@ -1,0 +1,54 @@
+#!/usr/bin/plantuml
+@startuml
+
+package "IDEs" {
+  [PHPStorm]
+  [PyCharm]
+  [RubyMine]
+  [IntelliJ]
+}
+
+package "DBServers" {
+  [MySQL]
+  [MongoDB]
+}
+
+package "Development stacks" {
+  [MEAN]
+  [LAMP]
+  [Python]
+}
+
+package "Web servers" {
+  [NGINX]
+  [Apache 2.4]
+}
+
+package "Tools" {
+  [Midnight Commander]
+  [Git-Flow]
+  [unzip]
+  [p7zip]
+  [terminator]
+  [sublime]
+  [atom]
+  [zeal]
+  [google chrome stable]
+}
+
+package "Virtualization support" {
+  [VMWare ESXi]
+  [Vagrant]
+  [Docker]
+}
+
+package "PHPStorm Plugins" {
+  [AngularJS]
+  [NodeJS]
+  [Bash Support]
+  [PlantUML integration]
+
+}
+
+
+@enduml
