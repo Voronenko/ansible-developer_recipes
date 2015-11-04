@@ -1,3 +1,4 @@
 hosts
 ansible.cfg
 prod.yml
+.idea/
