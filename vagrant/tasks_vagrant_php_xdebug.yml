@@ -1,58 +1,101 @@
+- name: XDebug | dependencies
+  apt: state=present pkg=php5-dev
+  sudo: yes
+  tags:
+    -xdebug
+
 - name: XDebug | Make temporary directory
-  shell: echo `mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir'`
+  shell: mktemp -d
   register: xdebug_workspace
+  tags:
+    -xdebug
 
 - name: XDebug | Detect module path
   shell: echo `php -i | grep extension_dir | awk '{print $(NF)}'`
   register: php_module_path
+  tags:
+    -xdebug
 
 - name: XDebug | Detect ini path
   shell: echo `php -i | grep "Scan this dir for additional .ini files" | awk '{print $(NF)}'`
   register: php_extension_conf_path
+  tags:
+    -xdebug
 
 
-- name: XDebug | Download Xdebug.
-  get_url:
-    url: "http://xdebug.org/files/xdebug-{{ php_xdebug_version }}.tgz"
-    dest: "{{ xdebug_workspace }}"
+- name: XDebug | Download Xdebug
+  get_url: url="http://xdebug.org/files/xdebug-{{ php_xdebug_version }}.tgz" dest="{{ xdebug_workspace.stdout }}/xdebug-{{ php_xdebug_version }}.tgz"
+  tags:
+    -xdebug
 
 - name: XDebug | Untar Xdebug.
   command: >
-    tar -C {{ workspace }} -xvzf {{ workspace }}/xdebug-{{ php_xdebug_version }}.tgz
-    creates={{ xdebug_workspace }}/xdebug-{{ php_xdebug_version }}/README
+    tar -C {{ xdebug_workspace.stdout }} -xvzf {{ xdebug_workspace.stdout }}/xdebug-{{ php_xdebug_version }}.tgz
+    creates={{ xdebug_workspace.stdout }}/xdebug-{{ php_xdebug_version }}/README
+  tags:
+    -xdebug
 
 - name: XDebug | Build Xdebug.
-  shell: >
-    {{ item }}
-    chdir={{ xdebug_workspace }}/xdebug-{{ php_xdebug_version }}
-    creates={{ xdebug_workspace }}/xdebug-{{ php_xdebug_version }}/modules/xdebug.so
+  shell: "{{ item.exec }}"
+  args:
+    chdir: "{{ xdebug_workspace.stdout }}/xdebug-{{ php_xdebug_version }}"
+    creates: "{{ xdebug_workspace.stdout }}/xdebug-{{ php_xdebug_version }}/modules/xdebug.so"
   with_items:
-    - phpize
-    - ./configure
-    - make
+    - { exec : "phpize" }
+    - { exec : "./configure" }
+    - { exec : "make" }
   notify: restart apache2
+  tags:
+    -xdebug
 
 - name: XDebug | Ensure php module path exists.
   file:
-    path: "{{ php_module_path }}"
+    path: "{{ php_module_path.stdout }}"
     state: directory
     owner: root
     group: root
     mode: 0755
+  tags:
+    -xdebug
 
 - name: XDebug | Move Xdebug module into place.
-  shell: >
-    cp {{ xdebug_workspace }}/xdebug-{{ php_xdebug_version }}/modules/xdebug.so {{ php_module_path }}/xdebug.so
-    creates={{ php_module_path }}/xdebug.so
+  shell: cp {{ xdebug_workspace.stdout }}/xdebug-{{ php_xdebug_version }}/modules/xdebug.so {{ php_module_path.stdout }}/xdebug.so
+  args:
+    creates: "{{ php_module_path }}/xdebug.so"
   sudo: yes
   notify: restart apache2
+  tags:
+    -xdebug
 
 - name: XDebug | Copy xdebug INI into php.d folder.
   template:
-    src: "{{root_dir}}/files/php_xdebug/xdebug.ini.j2"
-    dest: "{{ php_extension_conf_path }}/xdebug.ini"
+    src: "{{root_dir}}/files/php_debug/xdebug.ini.j2"
+    dest: "{{ php_extension_conf_path.stdout.replace('/cli/','/apache2/') }}/xdebug.ini"
     owner: root
     group: root
     mode: 0644
+  with_items:
+    - {
+      php_module_path: "{{php_module_path.stdout}}"
+    }
   sudo: yes
   notify: restart apache2
+  tags:
+    -xdebug
+
+
+- name: XDebug | Errors to browser
+  template:
+    src: "{{root_dir}}/files/php_debug/devbox.ini.j2"
+    dest: "{{ php_extension_conf_path.stdout.replace('/cli/','/apache2/') }}/devbox.ini"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - {
+      php_module_path: "{{php_module_path.stdout}}"
+    }
+  sudo: yes
+  notify: restart apache2
+  tags:
+    -xdebug
