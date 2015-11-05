@@ -1,0 +1,13 @@
+description "Mailhog Daemon"
+
+start on runlevel [2345]
+stop on runlevel [016]
+
+console log
+
+env PID=/var/run/mailhog.pid
+env USER=nobody
+env BIN=/usr/local/bin/MailHog
+env MAILHOG_OPTS=""
+
+exec start-stop-daemon --start --quiet --make-pidfile --pidfile ${PID} --exec ${BIN} ${MAILHOG_OPTS}
