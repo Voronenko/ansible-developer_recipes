@@ -99,3 +99,9 @@
   notify: restart apache2
   tags:
     -xdebug
+
+- name: XDebug | Forced apache restart for the first time
+  shell: service apache2 restart
+  sudo: yes
+  tags:
+    -xdebug
