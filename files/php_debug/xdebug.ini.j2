@@ -1,0 +1,8 @@
+; configuration for php xdebug module
+zend_extension = "{{php_module_path}}/xdebug.so"
+xdebug.remote_enable = 1
+xdebug.remote_connect_back = 1
+xdebug.remote_port = 9000
+xdebug.remote_handler = "dbgp"
+xdebug.profiler_enable = 0
+xdebug.profiler_enable_trigger = 1
