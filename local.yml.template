@@ -72,8 +72,13 @@
 #     - include: tools/tasks_mailhog.yml                    # Web and API based SMTP testing
 
 # COMMUNICATIONS
-     - include: tools/tasks_skype.yml                       # skype 4.3
-     - include: tools/tasks_speak_io.yml                    # speak.io client
+#     - include: tools/tasks_skype.yml                       # skype 4.3
+#     - include: tools/tasks_speak_io.yml                    # speak.io client
+#     - include: tools/tasks_slack_client.yml               # slack
+#     - include: tools/tasks_hipchat_client.yml             # hipchat
+
+
+# Local LAMP debugging
 
   handlers:
     - name: restart apache2
