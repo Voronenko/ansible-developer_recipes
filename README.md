@@ -17,10 +17,11 @@ Helper ansible repository for my devbox box configuration. Suitable for: LAMP, M
 
 <pre>
 
+#     - include: tasks_cleanupubuntu.yml                   # removes games, lens, etc
 #     - include: tasks_python.yml                          # basic updates to py & pip
 #     - include: tasks_worktools.yml                       # swiss knife for desktop utilities
 
-#     - include: tasks_mongodb.yml                         # mongodb 2.6
+#     - include: tasks_mongodb_3.yml                       # mongodb 3.0
 #     - include: tasks_mysql.yml                           # MYSQL 5.5
 #     - include: tasks_percona_toolkit.yml                 # percona tools for mysql
 
@@ -28,7 +29,7 @@ Helper ansible repository for my devbox box configuration. Suitable for: LAMP, M
 #     - include: tasks_nginx.yml                           # nginx
 #     - include: tasks_apache.yml                          # apache prefork|worker
 
-#     - include: tasks_nodejs.yml                          # node 0.10.*
+#     - include: tasks_nodejs.yml                          # node 0.10.* 0.12.*
 #     - include: tasks_java.yml                            # java 6-7-8
 #     - include: tasks_php_apache.yml                      # php 5.5 for apache
 
@@ -37,10 +38,39 @@ Helper ansible repository for my devbox box configuration. Suitable for: LAMP, M
 #     - include: tasks_jetbrains_rubymine.yml              # RUBY IDE
 #     - include: tasks_jetbrains_intellij_community.yml    # JAVA IDE
 
-#     - include: tasks_robomongo.yml                       # mongo GUI tool    
+#     - include: tasks_robomongo.yml                       # mongo GUI tool
 #     - include: tasks_dbeawer.yml                         # mysql | postgre GUI tool
 
-#     - include: tasks_docker.yml # docker
+#     - include: tasks_docker.yml                          # docker
+
+#     - include: tasks_oracle_virtualbox.yml               # Oracle Virtual Box
+#     - include: tasks_vagrant.yml                         # Vagrant
+
+
+#     - include: tools/tasks_expect.yml                    # expect tool
+#     - include: tools/tasks_plantuml.yml                  # plant uml
+#     - include: tools/tasks_toggle.yml                    # toggle time tracker
+#     - include: tools/tasks_dpr.yml                       # d.pr screenshoting tool
+
+#     VMWARE
+#     - include: vmware/tasks_vmware_tools.yml             # ESX vmware tools
+
+#    DEVELOPMENT
+#     - include: tools/tasks_mailhog.yml                    # Web and API based SMTP testing
+
+</pre>
+
+
+# bundled recipes for local or vagrant based LAMP debugging
+<pre>
+
+# - include: "{{root_dir}}/vagrant/tasks_vagrant_php_webgrind.yml"                   # Webgrind
+# - include: "{{root_dir}}/vagrant/tasks_vagrant_phpmyadmin.yml"                 # PhpMyAdmin
+# - include: "{{root_dir}}/vagrant/tasks_vagrant_php_xdebug.yml"                 # XDebug extension
+# - include: "{{root_dir}}/vagrant/tasks_vagrant_write_tools.yml"                # db import script, python venv init scripts
+# - include: "{{root_dir}}/vagrant/tasks_vagrant_import_mysqldb_databag.yml"     # (re)imports databases from db folder
+# - include: "{{root_dir}}/vagrant/tasks_vagrant_apache2_devsites.yml"           # register apache websites on vagrant
+
 
 </pre>
 
@@ -51,13 +81,22 @@ Helper ansible repository for my devbox box configuration. Suitable for: LAMP, M
     mysql_root_user: root
     mysql_root_password: devroot
     apache_mode: worker # use prefork or worker variables
-    java_version: 8
-    phpstorm_version: 9.0.2
-    pycharm_version: 4.5.4
-    rubymine_version: 7.1.4
-    intellij_version: 14.1.4
-    robomongo_version: 0.8.5
     dbeawer_version: 3.4.5
+    intellij_version: 14.1.4
+    java_version: 8
+    mailhog_version: 0.1.6
+    mongo_version: 3
+    nodejs_version: "0.12" # 0.10 0.12
+    oracle_vbox_version: 4.3
+    phpstorm_version: 10.0 # | 9.0.2 | 8.0.3 | 8.0.1 | 7.1.4 | 6.0.3 | 5.0.4
+    php_xdebug_version: 2.2.4
+    pycharm_version: 4.5.4
+    robomongo_version: 0.8.5
+    rubymine_version: 7.1.4
+    vagrant_version: 1.7.4
+
+    php_family: default # 5.4 | 5.5 | 5.6 | default
+    hypervisor: esx
 </pre>    
 
 
@@ -75,6 +114,24 @@ Helper ansible repository for my devbox box configuration. Suitable for: LAMP, M
 - [Algorithms](#Algorithms)
 - [Bookmarklets](#Bookmarklets)
 
+
+## Databases
+* [MySQL](https://www.mysql.com/) MySQL Community  database server
+* [MongoDB](https://www.mongodb.org/) Popular NoSQL database
+
+## Database tools
+* [DBeawer](http://dbeaver.jkiss.org/) Great GUI tool to work with MySQL, Postgres and bunch or another DBs
+* [Robomongo](http://robomongo.org/) Awesome free gui client for MongoDB
+* [Common schema](https://github.com/shlomi-noach/common_schema) DBA's framework for MySQL
+
+## Development
+
+* [Python] Includes most recent packet manager - pip installation and update
+* [Java] Installs java runtime environment 6,7, or 8 on the box
+* [NodeJS] Installs nodeJS 0.10 or 0.12 with set of most popular tools, including grunt, gulp, bower, npm
+* [PHP] Installs PHP for apache or nginx as Fast-CGI
+
+
 ## Documentation tools
 *Tools to ensure your project documentation does not get lost*
 
@@ -84,13 +141,17 @@ Helper ansible repository for my devbox box configuration. Suitable for: LAMP, M
 * [Bizagi modeler](http://www.bizagi.com/en/products/bpm-suite/modeler) Bizagi modeler - BMPN2.0 compatible tool for drowing business flow diagrams (Windows only)
 * [Gliffy](https://www.gliffy.com/go/commerce/index) html5 based online diagramming tool with BMPN 2.0 support
 
+## Virtualization
+* [Docker](https://www.docker.com/) Necessary docker components to build and run docker containers locally
+* [Oracle Virtual Box](https://www.virtualbox.org/) Free virtualization environment for Linux
+* [Vagrant](https://www.vagrantup.com/) Create and configure lightweight, reproducible, and portable development environments
+* [ESXi client tools](https://www.vmware.com/products/vsphere-hypervisor) When I work under ESXi - provides better experience
 
-## #Database tools
-*When you are tired of console*
 
-* [DBeawer](http://dbeaver.jkiss.org/) Great tool to work with MySQL, Postgres and bunch or another DBs
-* [Robomongo](http://robomongo.org/) Awesome free gui client for MongoDB
-* [Common schema](https://github.com/shlomi-noach/common_schema) DBA's framework for MySQL
+## Webservers
+* [Apache](http://www.apache.org/) Classic WebServer (recipe supports both prefork and worker models)
+* [Nginx](http://nginx.org/) Compact effective webserver for highload
+
 
 ## Workplace handy tools
 
@@ -107,14 +168,18 @@ Helper ansible repository for my devbox box configuration. Suitable for: LAMP, M
 * [d.pr](http://droplr.com/apps) Cross platform online screenshot capture
 client
 * [Shutter](http://shutter-project.org/) Unix only screenshot capture
+* [PHPStorm](https://www.jetbrains.com/phpstorm/) Jetbrains IDE for PHP
+* [PyCharm](https://www.jetbrains.com/pycharm) Jetbrains IDE for Python
+* [Rubymine](https://www.jetbrains.com/ruby/) Jetbrains IDE for Ruby
+* [Idea](https://www.jetbrains.com/idea/) Jetbrains IDE for Java
 
 ## Collaboration
 
 * [HipChat](https://www.hipchat.com/downloads) Crossplatform atlassian HipChat
 * [Slack](https://slack.com/downloads) Crossplatform slack client
-* [Appear.in](http://appear.in/) Client-less online multiplatform WebRTC collaboration tool with screen sharing support
 * [Speak.io](http://speak.io/) custom video/screen/sound communication for teams. Free unlimited trial period.
 * [Teamviewer](https://www.teamviewer.com/en/index.aspx) Most known tool for screen sharing and remote control
+* [Appear.in](http://appear.in/) Client-less online multiplatform WebRTC collaboration tool with screen sharing support
 
 ## PDF
 * [Bullzip PDF Printer](http://www.bullzip.com/products/pdf/info.php) free PDF printer for windows
@@ -135,7 +200,7 @@ client
 * [PHP QA Tools](http://phpqatools.org/)
 
 ## Development-JS
-* [CasperJS](http://casperjs.org/) http://casperjs.org/CasperJS is an open source navigation scripting & testing utility written in Javascript for the PhantomJS WebKit headless browser and SlimerJS (Gecko). It eases the process of defining a full navigation scenario and provides useful high-level functions, methods & syntactic sugar 
+* [CasperJS](http://casperjs.org/) http://casperjs.org/CasperJS is an open source navigation scripting & testing utility written in Javascript for the PhantomJS WebKit headless browser and SlimerJS (Gecko). It eases the process of defining a full navigation scenario and provides useful high-level functions, methods & syntactic sugar
 
 ## Algorithms
 * [algolist.manual.ru](http://algolist.manual.ru/)
