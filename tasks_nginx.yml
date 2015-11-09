@@ -55,6 +55,11 @@
     tags: nginx
     sudo: yes
 
+  - name: Nginx | Uncomment server_names_hash_bucket_size
+    lineinfile: dest=/etc/nginx/nginx.conf regexp="^(\s*)#\s*server_names_hash_bucket_size" line="\1server_names_hash_bucket_size 64;" backrefs=yes
+    sudo: yes
+    tags: proxy
+
   - name: Nginx | Reload
     service: name=nginx state=reloaded
     when: ansible_os_family == "Debian" and nginx_present|failed
