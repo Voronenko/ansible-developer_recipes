@@ -1,0 +1,23 @@
+  - name: Monit | Check if is installed
+    command: dpkg-query -W monit
+    when: ansible_os_family == "Debian"
+    register: monit_check_deb
+    failed_when: monit_check_deb.rc > 1
+    changed_when: monit_check_deb.rc == 1
+    tags: monit
+
+  - name: Monit | libssl-dev dependency
+    apt: pkg="libssl-dev" state="present"
+    sudo: yes
+    tags: monit    
+
+  - name: Monit | Download
+    get_url: url="http://us.archive.ubuntu.com/ubuntu/pool/universe/m/monit/monit_{{monit_version}}_amd64.deb" dest="/tmp/monit_{{monit_version}}_amd64.deb"
+    when: monit_check_deb.rc == 1
+    tags: monit
+
+  - name: Monit | Install
+    apt: deb="/tmp/monit_{{monit_version}}_amd64.deb"
+    when: monit_check_deb.rc == 1
+    sudo: yes
+    tags: monit
