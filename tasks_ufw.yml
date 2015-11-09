@@ -4,6 +4,8 @@
   #  ufw_rules_allow (provided)
   #  ufw_rules_allow_from_hosts (optional)
 
+  - debug: var="ufw_rules_allow"
+
   - name: UFW | Reset it
     ufw: state=reset
     sudo: yes
