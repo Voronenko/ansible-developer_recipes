@@ -5,6 +5,11 @@
     register: dpr_present
     tags: dpr
 
+  - name: D.PR | Install dependencies
+    apt: state=present pkg=libcurl4-openssl-dev
+    sudo: yes
+    tags: dpr
+
   - name: D.PR | get pack
     get_url: url=http://d.pr/f/LMD4+ dest={{apps_dir}}/dpr.tgz
     when: dpr_present|failed
