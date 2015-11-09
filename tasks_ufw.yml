@@ -1,0 +1,35 @@
+--- # https://github.com/StarterSquad/prudentia/blob/master/prudentia/tasks/ufw.yml
+  # Parameters:
+  #  ufw_rules_default (provided)
+  #  ufw_rules_allow (provided)
+  #  ufw_rules_allow_from_hosts (optional)
+
+  - name: UFW | Reset it
+    ufw: state=reset
+    sudo: yes
+    tags: ufw
+
+  - name: UFW | Configure incoming/outgoing defaults
+    ufw: policy={{item.policy}} direction={{item.direction}}
+    with_items: ufw_rules_default
+    sudo: yes
+    tags: ufw
+
+  - name: UFW | Configure rules to allow incoming traffic
+    ufw: rule=allow port={{item.port}} proto={{item.proto}}
+    with_items: ufw_rules_allow
+    when: ufw_rules_allow is defined
+    sudo: yes
+    tags: ufw
+
+  - name: UFW | Configure rules to allow incoming traffic from specific hosts
+    ufw: rule=allow port={{item.port}} proto={{item.proto}} src={{ item.address }}
+    with_items: ufw_rules_allow_from_hosts
+    when: ufw_rules_allow_from_hosts is defined
+    sudo: yes
+    tags: ufw
+
+  - name: UFW | Enable it
+    ufw: state=enabled logging=on
+    sudo: yes
+    tags: ufw
