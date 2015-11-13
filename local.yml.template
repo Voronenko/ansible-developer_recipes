@@ -27,6 +27,15 @@
 
     atom_packages: ["angularjs", "meteor-api", "emmet", "file-icons", "tag", "expand-region", "atom-alignment", "atom-beautify", "minimap", "set-syntax", "jshint", "linter", "linter-jscs", "jscs-fixer", "git-blame", "highlight-line", "autocomplete-plus", "toggle-quotes", "monokai"]
 
+    sshd_config_lines:
+      - {regexp: "^Protocol.*", line: "Protocol 2"}
+      - {regexp: "^PermitRootLogin.*", line: "PermitRootLogin no"}
+      - {regexp: "^RSAAuthentication.*", line: "RSAAuthentication yes"}
+      - {regexp: "^PubkeyAuthentication.*", line: "PubkeyAuthentication yes"}
+      - {regexp: "^ChallengeResponseAuthentication.*", line: "ChallengeResponseAuthentication no"}
+      - {regexp: "^PasswordAuthentication.*", line: "PasswordAuthentication no"}
+      - {regexp: "^MaxAuthTries.*", line: "MaxAuthTries 3"}
+
 
   tasks:
 
