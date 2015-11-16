@@ -38,3 +38,18 @@
   tags:
     -vagrant
     -setup
+
+- name: Vagrant | install vagrant-hostsupdater plugin
+  shell: vagrant plugin install vagrant-hostsupdater
+  sudo: yes
+  tags:
+    -vagrant
+    -setup
+
+- name: Vagrant | install vagrant-auto_network plugin
+  shell: vagrant plugin install vagrant-auto_network
+  sudo: yes
+  tags:
+    -vagrant
+    -setup
+
