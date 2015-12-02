@@ -8,7 +8,6 @@
        - gbrainy
        - gnome-mahjongg
        - aisleriot
-       -
     sudo: yes
     tags:
       - cleanup
