@@ -12,6 +12,14 @@
       -worktools
       -setup
 
+  - name: Worktools | MultiTail https://www.vanheusden.com/
+    apt: state=present pkg=multitail
+    sudo: yes
+    tags:
+      -worktools
+      -setup
+
+
   - name: Worktools | action "open in terminal" for Nautilus
     apt: state=present pkg=nautilus-open-terminal
     sudo: yes
@@ -20,22 +28,22 @@
       -setup
 
   - name: Worktools | unzip
-    apt: state=present pkg=unzip         
+    apt: state=present pkg=unzip
     sudo: yes
     tags:
       -worktools
       -setup
 
-  - name: Worktools | p7zip             
+  - name: Worktools | p7zip
     apt: name=p7zip-full state=latest
-    sudo: yes      
+    sudo: yes
     tags:
       -worktools
       -setup
 
   - name: Worktools | terminator
     apt: name=terminator state=latest
-    sudo: yes      
+    sudo: yes
     tags:
       -worktools
       -setup
@@ -55,7 +63,7 @@
     sudo: yes
     when: sublime_check_deb.rc == 1
     tags:
-      -sublime  
+      -sublime
       -setup
 
   - name: Worktools | Install Sublime
@@ -63,7 +71,7 @@
     sudo: yes
     when: sublime_check_deb.rc == 1
     tags:
-      -atom 
+      -atom
       -setup
 
   - name: Worktools | Check if atom is installed
@@ -81,7 +89,7 @@
     sudo: yes
     when: atom_check_deb.rc == 1
     tags:
-      -atom  
+      -atom
       -setup
 
   - name: Worktools | Install atom
@@ -90,7 +98,7 @@
     sudo: yes
     tags:
       -atom
-      -setup      
+      -setup
 
   - name: Worktools | Install atom packages
     shell: apm install {{item}}
@@ -98,7 +106,7 @@
     when: atom_packages is defined
     tags:
       -atom
-      -setup            
+      -setup
 
   - name: Worktools | Check if zeal is installed
     command: dpkg-query -W zeal
@@ -122,7 +130,7 @@
     apt: update_cache=yes pkg=zeal state=installed
     sudo: yes
     tags:
-      -zeal 
+      -zeal
       -setup
 
   - name: Worktools | Check google apt
@@ -139,7 +147,7 @@
     sudo: yes
     when: google_apt_exists.rc == 1
     tags:
-      -chrome 
+      -chrome
       -setup
 
   - name: Worktools | Add Google Chrome repo
@@ -147,16 +155,12 @@
     when: google_apt_exists.rc == 1
     sudo: yes
     tags:
-      -chrome 
+      -chrome
       -setup
 
   - name: Install Google Chrome
     apt: update_cache=yes pkg=google-chrome-stable state=installed
     sudo: yes
     tags:
-      -chrome 
+      -chrome
       -setup
-
-
-
-
