@@ -1,0 +1,4 @@
+---
+  - git: repo=https://github.com/softasap/free-icons-set.git
+       dest="{{apps_dir}}/shared_icons"
+              

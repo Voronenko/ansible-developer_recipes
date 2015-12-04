@@ -1,8 +1,19 @@
 - hosts: localhost
+
+  pre_tasks:
+    - name: Include vars from local user_vars.yml if found
+      include_vars: "{{ item }}"
+      with_first_found:
+       - "user_vars.yml"
+       - "user_vars_default.yml"
+      tags: restart
+
+
   vars:
     root_dir: "{{playbook_dir}}"
     deploy_user: "{{ansible_user_id}}"
     apps_dir: "/home/{{ansible_user_id}}/apps"
+    icons_dir: "{{apps_dir}}/shared_icons"
     mysql_root_user: root
     mysql_root_password: devroot
     apache_mode: worker # use prefork or worker variables
@@ -90,6 +101,10 @@
 
 #  TIME TRACKING
 #     - include: tools/tasks_toggle.yml
+
+#  DESKTOP shortcuts
+#     - include: e531/desktop_icons_pack.yml              # desktop icons
+#     - include: e531/shortcuts.yml                       # desktop shortcuts
 
 # Local LAMP debugging
 

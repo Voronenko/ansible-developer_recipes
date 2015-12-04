@@ -1,0 +1,10 @@
+---
+  desktop_shortcuts:
+    - {
+      name: "mc",
+      exec: "mc",
+      icon: "",
+      comment: "mc",
+      categories: "tools;",
+      startupwmclass: "tools"
+    }

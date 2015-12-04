@@ -1,0 +1,7 @@
+---
+  - name: Workplace| Create shortcuts
+    template:
+      src={{root_dir}}/files/shared/desktopentry.j2
+      dest=/home/{{deploy_user}}/Desktop/{{item.name}}.desktop
+      mode=755
+    with_items: "{{desktop_shortcuts}}"
