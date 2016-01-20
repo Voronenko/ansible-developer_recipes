@@ -5,6 +5,13 @@
       -worktools
       -setup
 
+  - name: Worktools | JQ
+    apt: state=present pkg=jq
+    sudo: yes
+    tags:
+      -worktools
+      -setup
+
   - name: Worktools | Git-Flow
     apt: state=present pkg=git-flow
     sudo: yes
