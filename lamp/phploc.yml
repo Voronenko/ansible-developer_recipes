@@ -1,0 +1,26 @@
+---
+  - name: PHPLOC | Check if phploc is present
+    shell: test -x /usr/local/bin/phploc
+    ignore_errors: yes
+    register: phploc_present
+    tags: phploc
+
+  - name: PHPLOC | Download phploc distribution
+    get_url: url="https://phar.phpunit.de/phploc.phar"
+             dest="/tmp/phploc.phar"
+    when: phploc_present|failed
+    tags: phploc
+
+  - name: PHPLOC | mv phploc.phar /usr/local/bin/phploc
+    command: mv phploc.phar /usr/local/bin/phploc
+             chdir="/tmp"
+    become: yes
+    when: phploc_present|failed
+    tags: phploc
+
+  - name: PHPLOC | set executable attr
+    file: path=/usr/local/bin/phploc state=touch mode="u=rwx,g=rx,o=rx"
+    become: yes
+    when: phploc_present|failed
+    tags: phploc
+

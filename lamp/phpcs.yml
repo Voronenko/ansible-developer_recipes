@@ -1,0 +1,51 @@
+---
+  - name: PHPCS | Check if phpcs is present
+    shell: test -x /usr/local/bin/phpcs
+    ignore_errors: yes
+    register: phpcs_present
+    tags: phpcs
+
+  - name: PHPCS | Download phpcs distribution
+    get_url: url="https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar"
+             dest="/tmp/phpcs.phar"
+    when: phpcs_present|failed
+    tags: phpcs
+
+  - name: PHPCS | mv phpcs.phar /usr/local/bin/phpcs
+    command: mv phpcs.phar /usr/local/bin/phpcs
+             chdir="/tmp"
+    become: yes
+    when: phpcs_present|failed
+    tags: phpcs
+
+  - name: PHPCS | set executable attr
+    file: path=/usr/local/bin/phpcs state=touch mode="u=rwx,g=rx,o=rx"
+    become: yes
+    when: phpcs_present|failed
+    tags: phpcs
+
+
+  - name: PHPCBF | Check if phpcbf is present
+    shell: test -x /usr/local/bin/phpcbf
+    ignore_errors: yes
+    register: phpcbf_present
+    tags: phpcbf
+
+  - name: PHPCBF | Download phpcbf distribution
+    get_url: url="https://squizlabs.github.io/PHP_CodeSniffer/phpcbf.phar"
+             dest="/tmp/phpcbf.phar"
+    when: phpcbf_present|failed
+    tags: phpcbf
+
+  - name: PHPCBF | mv phpcbf.phar /usr/local/bin/phpcbf
+    command: mv phpcbf.phar /usr/local/bin/phpcbf
+             chdir="/tmp"
+    become: yes
+    when: phpcbf_present|failed
+    tags: phpcbf
+
+  - name: PHPCBF | set executable attr
+    file: path=/usr/local/bin/phpcbf state=touch mode="u=rwx,g=rx,o=rx"
+    become: yes
+    when: phpcbf_present|failed
+    tags: phpcbf

@@ -96,6 +96,9 @@
 #      LAMP
 #     - include: lamp/phpdox.yml                            # phpdox documentator
 #     - include: lamp/doxygen.yml                           # doxygen documentator
+#     - include: lamp/phploc.yml                            # phploc tool
+#     - include: lamp/phpcs.yml                             # phpcs tool
+#     - include: lamp/phpmd.yml                             # phpmd tool
 
 #     - include: tools/tasks_expect.yml                    # expect tool
 #     - include: tools/tasks_plantuml.yml                  # plant uml
