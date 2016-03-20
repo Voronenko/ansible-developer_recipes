@@ -19,6 +19,7 @@
     apache_mode: worker # use prefork or worker variables
 
     dbeawer_version: 3.4.5
+    chruby_version: 0.3.9
     intellij_version: 14.1.4
     java_version: 8
     mailhog_version: 0.1.6
@@ -31,6 +32,11 @@
     pycharm_version: 5.0.1 # 4.5.4
 #    pycharm_edition: community # professional | community
     robomongo_version: 0.8.5
+    rubies_location: /opt/rubies
+    ruby_install_version: 0.6.0
+    ruby_install_setsystem: true
+    ruby_version: 2.3.0
+
     rubymine_version: 7.1.4
     vagrant_version: 1.7.4
 
@@ -81,7 +87,11 @@
 #     - include: tasks_oracle_virtualbox.yml               # Oracle Virtual Box
 #     - include: tasks_vagrant.yml                         # Vagrant
 
-
+#      RUBY
+#     - include: ruby/ch_ruby.yml                          # chruby
+#     - include: ruby/ruby_install.yml                     # ruby-install
+#     - include: ruby/ruby.yml                             # installs ruby itself
+   
 #     - include: tools/tasks_expect.yml                    # expect tool
 #     - include: tools/tasks_plantuml.yml                  # plant uml
 #     - include: tools/tasks_toggle.yml                    # toggle time tracker

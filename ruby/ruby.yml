@@ -1,0 +1,24 @@
+---
+  - name: Ruby | Find out if ruby_version is already installed
+    stat: path={{rubies_location}}/ruby-{{ruby_version}}
+    register: ruby_version_present
+    tags: ruby
+
+  - name: Ruby | Install ruby_version if necessary
+    command: '/usr/local/bin/ruby-install ruby {{ruby_version}}'
+    when: not ruby_version_present.stat.exists
+    become: yes
+    tags: ruby
+
+  - debug: var="ruby_install_setsystem"
+
+  - name: Ruby | Update SYSTEM ruby_version if necessary
+    command: '/usr/local/bin/ruby-install --system ruby {{ruby_version}}'
+    when: option_ruby_install_setsystem
+    become: yes
+    tags: ruby
+
+#  - name: Ruby | change default ruby
+#    command: 'chruby {{ruby_version}}'
+#    when: not ruby_version_present.stat.exists
+#    tags: ruby
