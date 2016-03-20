@@ -1,0 +1,33 @@
+---
+  - name: PHPDOX | Check if phpdox is present
+    shell: test -x /usr/local/bin/phpdox
+    ignore_errors: yes
+    register: phpdox_present
+    tags: phpdox
+
+  - name: PHPDOX | Install dependencies
+    apt: pkg={{ item }} state=present force="yes"  update_cache="yes"
+    when: phpdox_present|failed
+    with_items:
+      - php5-xsl
+    become: yes
+    tags: phpdox 
+
+  - name: PHPDOX | Download phpdox distribution
+    get_url: url="http://phpdox.de/releases/phpdox.phar"
+             dest="/tmp/phpdox.phar"
+    when: phpdox_present|failed
+    tags: phpdox
+
+  - name: PHPDOX | mv phpdox.phar /usr/local/bin/phpdox
+    command: mv phpdox.phar /usr/local/bin/phpdox
+             chdir="/tmp"
+    become: yes
+    when: phpdox_present|failed
+    tags: phpdox
+
+  - name: PHPDOX | set executable attr
+    file: path=/usr/local/bin/phpdox state=touch mode="u=rwx,g=rx,o=rx"
+    become: yes
+    when: phpdox_present|failed
+    tags: phpdox

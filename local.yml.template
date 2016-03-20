@@ -91,6 +91,9 @@
 #     - include: ruby/ch_ruby.yml                          # chruby
 #     - include: ruby/ruby_install.yml                     # ruby-install
 #     - include: ruby/ruby.yml                             # installs ruby itself
+
+#      LAMP
+#     - include: lamp/phpdox.yml                            # phpdox documentator 
    
 #     - include: tools/tasks_expect.yml                    # expect tool
 #     - include: tools/tasks_plantuml.yml                  # plant uml
