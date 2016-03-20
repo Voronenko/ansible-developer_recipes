@@ -20,6 +20,7 @@
 
     dbeawer_version: 3.4.5
     chruby_version: 0.3.9
+    doxygen_version: 1.8.11
     intellij_version: 14.1.4
     java_version: 8
     mailhog_version: 0.1.6
@@ -93,8 +94,9 @@
 #     - include: ruby/ruby.yml                             # installs ruby itself
 
 #      LAMP
-#     - include: lamp/phpdox.yml                            # phpdox documentator 
-   
+#     - include: lamp/phpdox.yml                            # phpdox documentator
+#     - include: lamp/doxygen.yml                           # doxygen documentator
+
 #     - include: tools/tasks_expect.yml                    # expect tool
 #     - include: tools/tasks_plantuml.yml                  # plant uml
 #     - include: tools/tasks_toggle.yml                    # toggle time tracker
