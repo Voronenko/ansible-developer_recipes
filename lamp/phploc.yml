@@ -24,3 +24,4 @@
     when: phploc_present|failed
     tags: phploc
 
+# phploc --log-xml build/phploc.xml --progress --exclude vendor/ $SOURCE_PATH

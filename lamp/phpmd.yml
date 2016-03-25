@@ -23,3 +23,5 @@
     become: yes
     when: phpmd_present|failed
     tags: phpmd
+
+# phpmd $SOURCE_PATH xml cleancode,codesize,controversial,design,naming,unusedcode --reportfile build/phpmd.xml --exclude=*/.git/*,*/vendor/*,vendor/*

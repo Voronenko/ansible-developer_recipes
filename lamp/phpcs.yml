@@ -49,3 +49,5 @@
     become: yes
     when: phpcbf_present|failed
     tags: phpcbf
+
+# phpcs --report=xml --report-file=build/phpcs.xml --ignore=*/.git/*,*/vendor/*,vendor/* $SOURCE_PATH
