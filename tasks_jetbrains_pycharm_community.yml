@@ -15,6 +15,14 @@
     -pycharm
     -setup
 
+- name: JetBrains Pycharm| Check pycharm_version variable
+  assert:
+    that: pycharm_version in ["2016.1", "5.0.1", "4.5.4"]
+  tags:
+    -jetbrains
+    -pycharm
+    -setup
+
 - name: JetBrains PyCharm| Download PyCharm archive
   get_url:
     url=http://download.jetbrains.com/python/pycharm-{{use_pycharm_edition}}-{{pycharm_version}}.tar.gz
