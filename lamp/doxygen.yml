@@ -56,12 +56,7 @@
     tags: doxygen
 
   - name: DOXYGEN | clean build dir
-    file: path="{{apps_dir}}/doxygen-{{doxygen_version}}" state=ansent
+    file: path="{{apps_dir}}/doxygen-{{doxygen_version}}" state=absent
     when: doxygen_present|failed
     tags: doxygen
-
-#phpcs --report=xml --report-file=build/logs/phpcs.xml --ignore=*/.git/*,*/vendor/*,vendor/* $SOURCE_PATH
-#phploc --log-xml build/phploc.xml --progress --exclude vendor/ $SOURCE_PATH
-#phpmd $SOURCE_PATH xml cleancode,codesize,controversial,design,naming,unusedcode --reportfile build/phpmd.xml --exclude=*/.git/*,*/vendor/*,vendor/*
-#phpdox
 
