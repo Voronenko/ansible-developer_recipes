@@ -21,7 +21,7 @@
     dbeawer_version: 3.4.5
     chruby_version: 0.3.9
     doxygen_version: 1.8.11
-    intellij_version: 14.1.4
+    intellij_version: 2016.1.1 #14.1.4
     java_version: 8
     mailhog_version: 0.1.6
     mongo_version: 3
