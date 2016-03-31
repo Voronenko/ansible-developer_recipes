@@ -1,106 +1,107 @@
-- set_fact:
-    use_pycharm_edition: "{{pycharm_edition | default('community')}}"
+---
+  - set_fact:
+      use_pycharm_edition: "{{pycharm_edition | default('community')}}"
 
-- name: JetBrains| ensure apps folder exists
-  shell:
-    mkdir -p {{apps_dir}}
-    creates="{{apps_dir}}"
+  - name: JetBrains| ensure apps folder exists
+    shell:
+      mkdir -p {{apps_dir}}
+      creates="{{apps_dir}}"
 
-- name: JetBrains PyCharm| Test if folder exist
-  stat:
-    path={{apps_dir}}/pycharm
-  register: pycharm_exist
-  tags:
-    -jetbrains
-    -pycharm
-    -setup
+  - name: JetBrains PyCharm| Test if folder exist
+    stat:
+      path={{apps_dir}}/pycharm
+    register: pycharm_exist
+    tags:
+      -jetbrains
+      -pycharm
+      -setup
 
-- name: JetBrains Pycharm| Check pycharm_version variable
-  assert:
-    that: pycharm_version in ["2016.1", "5.0.1", "4.5.4"]
-  tags:
-    -jetbrains
-    -pycharm
-    -setup
+  - name: JetBrains Pycharm| Check pycharm_version variable
+    assert:
+      that: pycharm_version in ["2016.1", "5.0.1", "4.5.4"]
+    tags:
+      -jetbrains
+      -pycharm
+      -setup
 
-- name: JetBrains PyCharm| Download PyCharm archive
-  get_url:
-    url=http://download.jetbrains.com/python/pycharm-{{use_pycharm_edition}}-{{pycharm_version}}.tar.gz
-    dest={{apps_dir}}/pycharm.tar.gz
-  when: pycharm_exist.stat.exists == False
-  tags:
-    -jetbrains
-    -pycharm
-    -setup
-
-
-- name: JetBrains PyCharm| Decompress PyCharm archive
-  unarchive:
-    src={{apps_dir}}/pycharm.tar.gz
-    dest={{apps_dir}}
-    copy=no
-  when: pycharm_exist.stat.exists == False
-  tags:
-    -jetbrains
-    -pycharm
-    -setup
-
-- shell: ls -d {{apps_dir}}/pycharm-*
-  register: pycharm_version
-  when: pycharm_exist.stat.exists == False
-  tags:
-    -jetbrains
-    -pycharm
-    -setup
+  - name: JetBrains PyCharm| Download PyCharm archive
+    get_url:
+      url=http://download.jetbrains.com/python/pycharm-{{use_pycharm_edition}}-{{pycharm_version}}.tar.gz
+      dest={{apps_dir}}/pycharm.tar.gz
+    when: pycharm_exist.stat.exists == False
+    tags:
+      -jetbrains
+      -pycharm
+      -setup
 
 
-- name: JetBrains PyCharm| Move PyCharm folder
-  command: "mv {{pycharm_version.stdout}} {{apps_dir}}/pycharm"
-  when: pycharm_exist.stat.exists == False
-  args:
-    chdir: "{{apps_dir}}"
-  tags:
-    -jetbrains
-    -pycharm
-    -setup
-  ignore_errors: true
+  - name: JetBrains PyCharm| Decompress PyCharm archive
+    unarchive:
+      src={{apps_dir}}/pycharm.tar.gz
+      dest={{apps_dir}}
+      copy=no
+    when: pycharm_exist.stat.exists == False
+    tags:
+      -jetbrains
+      -pycharm
+      -setup
+
+  - shell: ls -d {{apps_dir}}/pycharm-*
+    register: pycharm_version
+    when: pycharm_exist.stat.exists == False
+    tags:
+      -jetbrains
+      -pycharm
+      -setup
 
 
-- name: JetBrains PyCharm| Create symlink
-  file:
-    src={{apps_dir}}/pycharm/bin/pycharm.sh
-    dest=/usr/bin/pycharm
-    state=link
-  sudo: yes
-  tags:
-    -jetbrains
-    -pycharm
-    -setup
+  - name: JetBrains PyCharm| Move PyCharm folder
+    command: "mv {{pycharm_version.stdout}} {{apps_dir}}/pycharm"
+    when: pycharm_exist.stat.exists == False
+    args:
+      chdir: "{{apps_dir}}"
+    tags:
+      -jetbrains
+      -pycharm
+      -setup
+    ignore_errors: true
 
-- name: JetBrains PyCharm| Create desktop entry
-  template:
-    src={{root_dir}}/files/jetbrains/desktopentry.j2
-    dest=/home/{{deploy_user}}/Desktop/PyCharm.desktop
-    mode=755
-  with_items:
-    - {
-    	name: "PyCharm",
-    	exec: "{{apps_dir}}/pycharm/bin/pycharm.sh",
-    	icon: "{{apps_dir}}/pycharm/bin/pycharm.png",
-    	comment: "Develop with PyCharm!",
-    	categories: "Development;IDE;",
-    	startupwmclass: "jetbrains-pycharm"
-    }
-  tags:
-    -jetbrains
-    -pycharm
-    -setup
 
-#- name:JetBrains PyCharm| Remove phpStorm archive
-#  file:
-#    path={{apps_dir}}/pycharm.tar.gz
-#    state=absent
-#  tags:
-#    -jetbrains
-#    -pycharm
-#    -setup
+  - name: JetBrains PyCharm| Create symlink
+    file:
+      src={{apps_dir}}/pycharm/bin/pycharm.sh
+      dest=/usr/bin/pycharm
+      state=link
+    sudo: yes
+    tags:
+      -jetbrains
+      -pycharm
+      -setup
+
+  - name: JetBrains PyCharm| Create desktop entry
+    template:
+      src={{root_dir}}/files/jetbrains/desktopentry.j2
+      dest=/home/{{deploy_user}}/Desktop/PyCharm.desktop
+      mode=755
+    with_items:
+      - {
+      name: "PyCharm",
+      exec: "{{apps_dir}}/pycharm/bin/pycharm.sh",
+      icon: "{{apps_dir}}/pycharm/bin/pycharm.png",
+      comment: "Develop with PyCharm!",
+      categories: "Development;IDE;",
+      startupwmclass: "jetbrains-pycharm"
+      }
+    tags:
+      -jetbrains
+      -pycharm
+      -setup
+
+  #- name:JetBrains PyCharm| Remove phpStorm archive
+  #  file:
+  #    path={{apps_dir}}/pycharm.tar.gz
+  #    state=absent
+  #  tags:
+  #    -jetbrains
+  #    -pycharm
+  #    -setup
