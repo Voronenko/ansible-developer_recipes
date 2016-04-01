@@ -18,7 +18,7 @@
     mysql_root_password: devroot
     apache_mode: worker # use prefork or worker variables
 
-    dbeawer_version: 3.4.5
+    dbeawer_version: 3.6.3
     chruby_version: 0.3.9
     doxygen_version: 1.8.11
     intellij_version: 2016.1.1 #14.1.4

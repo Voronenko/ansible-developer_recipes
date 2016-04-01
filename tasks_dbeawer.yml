@@ -11,7 +11,7 @@
 
 - name: DBeawer | download package
   get_url: 
-    url="http://dbeaver.jkiss.org/files/dbeaver_{{ dbeawer_version }}_amd64.deb"
+    url="http://dbeaver.jkiss.org/files/3.6.3/dbeaver-ce_{{ dbeawer_version }}_amd64.deb"
     dest="/home/{{ deploy_user }}/Downloads/dbeawer.deb"
   when: dbeawer_check_deb.rc == 1
   tags:
