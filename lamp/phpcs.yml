@@ -6,7 +6,7 @@
     tags: phpcs
 
   - name: PHPCS | Download phpcs distribution
-    get_url: url="https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar"
+    get_url: url="https://github.com/squizlabs/PHP_CodeSniffer/releases/download/{{phpcs_version}}/phpcs.phar"
              dest="/tmp/phpcs.phar"
     when: phpcs_present|failed
     tags: phpcs
@@ -32,7 +32,7 @@
     tags: phpcbf
 
   - name: PHPCBF | Download phpcbf distribution
-    get_url: url="https://squizlabs.github.io/PHP_CodeSniffer/phpcbf.phar"
+    get_url: url="https://github.com/squizlabs/PHP_CodeSniffer/releases/download/{{phpcbf_version}}/phpcbf.phar"
              dest="/tmp/phpcbf.phar"
     when: phpcbf_present|failed
     tags: phpcbf
