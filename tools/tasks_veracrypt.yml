@@ -1,0 +1,9 @@
+---
+
+  - name: VERACRYPT | Add ppa repositories
+    apt_repository: repo='ppa:unit193/encryption' state=present
+    become: yes
+
+  - name: VERACRYPT | Install package
+    apt: pkg="veracrypt" update_cache="yes"
+    become: yes
