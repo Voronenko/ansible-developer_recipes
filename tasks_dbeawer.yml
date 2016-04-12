@@ -1,7 +1,7 @@
 - name: DBeawer | Check if my_package is installed
   command: dpkg-query -W dbeaver
   register: dbeawer_check_deb
-  sudo: yes
+  become: yes
   failed_when: dbeawer_check_deb.rc > 1
   changed_when: dbeawer_check_deb.rc == 1
   tags:
@@ -20,7 +20,7 @@
 
 - name: DBeawer | install package
   apt: deb="/home/{{ deploy_user }}/Downloads/dbeawer.deb"
-  sudo: true
+  become: true
   when: dbeawer_check_deb.rc == 1
   tags:
     -worktools
