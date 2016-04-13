@@ -117,19 +117,25 @@ Helper ansible repository for my devbox box configuration. Suitable for: LAMP, M
 
 ## Databases
 * [MySQL](https://www.mysql.com/) MySQL Community  database server
-* [MongoDB](https://www.mongodb.org/) Popular NoSQL database
+* [MongoDB](https://www.mongodb.org/) Popular NoSQL database [![Build Status](https://travis-ci.org/softasap/sa-mongo.svg?branch=master)](https://travis-ci.org/softasap/sa-mongo)
+
 
 ## Database tools
-* [DBeawer](http://dbeaver.jkiss.org/) Great GUI tool to work with MySQL, Postgres and bunch or another DBs
-* [Robomongo](http://robomongo.org/) Awesome free gui client for MongoDB
+* [DBeawer](http://dbeaver.jkiss.org/) Great GUI tool to work with MySQL, Postgres and bunch or another DBs [![Build Status](https://travis-ci.org/softasap/sa-dev-dbgui.svg?branch=master)](https://travis-ci.org/softasap/sa-dev-dbgui)
+
+* [Robomongo](http://robomongo.org/) Awesome free gui client for MongoDB [![Build Status](https://travis-ci.org/softasap/sa-dev-dbgui.svg?branch=master)](https://travis-ci.org/softasap/sa-dev-dbgui)
+
 * [Common schema](https://github.com/shlomi-noach/common_schema) DBA's framework for MySQL
 
 ## Development
 
 * [Python] Includes most recent packet manager - pip installation and update
-* [Java] Installs java runtime environment 6,7, or 8 on the box
-* [NodeJS] Installs nodeJS 0.10 or 0.12 with set of most popular tools, including grunt, gulp, bower, npm
-* [PHP] Installs PHP for apache or nginx as Fast-CGI
+* [Java] Installs java runtime environment 6,7, or 8 on the box [![Build Status](https://travis-ci.org/softasap/sa-java.svg?branch=master)](https://travis-ci.org/softasap/sa-java)
+
+* [NodeJS] Installs nodeJS 0.10 or 0.12 with set of most popular tools, including grunt, gulp, bower, npm [![Build Status](https://travis-ci.org/softasap/sa-node.svg?branch=master)](https://travis-ci.org/softasap/sa-node)
+
+* [PHP] Installs PHP for apache or nginx as Fast-CGI [![Build Status](https://travis-ci.org/softasap/sa-lamp.svg?branch=master)](https://travis-ci.org/softasap/sa-lamp)
+
 
 
 ## Documentation tools
@@ -150,10 +156,13 @@ Helper ansible repository for my devbox box configuration. Suitable for: LAMP, M
 
 ## Webservers
 * [Apache](http://www.apache.org/) Classic WebServer (recipe supports both prefork and worker models)
-* [Nginx](http://nginx.org/) Compact effective webserver for highload
+* [Nginx](http://nginx.org/) Compact effective webserver for highload [![Build Status](https://travis-ci.org/softasap/sa-nginx.svg?branch=master)](https://travis-ci.org/softasap/sa-nginx)
 
 
 ## Workplace handy tools
+
+[![Build Status](https://travis-ci.org/softasap/sa-dev-worktools.svg?branch=master)](https://travis-ci.org/softasap/sa-dev-worktools)
+
 
 * [Midnight Commander](https://www.midnight-commander.org/) visual folder structure browsing
 * [Git-Flow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow/) Git-Flow - +- successful git branching model
