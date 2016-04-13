@@ -1,0 +1,30 @@
+- name: Chrome Remote Desktop | Check if is installed
+  command: dpkg-query -W chrome-remote-desktop
+  register: chromerd_check_deb
+  become: yes
+  failed_when: chromerd_check_deb.rc > 1
+  changed_when: chromerd_check_deb.rc == 1
+  tags:
+    -worktools
+    -chromerd
+
+
+- name: Chrome Remote Desktop | download package
+  get_url: 
+    url="http://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.deb"
+    dest="/tmp/chrome-remote-desktop_current_amd64.deb"
+  when: chromerd_check_deb.rc == 1
+  tags:
+    -worktools
+    -chromerd
+
+- name: Chrome Remote Desktop | install package
+  apt: deb="/tmp/chrome-remote-desktop_current_amd64.deb"
+  become: true
+  when: chromerd_check_deb.rc == 1
+  tags:
+    -worktools
+    -chromerd
+
+
+

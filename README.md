@@ -177,10 +177,13 @@ Helper ansible repository for my devbox box configuration. Suitable for: LAMP, M
 * [d.pr](http://droplr.com/apps) Cross platform online screenshot capture
 client
 * [Shutter](http://shutter-project.org/) Unix only screenshot capture
-* [PHPStorm](https://www.jetbrains.com/phpstorm/) Jetbrains IDE for PHP
-* [PyCharm](https://www.jetbrains.com/pycharm) Jetbrains IDE for Python
-* [Rubymine](https://www.jetbrains.com/ruby/) Jetbrains IDE for Ruby
-* [Idea](https://www.jetbrains.com/idea/) Jetbrains IDE for Java
+* [PHPStorm](https://www.jetbrains.com/phpstorm/) Jetbrains IDE for PHP [![Build Status](https://travis-ci.org/softasap/sa-dev-phpstorm.svg?branch=master)](https://travis-ci.org/softasap/sa-dev-phpstorm)
+
+* [PyCharm](https://www.jetbrains.com/pycharm) Jetbrains IDE for Python [![Build Status](https://travis-ci.org/softasap/sa-dev-pycharm.svg?branch=master)](https://travis-ci.org/softasap/sa-dev-pycharm)
+
+* [Rubymine](https://www.jetbrains.com/ruby/) Jetbrains IDE for Ruby [![Build Status](https://travis-ci.org/softasap/sa-dev-rubymine.svg?branch=master)](https://travis-ci.org/softasap/sa-dev-rubymine)
+* [Idea](https://www.jetbrains.com/idea/) Jetbrains IDE for Java [![Build Status](https://travis-ci.org/softasap/sa-dev-intellij.svg?branch=master)](https://travis-ci.org/softasap/sa-dev-intellij)
+
 
 ## Collaboration
 
