@@ -177,6 +177,10 @@ Helper ansible repository for my devbox box configuration. Suitable for: LAMP, M
 * [d.pr](http://droplr.com/apps) Cross platform online screenshot capture
 client
 * [Shutter](http://shutter-project.org/) Unix only screenshot capture
+
+
+## Development IDE's
+
 * [PHPStorm](https://www.jetbrains.com/phpstorm/) Jetbrains IDE for PHP [![Build Status](https://travis-ci.org/softasap/sa-dev-phpstorm.svg?branch=master)](https://travis-ci.org/softasap/sa-dev-phpstorm)
 
 * [PyCharm](https://www.jetbrains.com/pycharm) Jetbrains IDE for Python [![Build Status](https://travis-ci.org/softasap/sa-dev-pycharm.svg?branch=master)](https://travis-ci.org/softasap/sa-dev-pycharm)
