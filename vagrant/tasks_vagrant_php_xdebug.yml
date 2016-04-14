@@ -1,6 +1,6 @@
 - name: XDebug | dependencies
   apt: state=present pkg=php5-dev
-  sudo: yes
+  become: yes
   tags:
     -xdebug
 
@@ -55,6 +55,7 @@
     owner: root
     group: root
     mode: 0755
+  become: yes
   tags:
     -xdebug
 
@@ -62,7 +63,7 @@
   shell: cp {{ xdebug_workspace.stdout }}/xdebug-{{ php_xdebug_version }}/modules/xdebug.so {{ php_module_path.stdout }}/xdebug.so
   args:
     creates: "{{ php_module_path }}/xdebug.so"
-  sudo: yes
+  become: yes
   notify: restart apache2
   tags:
     -xdebug
@@ -78,15 +79,33 @@
     - {
       php_module_path: "{{php_module_path.stdout}}"
     }
-  sudo: yes
+  become: yes
+  when: apache_mode == "prefork"
   notify: restart apache2
+  tags:
+    -xdebug
+
+- name: XDebug | Copy xdebug INI into php.d folder.
+  template:
+    src: "{{root_dir}}/files/php_debug/xdebug.ini.j2"
+    dest: "{{ php_extension_conf_path.stdout.replace('/cli/','/fpm/') }}/xdebug.ini"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - {
+      php_module_path: "{{php_module_path.stdout}}"
+    }
+  become: yes
+  when: apache_mode == "worker"
+  notify: restart fpm
   tags:
     -xdebug
 
 
 - name: XDebug | Errors to browser
   template:
-    src: "{{root_dir}}/files/php_debug/devbox.ini.j2"
+    src: "{{role_dir}}/files/php_debug/devbox.ini.j2"
     dest: "{{ php_extension_conf_path.stdout.replace('/cli/','/apache2/') }}/devbox.ini"
     owner: root
     group: root
@@ -95,13 +114,41 @@
     - {
       php_module_path: "{{php_module_path.stdout}}"
     }
-  sudo: yes
+  become: yes
+  when: apache_mode == "prefork"
   notify: restart apache2
+  tags:
+    -xdebug
+
+
+- name: XDebug | Errors to browser
+  template:
+    src: "{{role_dir}}/files/php_debug/devbox.ini.j2"
+    dest: "{{ php_extension_conf_path.stdout.replace('/cli/','/fpm/') }}/devbox.ini"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - {
+      php_module_path: "{{php_module_path.stdout}}"
+    }
+  become: yes
+  notify: restart fpm
+  when: apache_mode == "worker"
   tags:
     -xdebug
 
 - name: XDebug | Forced apache restart for the first time
   shell: service apache2 restart
-  sudo: yes
+  become: yes
+  when: apache_mode == "prefork"
+  tags:
+    -xdebug
+
+
+- name: XDebug | Forced apache restart for the first time
+  shell: service php5-fpm restart
+  become: yes
+  when: apache_mode == "worker"
   tags:
     -xdebug

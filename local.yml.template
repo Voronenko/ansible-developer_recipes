@@ -11,6 +11,7 @@
 
   vars:
     root_dir: "{{playbook_dir}}"
+    role_dir: "{{root_dir}}"
     deploy_user: "{{ansible_user_id}}"
     apps_dir: "/home/{{ansible_user_id}}/apps"
     icons_dir: "{{apps_dir}}/shared_icons"
@@ -127,9 +128,16 @@
 #     - include: e531/shortcuts.yml                       # desktop shortcuts
 
 # Local LAMP debugging
+#      - include: vagrant/tasks_vagrant_php_xdebug.yml
 
   handlers:
     - name: restart apache2
       service: name=apache2 state=restarted
+      become: yes
     - name: restart vmtoolsd
       service: name=vmtoolsd state=restarted
+      become: yes
+    - name: restart fpm
+      service: name=php5-fpm state=restarted
+      become: yes
+
