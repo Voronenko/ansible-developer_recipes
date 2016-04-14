@@ -78,6 +78,7 @@
 #     - include: tasks_nodejs.yml                          # node 0.10.* 0.12.*
 #     - include: tasks_java.yml                            # java 6-7-8
 #     - include: tasks_php_apache.yml                      # php 5.5 for apache
+#     - include: tasks_ruby.yml                            # Set system ruby to 2.1
 
 #     - include: tasks_jetbrains_phpstorm.yml              # PHP IDE
 #     - include: tasks_jetbrains_pycharm_community.yml     # PY IDE

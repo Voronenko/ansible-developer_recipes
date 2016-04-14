@@ -1,0 +1,25 @@
+---
+  - name: RUBY | chruby
+    include: ruby/ch_ruby.yml
+    become: yes
+    tags: 
+        -ruby
+        -setup
+
+
+  - name: RUBY | ruby_install
+    include: ruby/ruby_install.yml
+    become: yes
+    tags:
+        -ruby
+        -setup
+
+
+  - name: RUBY | ruby
+    include: ruby/ruby.yml ruby_install_setsystem=true
+    become: yes
+    tags:
+        -ruby
+        -setup
+
+ 
