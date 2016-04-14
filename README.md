@@ -170,6 +170,7 @@ Helper ansible repository for my devbox box configuration. Suitable for: LAMP, M
 * [unzip]() unzip
 * [p7zip](http://p7zip.sourceforge.net/) p7zip
 * [terminator](https://apps.ubuntu.com/cat/applications/precise/terminator/) terminator
+* [tmux](https://github.com/tmux/tmux) tmux
 * [sublime](http://www.sublimetext.com/2) sublime text 2
 * [atom](https://atom.io/) github's atom editor
 * [zeal](https://zealdocs.org/) Zeal offline documentation browser
