@@ -1,0 +1,26 @@
+---
+- name: Visual Studio Code | Check if _package is installed
+  command: dpkg-query -W visual-studio-code
+  register: vscode_check_deb
+  become: yes
+  failed_when: vscode_check_deb.rc > 1
+  changed_when: vscode_check_deb.rc == 1
+  tags:
+    -worktools
+    -vscode
+
+
+- name: Visual Studio Code | download package
+  get_url: url="http://go.microsoft.com/fwlink/?LinkID=760868"  dest="/tmp/vsvode.deb"
+  when: vscode_check_deb.rc == 1
+  tags:
+    -worktools
+    -vscode
+
+- name: Visual Studio Code | install package
+  apt: deb="/tmp/vsvode.deb"
+  become: true
+  when: vscode_check_deb.rc == 1
+  tags:
+    -worktools
+    -vscode

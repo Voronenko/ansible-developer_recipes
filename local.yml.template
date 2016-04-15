@@ -130,7 +130,10 @@
 #     - include: e531/shortcuts.yml                       # desktop shortcuts
 
 # Local LAMP debugging
-#      - include: vagrant/tasks_vagrant_php_xdebug.yml
+#     - include: vagrant/tasks_vagrant_php_xdebug.yml
+
+# 3rd party code editors
+#     - include: tools/tasks_microsoft_visual_studio_code.yml
 
   handlers:
     - name: restart apache2
