@@ -78,7 +78,7 @@
     sudo: yes
     when: sublime_check_deb.rc == 1
     tags:
-      -atom
+      -sublime
       -setup
 
   - name: Worktools | Check if atom is installed
