@@ -40,8 +40,8 @@
     ruby_install_version: 0.6.0
     ruby_install_setsystem: true
     ruby_version: 2.3.0
-
     rubymine_version: 7.1.4
+#    s3cmd_version: 1.6.1
     vagrant_version: 1.7.4
 
     php_family: default # 5.4 | 5.5 | 5.6 | default
@@ -65,7 +65,7 @@
 #     - include: tasks_cleanupubuntu.yml                   # removes games, lens, etc
 #     - include: tasks_python.yml                          # basic updates to py & pip
 #     - include: tasks_worktools.yml                       # swiss knife for desktop utilities
-#     - include: tools/tasks_tmux.yml                      # If you are the tmux fun 
+#     - include: tools/tasks_tmux.yml                      # If you are the tmux fun
 
 #     - include: tasks_mongodb_3.yml                       # mongodb 3.0
 #     - include: tasks_mysql.yml                           # MYSQL 5.5
@@ -135,6 +135,9 @@
 # 3rd party code editors
 #     - include: tools/tasks_microsoft_visual_studio_code.yml
 
+# 3rd party tools
+#     - include: tools/tasks_s3cmd.yml
+
   handlers:
     - name: restart apache2
       service: name=apache2 state=restarted
@@ -145,4 +148,3 @@
     - name: restart fpm
       service: name=php5-fpm state=restarted
       become: yes
-

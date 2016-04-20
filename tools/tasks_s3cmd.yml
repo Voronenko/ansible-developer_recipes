@@ -1,0 +1,12 @@
+---
+  - name: S3CMD | Install S3 distribution via PIP
+    pip: name=s3cmd version={{s3cmd_version}}
+    when: s3cmd_version is defined
+    become: yes
+    tags: s3cmd
+
+  - name: S3CMD | Install S3 distribution via PIP
+    pip: name=s3cmd
+    when: s3cmd_version is not defined
+    become: yes
+    tags: s3cmd
