@@ -8,6 +8,11 @@
        - "user_vars_default.yml"
       tags: restart
 
+    - name: Include release related vars
+      include_vars: "{{ item }}"
+      with_first_found:
+       - "{{root_dir}}/defaults/{{ansible_distribution_release}}_vars.yml"
+       - "{{root_dir}}/defaults/default_vars.yml"
 
   vars:
     root_dir: "{{playbook_dir}}"
