@@ -1,154 +1,153 @@
     - name: Apache | install apache2
       apt: name=apache2 update_cache=yes state=latest
-      sudo: yes
-      tags: 
-        - setup 
-        - apache2         
+      become: yes
+      tags:
+        - setup
+        - apache2
 
     - name: Apache | install libapache2-mod-proxy-html for mod_html_proxy
       apt: name=libapache2-mod-proxy-html update_cache=yes state=latest
-      sudo: yes
-      tags: 
-        - setup 
-        - apache2         
+      become: yes
+      tags:
+        - setup
+        - apache2
 
     - name: Apache | install apache2 MPM Worker
       apt: name=apache2-mpm-worker state=latest
       when: "apache_mode == 'worker'"
-      sudo: yes
-      tags: 
-        - setup 
-        - apache2         
+      become: yes
+      tags:
+        - setup
+        - apache2
 
     - name: Apache |install libapache2-mod-wsgi
       apt: name=libapache2-mod-wsgi state=latest
-      sudo: yes
-      tags: 
-        - setup 
-        - apache2         
+      become: yes
+      tags:
+        - setup
+        - apache2
 
     - name: Apache |install libapache2-mod-fastcgi
       apt: name=libapache2-mod-fastcgi state=latest
-      when: "apache_mode == 'worker'"      
-      sudo: yes
-      tags: 
-        - setup 
-        - apache2         
+      when: "apache_mode == 'worker'"
+      become: yes
+      tags:
+        - setup
+        - apache2
 
     - name: Apache |enabled mod_rewrite
       apache2_module: name=rewrite state=present
-      sudo: yes
+      become: yes
       notify:
         - restart apache2
-      tags: 
-        - setup 
-        - apache2         
+      tags:
+        - setup
+        - apache2
 
     - name: Apache |enabled mod_wsgi
       apache2_module: name=wsgi state=present
-      sudo: yes
+      become: yes
       notify:
         - restart apache2
-      tags: 
-        - setup 
-        - apache2         
+      tags:
+        - setup
+        - apache2
 
     - name: Apache |enabled mod_actions
       apache2_module: name=actions state=present
-      when: "apache_mode == 'worker'"            
-      sudo: yes
+      when: "apache_mode == 'worker'"
+      become: yes
       notify:
         - restart apache2
-      tags: 
-        - setup 
-        - apache2         
+      tags:
+        - setup
+        - apache2
 
     - name: Apache |enabled mod_xml2enc
       apache2_module: name=xml2enc state=present
-      sudo: yes
+      become: yes
       notify:
         - restart apache2
-      tags: 
-        - setup 
-        - apache2         
+      tags:
+        - setup
+        - apache2
 
     - name: Apache |enabled mod_proxy_html
       apache2_module: name=proxy_html state=present
-      sudo: yes
+      become: yes
       notify:
         - restart apache2
-      tags: 
-        - setup 
-        - apache2         
+      tags:
+        - setup
+        - apache2
 
     - name: Apache |enabled mod_proxy_http
       apache2_module: name=proxy_http state=present
-      sudo: yes
+      become: yes
       notify:
         - restart apache2
-      tags: 
-        - setup 
-        - apache2         
+      tags:
+        - setup
+        - apache2
 
 
     - name: Apache |enabled mod_headers
       apache2_module: name=headers state=present
-      sudo: yes
+      become: yes
       notify:
         - restart apache2
-      tags: 
-        - setup 
-        - apache2         
+      tags:
+        - setup
+        - apache2
 
     - name: Apache |enabled mod_expires
       apache2_module: name=expires state=present
-      sudo: yes
+      become: yes
       notify:
         - restart apache2
-      tags: 
-        - setup 
-        - apache2         
+      tags:
+        - setup
+        - apache2
 
 
     - name: Apache |enabled mod_alias
       apache2_module: name=alias state=present
-      when: "apache_mode == 'worker'"                  
-      sudo: yes
+      when: "apache_mode == 'worker'"
+      become: yes
       notify:
         - restart apache2
-      tags: 
-        - setup 
-        - apache2         
+      tags:
+        - setup
+        - apache2
 
     - name: Apache |enabled mod_ssl
       apache2_module: name=ssl state=present
-      sudo: yes
+      become: yes
       notify:
         - restart apache2
-      tags: 
-        - setup 
-        - apache2         
+      tags:
+        - setup
+        - apache2
 
 
     - name: Apache |enabled mod_fastcgi
       apache2_module: name=fastcgi state=present
-      when: "apache_mode == 'worker'"                        
-      sudo: yes
+      when: "apache_mode == 'worker'"
+      become: yes
       notify:
         - restart apache2
-      tags: 
-        - setup 
-        - apache2         
+      tags:
+        - setup
+        - apache2
 
     - name: Apache | deactivate default site if {{apache2_disable_default}} is set
       command: a2dissite 000-default
-      when: apache2_disable_default is defined 
-      sudo: yes    
+      when: apache2_disable_default is defined
+      become: yes
 
     - name: Apache |restart apache2
-      service: name=apache2 state=restarted      
-      sudo: yes      
-      tags: 
-        - setup 
-        - apache2         
-
+      service: name=apache2 state=restarted
+      become: yes
+      tags:
+        - setup
+        - apache2

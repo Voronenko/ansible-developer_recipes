@@ -43,7 +43,7 @@
     robomongo_version: 0.8.5
     rubies_location: /opt/rubies
     ruby_install_version: 0.6.0
-    ruby_install_setsystem: true
+    option_ruby_install_setsystem: true
     ruby_version: 2.3.0
     rubymine_version: 7.1.4
 #    s3cmd_version: 1.6.1
