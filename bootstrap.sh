@@ -14,10 +14,10 @@ SUDOERFILE="/etc/sudoers.d/$SUDOERUSER"
 sudo bash -c "touch $SUDOERFILE"
 sudo bash -c "echo $SUDOERUSER ALL=\(ALL\) NOPASSWD: ALL > $SUDOERFILE"
 
-sudo apt-get -y install software-properties-common
-sudo apt-add-repository ppa:ansible/ansible
-sudo apt-get update
-sudo apt-get -y install ansible
+sudo apt-get -y install -y software-properties-common git python-dev wget
+sudo apt-get install -y python-pip
+sudo pip install -U pip
+sudo pip install ansible
 
 echo "===================================================================="
 echo "current user to SUDOERS w/o password"
