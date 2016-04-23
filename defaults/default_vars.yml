@@ -1,0 +1,5 @@
+---
+  apt_source: { 
+                  mongodb: "{{ ansible_distribution_release }}"
+              }
+
