@@ -160,7 +160,7 @@
       -setup
 
   - name: Worktools | Add Google Chrome repo
-    become: content="deb http://dl.google.com/linux/chrome/deb/ stable main" dest=/etc/apt/sources.list.d/google-chrome.list owner=root group=root mode=644
+    copy: content="deb http://dl.google.com/linux/chrome/deb/ stable main" dest=/etc/apt/sources.list.d/google-chrome.list owner=root group=root mode=644
     when: google_apt_exists.rc == 1
     become: yes
     tags:
