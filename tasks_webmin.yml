@@ -1,14 +1,14 @@
   - name: Webmin | Add apt repository
     template: src={{root_dir}}/files/webmin/apt_source.j2 dest=/etc/apt/sources.list.d/webmin.list mode=644
     when: ansible_os_family == "Debian" 
-    sudo: yes
+    become: yes
     tags: 
         -webmin
         -setup
 
   - name: Webmin | Add Webmin key
     apt_key: url='http://www.webmin.com/jcameron-key.asc' state=present
-    sudo: yes
+    become: yes
     tags: 
         -webmin
         -setup
@@ -16,7 +16,7 @@
 
   - name: Webmin | Install Webmin and prerequisites
     apt: update_cache=yes  pkg={{ item }} state=installed
-    sudo: yes
+    become: yes
     with_items:
       - perl
       - libnet-ssleay-perl

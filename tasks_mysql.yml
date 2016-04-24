@@ -7,39 +7,45 @@
     when: ansible_system == "Linux"
     register: mysql_present
     ignore_errors: yes
-    tags: mysql
+    tags:
+      - mysql
 
   - name: MySQL | Preset root password
     shell: echo mysql-server-5.5 mysql-server/{{item}} password {{mysql_root_password}} | debconf-set-selections
     when: ansible_os_family == "Debian" and mysql_present|failed
     with_items:
-      - root_password
-      - root_password_again
-    tags: mysql
+      - "{{root_password}}"
+      - "{{root_password_again}}"
     become: yes
+    tags:
+      - mysql
+
 
   - name: MySQL | Install
     apt: update-cache=yes force=yes state=present pkg=mysql-server
     when: ansible_os_family == "Debian" and mysql_present|failed
-    tags: mysql
     become: yes
-
+    tags:
+      - mysql
   # - name: MySQL | Copy configuration file
   #   copy: src={{root_dir}}/files/mysql/my.cnf dest=/etc/mysql/my.cnf backup=yes
   #   when: ansible_os_family == "Debian"
   #   register: mysql_conf
-  #   tags: mysql
+  #   tags:
+  #    - mysql
   #   become: yes
 
   - name: MySQL | install libmysqlclient-dev
     apt: name=libmysqlclient-dev update_cache=yes state=latest
     when: ansible_os_family == "Debian" and mysql_present|failed
-    tags: mysql
     become: yes
+    tags:
+      - mysql
 
 
   - name: MySQL | Restart
     service: name=mysql state=restarted
 #    when: mysql_conf.changed
-    tags: mysql
     become: yes
+    tags:
+      - mysql

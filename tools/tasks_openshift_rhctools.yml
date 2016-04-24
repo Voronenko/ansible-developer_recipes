@@ -1,0 +1,15 @@
+  - name: RHC | Check if gem support is present
+    command: which gem
+    register: gem_path
+    tags:
+     - rhc
+
+  - name: RHC | Check if gem is present
+    command: test -x {{gem_path.stdout}}
+    tags:
+     - rhc
+
+  - name: RHC | Install tools
+    command: gem install rhc
+    tags:
+     - rhc

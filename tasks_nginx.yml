@@ -8,31 +8,36 @@
     when: ansible_os_family == "Debian"
     ignore_errors: yes
     register: nginx_present
-    tags: nginx
+    tags:
+      - nginx
 
   - name: Nginx | Add GPG key to apt keyring
     shell: wget -q -O - http://nginx.org/keys/nginx_signing.key | sudo apt-key add -
     when: ansible_os_family == "Debian" and nginx_present|failed
-    tags: nginx
-    sudo: yes
+    become: yes
+    tags:
+      - nginx
 
   - name: Nginx | Add Debian apt repository
     apt_repository: repo="deb http://nginx.org/packages/debian/ {{ansible_distribution_release}} nginx"
     when: ansible_os_family == "Debian" and ansible_distribution != "Ubuntu" and nginx_present|failed
-    tags: nginx
-    sudo: yes
+    become: yes
+    tags:
+      - nginx
 
   - name: Nginx | Add Ubuntu apt repository
     apt_repository: repo="deb http://nginx.org/packages/ubuntu/ {{ansible_distribution_release}} nginx"
     when: ansible_distribution == "Ubuntu" and nginx_present|failed
-    tags: nginx
-    sudo: yes
+    become: yes
+    tags:
+      - nginx
 
   - name: Nginx | Install
     apt: update-cache=yes force=yes state=present pkg=nginx
     when: ansible_os_family == "Debian" and nginx_present|failed
-    tags: nginx
-    sudo: yes
+    become: yes
+    tags:
+      - nginx
 
   - name: Nginx | Create sites available/enabled directories
     file: path={{item}} state=directory mode=0755
@@ -40,28 +45,33 @@
       - /etc/nginx/sites-available
       - /etc/nginx/sites-enabled
     when: ansible_os_family == "Debian" and nginx_present|failed
-    tags: nginx
-    sudo: yes
+    become: yes
+    tags:
+      - nginx
 
   - name: Nginx | Configure include sites-enabled
     lineinfile: dest=/etc/nginx/nginx.conf regexp=".*sites-enabled.*" line="    include /etc/nginx/sites-enabled/*;" insertbefore="}" state=present
     when: ansible_os_family == "Debian" and nginx_present|failed
-    tags: nginx
-    sudo: yes
+    become: yes
+    tags:
+      - nginx
 
   - name: Nginx | Disable default site
     file: path=/etc/nginx/default.conf state=absent
     when: ansible_os_family == "Debian" and nginx_present|failed
-    tags: nginx
-    sudo: yes
+    become: yes
+    tags:
+      - nginx
 
   - name: Nginx | Uncomment server_names_hash_bucket_size
     lineinfile: dest=/etc/nginx/nginx.conf regexp="^(\s*)#\s*server_names_hash_bucket_size" line="\1server_names_hash_bucket_size 64;" backrefs=yes
-    sudo: yes
-    tags: proxy
+    become: yes
+    tags:
+      - nginx
 
   - name: Nginx | Reload
     service: name=nginx state=reloaded
     when: ansible_os_family == "Debian" and nginx_present|failed
-    tags: nginx
-    sudo: yes
+    become: yes
+    tags:
+      - nginx

@@ -10,21 +10,25 @@
     when: ansible_system == "Linux"
     ignore_errors: yes
     register: mongo_present
-    tags: mongodb3
+    tags:
+      - mongodb3
 
   - name: MongoDB | Add GPG key to apt keyring
     apt_key: id=7F0CEB10 url=http://docs.mongodb.org/10gen-gpg-key.asc
     become: yes
-    tags: mongodb3
+    tags:
+      - mongodb3
 
   - name: MongoDB | Add Debian apt repository
     apt_repository: repo="deb http://repo.mongodb.org/apt/ubuntu {{ apt_source.mongodb }}/mongodb-org/3.0 multiverse"
     when: ansible_os_family == "Debian" and mongo_present|failed
-    tags: mongodb3
     become: yes
+    tags:
+      - mongodb3
 
   - name: MongoDB | Install
     apt: update-cache=yes force=yes state=present pkg=mongodb-org
     when: ansible_os_family == "Debian" and mongo_present|failed
     become: yes
-    tags: mongodb3
+    tags:
+      - mongodb3

@@ -6,7 +6,8 @@
       with_first_found:
        - "user_vars.yml"
        - "user_vars_default.yml"
-      tags: restart
+      tags:
+       - restart
 
     - name: Include release related vars
       include_vars: "{{ item }}"
@@ -146,6 +147,7 @@
 
 # 3rd party tools
 #     - include: tools/tasks_s3cmd.yml
+#     - include: tools/tasks_openshift_rhctools.yml
 
   handlers:
     - name: restart apache2

@@ -6,7 +6,7 @@
 
   - name: Deploy User | Creating group
     group: name={{group}} state=present
-    sudo: yes
+    become: yes
     tags:
      - deployer
 

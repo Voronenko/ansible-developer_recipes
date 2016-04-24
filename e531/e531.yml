@@ -1,11 +1,10 @@
   - name: E531 | Install e531 related packages
     apt: update_cache=yes  pkg={{ item }} state=installed
-    sudo: yes
+    become: yes
     with_items:
       - linux-headers-generic
       - bcmwl-kernel-source
       - indicator-multiload
-    tags: 
+    tags:
         -e531
         -setup
-      

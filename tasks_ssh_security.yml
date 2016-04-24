@@ -1,19 +1,19 @@
 
   - name: SSH | Install fail2ban
     apt: pkg=fail2ban state=installed update-cache=yes
-    sudo: yes
+    become: yes
     tags:
       - ssh 
 
   - name: SSH | local fail2ban jail config
     template: src={{root_dir}}/files/security/jail.local.j2 dest=/etc/fail2ban/jail.local
-    sudo: yes 
+    become: yes 
     tags:
       - ssh 
 
   - name: SSH |  reload fail2ban
     service: name=fail2ban state=reloaded      
-    sudo: yes
+    become: yes
     tags:
       - ssh 
 

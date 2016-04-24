@@ -3,7 +3,7 @@
     src={{root_dir}}/files/mysql/import_dbs.sh.j2
     dest=/usr/bin/vagrant_importdbs
     mode=755
-  sudo: yes  
+  become: yes  
   tags:
     -vagrant
 
@@ -13,7 +13,7 @@
     src={{root_dir}}/files/apache2/vagrant/py_init_venv.sh
     dest=/usr/bin/vagrant_init_venv
     mode=755
-  sudo: yes    
+  become: yes    
   tags:
     -vagrant
 
@@ -23,12 +23,12 @@
     src={{root_dir}}/files/vagrant/vagrant_init_provisioners.sh.j2
     dest=/usr/bin/vagrant_init_provisioners
     mode=755
-  sudo: yes    
+  become: yes    
   tags:
     -vagrant
 
 - name: Vagrant tools | Generate default snakeoil ssl certificate
   shell: make-ssl-cert generate-default-snakeoil --force-overwrite
-  sudo: yes 
+  become: yes 
   tags:
     -vagrant

@@ -4,28 +4,33 @@
     when: ansible_system == "Linux"
     ignore_errors: yes
     register: chruby_present
-    tags: ruby
+    tags:
+      - ruby
 
   - name: Ruby | Download chruby distribution
     get_url: url="http://github.com/postmodern/chruby/archive/v{{ chruby_version }}.tar.gz"
              dest="/tmp/chruby-{{ chruby_version }}.tar.gz"
     when: chruby_present|failed
-    tags: ruby
+    tags:
+      - ruby
 
   - name: Ruby | unpack chruby
     command: tar xf "/tmp/chruby-{{ chruby_version }}.tar.gz"
              chdir="/tmp"
     when: chruby_present|failed
-    tags: ruby
+    tags:
+      - ruby
 
   - name: Ruby | chruby install target
     command: make install
              chdir="/tmp/chruby-{{ chruby_version }}"
     become: yes
     when: chruby_present|failed
-    tags: ruby
+    tags:
+      - ruby
 
   - name: Ruby | autoload script
     template: src="{{root_dir}}/files/ruby/ch_ruby.sh.j2" dest=/etc/profile.d/chruby.sh
     become: yes
-    tags: ruby
+    tags:
+      - ruby
