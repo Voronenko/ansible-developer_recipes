@@ -1,0 +1,15 @@
+  - name: TRAVIS | Check if gem support is present
+    command: which gem
+    register: gem_path
+    tags:
+     - travis
+
+  - name: TRAVIS | Check if gem is present
+    command: test -x {{gem_path.stdout}}
+    tags:
+     - travis
+
+  - name: TRAVIS | Install tools
+    command: gem install travis -v {{travis_version}} --no-rdoc --no-ri
+    tags:
+     - travis

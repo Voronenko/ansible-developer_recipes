@@ -48,6 +48,7 @@
     ruby_version: 2.3.0
     rubymine_version: 7.1.4
 #    s3cmd_version: 1.6.1
+    travis_version: 1.8.2
     vagrant_version: 1.8.1
     vagrant_plugins:
       - vagrant-vbguest
@@ -148,6 +149,7 @@
 # 3rd party tools
 #     - include: tools/tasks_s3cmd.yml
 #     - include: tools/tasks_openshift_rhctools.yml
+#     - include: tools/tasks_travis_clienttools.yml
 
   handlers:
     - name: restart apache2
