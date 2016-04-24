@@ -3,29 +3,34 @@
     when: ansible_system == "Linux"
     ignore_errors: yes
     register: skype_present
-    tags: skype
+    tags:
+      - skype
 
   - name: Skype | Add Debian apt repository
     apt_repository: repo="deb http://archive.canonical.com/ {{ ansible_distribution_release }} partner"
     when: skype_present|failed
-    tags: skype
-    sudo: yes
+    become: yes
+    tags:
+      - skype
 
   - name: Skype | Install skype 4.3
     apt:  name=skype state=present update-cache=yes
     when: skype_present|failed
-    sudo: yes
-    tags: skype
+    become: yes
+    tags:
+      - skype
 
   - name: Skype call recorder | download package
     get_url:
       url="http://atdot.ch/scr/files/0.10/skype-call-recorder-ubuntu_0.10_amd64.deb"
       dest="/home/{{ deploy_user }}/Downloads/skype_call_recorder.deb"
     when: skype_present|failed
-    tags: skype
+    tags:
+      - skype
 
   - name: Skype call recorder | install package
     apt: deb="/home/{{ deploy_user }}/Downloads/skype_call_recorder.deb"
     sudo: true
     when: skype_present|failed
-    tags: skype
+    tags:
+      - skype

@@ -1,36 +1,44 @@
 --- # credits https://github.com/StarterSquad/prudentia/blob/master/prudentia/tasks/add-sudo-user.yml
 
   - debug: msg="Creating deploy user {{user}}:{{group}} with home directory {{home}}"
-    tags: deployer
+    tags:
+     - deployer
 
   - name: Deploy User | Creating group
     group: name={{group}} state=present
     sudo: yes
-    tags: deployer
+    tags:
+     - deployer
 
   - name: Deploy User | Creating user
     user: name={{user}} home={{home}} state=present shell=/bin/bash generate_ssh_key=yes group={{group}} groups=sudo
-    sudo: yes
-    tags: deployer
+    become: yes
+    tags:
+      - deployer
 
   - name: Deploy User | Check key presence
     stat: path=/{{ansible_user_id}}/.ssh/authorized_keys
-    sudo: yes
+    become: yes
     register: check_authorized_keys
+    tags:
+     - deployer
 
   - name: Deploy User | Copy authorized_keys from {{ansible_user_id}}
     command: cp /{{ansible_user_id}}/.ssh/authorized_keys {{home}}/.ssh/authorized_keys
-    sudo: yes
+    become: yes
     when: check_authorized_keys.stat.exists
-    tags: deployer
+    tags:
+     - deployer
 
   - name: Deploy User | Set permission on authorized_keys
     file: path={{home}}/.ssh/authorized_keys mode=600 owner={{user}} group={{group}}
-    sudo: yes
+    become: yes
     when: check_authorized_keys.stat.exists
-    tags: deployer
+    tags:
+     - deployer
 
   - name: Deploy User | Ensuring sudoers no pwd prompting
     lineinfile: dest=/etc/sudoers state=present regexp="%{{user}}" line="%{{user}} ALL=(ALL) NOPASSWD:ALL" validate="visudo -cf %s"
-    sudo: yes
-    tags: deployer
+    become: yes
+    tags:
+     - deployer

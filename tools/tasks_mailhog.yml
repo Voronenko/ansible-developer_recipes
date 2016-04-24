@@ -3,17 +3,20 @@
   - name: Mailhog | Download distribution
     get_url: url=http://github.com/mailhog/MailHog/releases/download/v{{mailhog_version}}/MailHog_linux_amd64 dest=/usr/local/bin/MailHog mode=0755
     when: ansible_system == "Linux"
-    sudo: yes
-    tags: mailhog
+    become: yes
+    tags:
+      - mailhog
 
   - name: Mailhog | Create upstart
     template: src={{root_dir}}/files/mailhog/mailhog.conf.j2 dest=/etc/init/mailhog.conf mode=0644
     when: ansible_system == "Linux"
-    sudo: yes
-    tags: mailhog
+    become: yes
+    tags:
+      - mailhog
 
   - name: Mailhog | Restart
     service: name=mailhog state=restarted
     when: ansible_system == "Linux"
-    sudo: yes
-    tags: mailhog
+    become: yes
+    tags:
+      - mailhog

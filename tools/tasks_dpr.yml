@@ -3,23 +3,27 @@
     when: ansible_system == "Linux"
     ignore_errors: yes
     register: dpr_present
-    tags: dpr
+    tags:
+      - dpr
 
   - name: D.PR | Install dependencies
     apt: state=present pkg=libcurl4-openssl-dev
-    sudo: yes
-    tags: dpr
+    become: yes
+    tags:
+      - dpr
 
   - name: D.PR | get pack
     get_url: url=http://d.pr/f/LMD4+ dest={{apps_dir}}/dpr.tgz
     when: dpr_present|failed
-    tags: dpr
+    tags:
+      - dpr
 
   - name: D.PR | Install dependencies
     shell: pip install simplejson
-    sudo: yes
+    become: yes
     when: dpr_present|failed
-    tags: dpr
+    tags:
+      - dpr
 
   - name: D.PR | setup pack
     unarchive:
@@ -27,16 +31,18 @@
       dest="{{apps_dir}}"
       copy=no
     when: dpr_present|failed
-    tags: dpr
+    tags:
+      - dpr
 
   - name: D.PR | link to /usr/bin
     file:
       src: "{{apps_dir}}/dewdrop"
       dest: /usr/bin/dewdrop
       state: link
-    sudo: yes
+    become: yes
     when: dpr_present|failed
-    tags: dpr
+    tags:
+      - dpr
 
   - name: D.PR| Create desktop entry
     template:
@@ -45,12 +51,13 @@
       mode=755
     with_items:
       - {
-      	name: "DewDROP(D.PR)",
-      	exec: "/usr/bin/dewdrop",
-      	icon: "",
-      	comment: "Screenshot with D.PR!",
-      	categories: "tools;",
-      	startupwmclass: "tools"
+      name: "DewDROP(D.PR)",
+      exec: "/usr/bin/dewdrop",
+      icon: "",
+      comment: "Screenshot with D.PR!",
+      categories: "tools;",
+      startupwmclass: "tools"
       }
     when: dpr_present|failed
-    tags: dpr
+    tags:
+      - dpr
