@@ -20,6 +20,7 @@ Helper ansible repository for my devbox box configuration. Suitable for: LAMP, M
 #     - include: tasks_cleanupubuntu.yml                   # removes games, lens, etc
 #     - include: tasks_python.yml                          # basic updates to py & pip
 #     - include: tasks_worktools.yml                       # swiss knife for desktop utilities
+#     - include: tools/tasks_tmux.yml                      # If you are the tmux fun
 
 #     - include: tasks_mongodb_3.yml                       # mongodb 3.0
 #     - include: tasks_mysql.yml                           # MYSQL 5.5
@@ -32,6 +33,7 @@ Helper ansible repository for my devbox box configuration. Suitable for: LAMP, M
 #     - include: tasks_nodejs.yml                          # node 0.10.* 0.12.*
 #     - include: tasks_java.yml                            # java 6-7-8
 #     - include: tasks_php_apache.yml                      # php 5.5 for apache
+#     - include: tasks_ruby.yml                            # Set system ruby to 2.1
 
 #     - include: tasks_jetbrains_phpstorm.yml              # PHP IDE
 #     - include: tasks_jetbrains_pycharm_community.yml     # PY IDE
@@ -46,6 +48,17 @@ Helper ansible repository for my devbox box configuration. Suitable for: LAMP, M
 #     - include: tasks_oracle_virtualbox.yml               # Oracle Virtual Box
 #     - include: tasks_vagrant.yml                         # Vagrant
 
+#      RUBY
+#     - include: ruby/ch_ruby.yml                          # chruby
+#     - include: ruby/ruby_install.yml                     # ruby-install
+#     - include: ruby/ruby.yml                             # installs ruby itself
+
+#      LAMP
+#     - include: lamp/phpdox.yml                            # phpdox documentator
+#     - include: lamp/doxygen.yml                           # doxygen documentator
+#     - include: lamp/phploc.yml                            # phploc tool
+#     - include: lamp/phpcs.yml                             # phpcs tool
+#     - include: lamp/phpmd.yml                             # phpmd tool
 
 #     - include: tools/tasks_expect.yml                    # expect tool
 #     - include: tools/tasks_plantuml.yml                  # plant uml
@@ -57,6 +70,30 @@ Helper ansible repository for my devbox box configuration. Suitable for: LAMP, M
 
 #    DEVELOPMENT
 #     - include: tools/tasks_mailhog.yml                    # Web and API based SMTP testing
+
+# COMMUNICATIONS
+#     - include: tools/tasks_skype.yml                       # skype 4.3
+#     - include: tools/tasks_speak_io.yml                    # speak.io client
+#     - include: tools/tasks_slack_client.yml               # slack
+#     - include: tools/tasks_hipchat_client.yml             # hipchat
+
+#  TIME TRACKING
+#     - include: tools/tasks_toggle.yml
+
+#  DESKTOP shortcuts
+#     - include: e531/desktop_icons_pack.yml              # desktop icons
+#     - include: e531/shortcuts.yml                       # desktop shortcuts
+
+# Local LAMP debugging
+#     - include: vagrant/tasks_vagrant_php_xdebug.yml
+
+# 3rd party code editors
+#     - include: tools/tasks_microsoft_visual_studio_code.yml
+
+# 3rd party tools
+#     - include: tools/tasks_s3cmd.yml
+#     - include: tools/tasks_openshift_rhctools.yml
+#     - include: tools/tasks_travis_clienttools.yml
 
 </pre>
 
@@ -81,22 +118,40 @@ Helper ansible repository for my devbox box configuration. Suitable for: LAMP, M
     mysql_root_user: root
     mysql_root_password: devroot
     apache_mode: worker # use prefork or worker variables
-    dbeawer_version: 3.4.5
-    intellij_version: 14.1.4
+    dbeawer_version: 3.6.3
+    chruby_version: 0.3.9
+    doxygen_version: 1.8.11
+    intellij_version: 2016.1.1 #14.1.4
     java_version: 8
     mailhog_version: 0.1.6
     mongo_version: 3
+    monit_version: "5.14-2"
     nodejs_version: "0.12" # 0.10 0.12
     oracle_vbox_version: 4.3
-    phpstorm_version: 10.0 # | 9.0.2 | 8.0.3 | 8.0.1 | 7.1.4 | 6.0.3 | 5.0.4
+    phpstorm_version: "2016.1" # 10.0.3  | "10.0" | 9.0.2 | 8.0.3 | 8.0.1 | 7.1.4 | 6.0.3 | 5.0.4
     php_xdebug_version: 2.2.4
-    pycharm_version: 4.5.4
+    phpcs_version: 2.5.1
+    phpcbf_version: 2.5.1
+    pycharm_version: "2016.1" #5.0.1 # 4.5.4
+  #    pycharm_edition: community # professional | community
     robomongo_version: 0.8.5
+    rubies_location: /opt/rubies
+    ruby_install_version: 0.6.0
+    option_ruby_install_setsystem: true
+    ruby_version: 2.3.0
     rubymine_version: 7.1.4
-    vagrant_version: 1.7.4
+  #    s3cmd_version: 1.6.1
+    travis_version: 1.8.2
+    vagrant_version: 1.8.1
+    vagrant_plugins:
+      - vagrant-vbguest
+      - vagrant-hostsupdater
+      - vagrant-auto_network
 
     php_family: default # 5.4 | 5.5 | 5.6 | default
     hypervisor: esx
+    # "git-blame" fails to compile with recent atom
+    atom_packages: ["angularjs","atom-css-comb", "meteor-api", "emmet", "file-icons", "tag", "expand-region", "atom-alignment", "atom-beautify", "minimap", "set-syntax", "jshint", "linter", "linter-jscs", "jscs-fixer", "highlight-line", "highlight-column", "autocomplete-plus", "toggle-quotes", "monokai"]
 </pre>    
 
 

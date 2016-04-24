@@ -1,8 +1,6 @@
 ---
   - name: JetBrains| ensure apps folder exists
-    shell:
-      mkdir -p {{apps_dir}}
-      creates="{{apps_dir}}"
+    file: path="{{apps_dir}}" state=directory
 
   - name: JetBrains RubyMine| Test if folder exist
     stat:
@@ -61,7 +59,7 @@
       src={{apps_dir}}/rubymine/bin/rubymine.sh
       dest=/usr/bin/rubymine
       state=link
-    sudo: yes
+    become: yes
     tags:
       -jetbrains
       -rubymine

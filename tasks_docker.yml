@@ -10,7 +10,7 @@
   - name: Docker | Add docker gpg keys
     shell: wget -qO- https://get.docker.com/gpg | sudo apt-key add -
     when: ansible_os_family == "Debian" and docker_present|failed
-    sudo: yes
+    become: yes
     tags: 
         -docker
         -setup
@@ -18,14 +18,14 @@
   - name: Docker | Install docker via web installer
     shell: wget -qO- https://get.docker.com/ | sh
     when: ansible_os_family == "Debian" and docker_present|failed
-    sudo: yes
+    become: yes
     tags: 
         -docker
         -setup
 
   - name: Docker | Add current user to docker group
     user: name={{ deploy_user }} groups=docker append=yes
-    sudo: yes
+    become: yes
     tags: 
         -docker
         -setup

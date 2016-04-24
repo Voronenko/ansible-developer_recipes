@@ -1,10 +1,12 @@
   - name: SSH | Secure SSHD
     lineinfile: dest=/etc/ssh/sshd_config regexp="{{item.regexp}}" line="{{item.line}}"
     with_items: sshd_config_lines
-    sudo: yes
-    tags: ssh
+    become: yes
+    tags:
+      - ssh
 
   - name: SSH | Restart SSHD
     service: name=ssh state=restarted
-    sudo: yes
-    tags: ssh
+    become: yes
+    tags:
+      - ssh

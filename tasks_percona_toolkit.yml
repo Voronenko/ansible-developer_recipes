@@ -1,37 +1,43 @@
   # https://github.com/Voronenko/chef-developer_recipes/blob/master/recipes/percona_toolkit.rb
 
+  - name: Percona| Check compability
+    assert:
+      that: ansible_distribution_release in [ "trusty" ]
+    tags:
+      -percona
+
   - name: Percona | Check if is present
     command: test -x /usr/bin/pt-deadlock-logger
     when: ansible_system == "Linux"
     ignore_errors: yes
     register: percona_present
-    tags: 
+    tags:
         -percona
         -setup
 
   - name: Percona | Add GPG key to apt keyring
     shell: gpg --keyserver  hkp://keys.gnupg.net --recv-keys 1C4CBDCDCD2EFD2A
     when: ansible_os_family == "Debian" and percona_present|failed
-    sudo: yes
-    tags: 
+    become: yes
+    tags:
         -percona
         -setup
 
   - name: Percona | Add apt repository
     template: src={{root_dir}}/files/percona/apt_source.j2 dest=/etc/apt/sources.list.d/percona.list mode=644
     when: ansible_os_family == "Debian" and percona_present|failed
-    sudo: yes
-    tags: 
+    become: yes
+    tags:
         -percona
         -setup
 
   - name: Percona | Install
     apt: update-cache=yes force=yes state=present pkg=percona-toolkit
     when: ansible_os_family == "Debian" and percona_present|failed
-    sudo: yes
-    tags: 
+    become: yes
+    tags:
         -percona
         -setup
 
-# usage 
-# Locks:  pt-deadlock-logger --daemonize --run-time=3000 --user=root --password=rootpass --create-dest-table --dest D=test_LCX,t=deadlocks,h=127.0.0.1       
+# usage
+# Locks:  pt-deadlock-logger --daemonize --run-time=3000 --user=root --password=rootpass --create-dest-table --dest D=test_LCX,t=deadlocks,h=127.0.0.1

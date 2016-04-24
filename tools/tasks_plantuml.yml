@@ -3,28 +3,33 @@
     when: ansible_system == "Linux"
     ignore_errors: yes
     register: plantuml_present
-    tags: plantuml
+    tags:
+      - plantuml
 
   - name: PlantUML | Install graphviz dependency
     apt:  name=graphviz state=present
     when: plantuml_present|failed
-    sudo: yes
-    tags: plantuml
+    become: yes
+    tags:
+      - plantuml
 
   - name: PlantUML | create opt dir
     file: path=/opt/plantuml/ state=directory
     when: plantuml_present|failed
-    sudo: yes
-    tags: plantuml
+    become: yes
+    tags:
+      - plantuml
 
   - name: PlantUML | get jar
     get_url: url=http://sourceforge.net/projects/plantuml/files/plantuml.jar/download dest=/opt/plantuml/plantuml.jar
     when: plantuml_present|failed
-    sudo: yes
-    tags: plantuml
+    become: yes
+    tags:
+      - plantuml
 
   - name: PlantUML | create launcher
     template: src={{root_dir}}/files/plantuml/plantuml.j2 dest=/usr/bin/plantuml mode=755
     when: plantuml_present|failed
-    sudo: yes
-    tags: plantuml
+    become: yes
+    tags:
+      - plantuml

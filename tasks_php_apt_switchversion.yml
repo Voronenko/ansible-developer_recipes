@@ -10,7 +10,7 @@
 
   - name: PHP | Ensure pub key exists for http://ppa.launchpad.net 
     shell: gpg -q --keyserver hkp://keyserver.ubuntu.com:80 --recv-key 4F4EA0AAE5267A6C && gpg -q -a --export 4F4EA0AAE5267A6C | apt-key add -
-    sudo: yes
+    become: yes
     tags: 
       -php
       -setup
@@ -20,7 +20,7 @@
   - name: PHP | Add apt repository for php 5.4
     apt_repository: repo='ppa:ondrej/php5-oldstable'
     when: php_family == "5.4" and php_present|failed
-    sudo: yes
+    become: yes
     tags: 
       -php
       -setup
@@ -28,7 +28,7 @@
   - name: PHP | Add apt repository for php 5.5
     apt_repository: repo='ppa:ondrej/php5'
     when: php_family == "5.5" and php_present|failed
-    sudo: yes
+    become: yes
     tags: 
       -php
       -setup        
@@ -36,7 +36,7 @@
   - name: PHP | Add apt repository for php 5.6
     apt_repository: repo='ppa:ondrej/php5-5.6'
     when: php_family == "5.6" and php_present|failed
-    sudo: yes
+    become: yes
     tags: 
       -php
       -setup                

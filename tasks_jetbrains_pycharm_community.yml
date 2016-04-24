@@ -3,9 +3,7 @@
       use_pycharm_edition: "{{pycharm_edition | default('community')}}"
 
   - name: JetBrains| ensure apps folder exists
-    shell:
-      mkdir -p {{apps_dir}}
-      creates="{{apps_dir}}"
+    file: path="{{apps_dir}}" state=directory
 
   - name: JetBrains PyCharm| Test if folder exist
     stat:
@@ -72,7 +70,7 @@
       src={{apps_dir}}/pycharm/bin/pycharm.sh
       dest=/usr/bin/pycharm
       state=link
-    sudo: yes
+    become: yes
     tags:
       -jetbrains
       -pycharm

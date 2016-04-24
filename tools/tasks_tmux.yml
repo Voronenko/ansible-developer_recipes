@@ -3,18 +3,20 @@
     command: test -x /usr/bin/tmux
     ignore_errors: yes
     register: tmux_present
-    tags: tmux
+    tags:
+      - tmux
 
   - name: TMUX | Add ppa repository
-    apt_repository: repo='ppa:pi-rho/dev' state=present 
+    apt_repository: repo='ppa:pi-rho/dev' state=present
     become: yes
     when: tmux_present | failed
-    tags: tmux
+    tags:
+      - tmux
 
 
   - name: TMUX | install package
     apt: pkg=tmux update_cache=yes
     become: yes
     when: tmux_present | failed
-    tags: tmux
-
+    tags:
+      - tmux

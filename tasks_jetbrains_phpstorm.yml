@@ -1,8 +1,6 @@
 ---
   - name: JetBrains| ensure apps folder exists
-    shell:
-      mkdir -p {{apps_dir}}
-      creates="{{apps_dir}}"
+    file: path="{{apps_dir}}" state=directory
 
   - name: JetBrains PHPStorm| Check phpstorm_version variable
     assert:
@@ -69,7 +67,7 @@
       src={{apps_dir}}/phpstorm/bin/phpstorm.sh
       dest=/usr/bin/phpstorm
       state=link
-    sudo: yes
+    become: yes
     tags:
       -jetbrains
       -phpstorm
