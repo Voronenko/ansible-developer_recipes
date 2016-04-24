@@ -47,7 +47,11 @@
     ruby_version: 2.3.0
     rubymine_version: 7.1.4
 #    s3cmd_version: 1.6.1
-    vagrant_version: 1.7.4
+    vagrant_version: 1.8.1
+    vagrant_plugins:
+      - vagrant-vbguest
+      - vagrant-hostsupdater
+      - vagrant-auto_network
 
     php_family: default # 5.4 | 5.5 | 5.6 | default
     hypervisor: esx
