@@ -14,8 +14,8 @@
     shell: echo mysql-server-5.5 mysql-server/{{item}} password {{mysql_root_password}} | debconf-set-selections
     when: ansible_os_family == "Debian" and mysql_present|failed
     with_items:
-      - "{{root_password}}"
-      - "{{root_password_again}}"
+      - "root_password"
+      - "root_password_again"
     become: yes
     tags:
       - mysql
