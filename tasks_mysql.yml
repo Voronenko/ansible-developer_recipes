@@ -40,6 +40,6 @@
 
   - name: MySQL | Restart
     service: name=mysql state=restarted
-    when: mysql_conf.changed
+#    when: mysql_conf.changed
     tags: mysql
     become: yes
