@@ -89,6 +89,6 @@
       - restart apache2
 
   - name: LAMP | fxp/composer-asset-plugin for YII
-    shell: composer global require "fxp/composer-asset-plugin:1.0.3"
+    shell: composer global require "fxp/composer-asset-plugin:1.1.4"
     tags:
       - setup
