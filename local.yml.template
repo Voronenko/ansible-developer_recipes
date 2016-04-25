@@ -148,9 +148,13 @@
 #     - include: tools/tasks_microsoft_visual_studio_code.yml
 
 # 3rd party tools
-#     - include: tools/tasks_s3cmd.yml
-#     - include: tools/tasks_openshift_rhctools.yml
-#     - include: tools/tasks_travis_clienttools.yml
+#     - include: tools/tasks_s3cmd.yml  # amazon s3 helper tool
+#     - include: tools/tasks_openshift_rhctools.yml  # redhat openshift cli
+#     - include: tools/tasks_travis_clienttools.yml  # travis cli
+#     - include: tools/tasks_veracrypt.yml  # truecrypt implementation and successor
+#     - include: tool/tasks_chrome_remote_desktop.yml  # remote access to your box
+#     - include: tool/tasks_dpr.yml # d.pr python client, recently had issues with running
+
 
   handlers:
     - name: restart apache2
