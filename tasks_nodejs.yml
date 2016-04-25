@@ -53,7 +53,7 @@
 
   - name: NodeJS | Add NodeSource repository preferences
     template:
-      src: "{{root_dir}}/files/nodejs/deb_nodesource_com_node.pref.j2"
+      src: "{{role_dir}}/templates/nodejs/deb_nodesource_com_node.pref.j2"
       dest: /etc/apt/preferences.d/deb_nodesource_com_node.pref
     become: yes
     when: ansible_os_family == "Debian" and node_present|failed
