@@ -74,6 +74,7 @@
 
 
 #     - include: tasks_cleanupubuntu.yml                   # removes games, lens, etc
+#     - include: tools/tasks_ubuntu_disableguestlogin.yml  # disable guest login enabled by default
 #     - include: tasks_python.yml                          # basic updates to py & pip
 #     - include: tasks_worktools.yml                       # swiss knife for desktop utilities
 #     - include: tools/tasks_tmux.yml                      # If you are the tmux fun

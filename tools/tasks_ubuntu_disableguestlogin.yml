@@ -1,0 +1,4 @@
+  - name: UBUNTU | Disable guest login in /usr/share/lightdm/lightdm.conf.d/50-ubuntu.conf
+    lineinfile: dest=/usr/share/lightdm/lightdm.conf.d/50-ubuntu.conf regexp="^allow-guest=*" line="allow-guest=false"
+    become: yes
+
