@@ -3,7 +3,7 @@
     when: ansible_system == "Linux"
     ignore_errors: yes
     register: node_present
-    tags: 
+    tags:
         -nodejs
         -setup
 
@@ -19,9 +19,9 @@
 
   - name: NodeJS | Check nodejs_version variable
     assert:
-      that: nodejs_version in [ "0.10", "0.12" ]
+      that: nodejs_version in [ "0.10", "0.12", "4.x", "5.x" ]
     when: ansible_os_family == "Debian" and node_present|failed
-    tags: 
+    tags:
        -nodejs
        -setup
 
@@ -29,7 +29,7 @@
     apt_key: url=https://deb.nodesource.com/gpgkey/nodesource.gpg.key state=present
     become: yes
     when: ansible_os_family == "Debian" and node_present|failed
-    tags: 
+    tags:
        -nodejs
        -setup
 
@@ -38,7 +38,7 @@
     apt_repository: repo='deb https://deb.nodesource.com/node_{{ nodejs_version }} {{ ansible_distribution_release }} main' state=present
     become: yes
     when: ansible_os_family == "Debian" and node_present|failed
-    tags: 
+    tags:
        -nodejs
        -setup
 
@@ -47,10 +47,9 @@
     apt_repository: repo='deb-src https://deb.nodesource.com/node_{{ nodejs_version }} {{ ansible_distribution_release }} main' state=present
     become: yes
     when: ansible_os_family == "Debian" and node_present|failed
-    tags: 
+    tags:
        -nodejs
        -setup
-
 
   - name: NodeJS | Add NodeSource repository preferences
     template:
@@ -58,18 +57,25 @@
       dest: /etc/apt/preferences.d/deb_nodesource_com_node.pref
     become: yes
     when: ansible_os_family == "Debian" and node_present|failed
-    tags: 
+    tags:
        -nodejs
        -setup
 
-  - name: NodeJS | Install Node.js
+  - name: NodeJS | Install Node.js 0.10 0.12 family
     apt: pkg=nodejs={{ nodejs_version }}.* state=installed update_cache=yes
     become: yes
-    when: ansible_os_family == "Debian" and node_present|failed
-    tags: 
+    when: ansible_os_family == "Debian" and nodejs_version in [ "0.10", "0.12" ]  and node_present|failed
+    tags:
        -nodejs
        -setup
 
+  - name: NodeJS | Install Node.js 4.x 5.x family
+    apt: pkg=nodejs state=installed update_cache=yes
+    become: yes
+    when: ansible_os_family == "Debian" and nodejs_version not in [ "0.10", "0.12" ]  and node_present|failed
+    tags:
+       -nodejs
+       -setup
 
   - name: NodeJS | Self update npm to most recent one
     shell: npm install -g npm

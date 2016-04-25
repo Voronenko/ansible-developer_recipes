@@ -126,7 +126,7 @@ Helper ansible repository for my devbox box configuration. Suitable for: LAMP, M
     mailhog_version: 0.1.6
     mongo_version: 3
     monit_version: "5.14-2"
-    nodejs_version: "0.12" # 0.10 0.12
+    nodejs_version: "0.12" # 0.10 0.12 4.x 5.x
     oracle_vbox_version: 4.3
     phpstorm_version: "2016.1" # 10.0.3  | "10.0" | 9.0.2 | 8.0.3 | 8.0.1 | 7.1.4 | 6.0.3 | 5.0.4
     php_xdebug_version: 2.2.4
