@@ -1,0 +1,12 @@
+[Service]
+ExecStart=/usr/local/bin/MailHog
+Restart=always
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=mailhog
+User=nobody
+Group=nobody
+
+
+[Install]
+WantedBy=multi-user.target

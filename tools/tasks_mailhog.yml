@@ -2,21 +2,34 @@
 
   - name: Mailhog | Download distribution
     get_url: url=http://github.com/mailhog/MailHog/releases/download/v{{mailhog_version}}/MailHog_linux_amd64 dest=/usr/local/bin/MailHog mode=0755
-    when: ansible_system == "Linux"
     become: yes
     tags:
       - mailhog
 
   - name: Mailhog | Create upstart
     template: src={{root_dir}}/files/mailhog/mailhog.conf.j2 dest=/etc/init/mailhog.conf mode=0644
-    when: ansible_system == "Linux"
+    when: ansible_distribution_release in [ "trusty" ]
     become: yes
     tags:
       - mailhog
 
   - name: Mailhog | Restart
     service: name=mailhog state=restarted
-    when: ansible_system == "Linux"
+    when: ansible_distribution_release in [ "trusty" ]
+    become: yes
+    tags:
+      - mailhog
+
+  - name: Mailhog | Create systemd service
+    template: src={{root_dir}}/templates/mailhog/mailhog.service.j2 dest=/etc/systemd/system/mailhog.service mode=0644
+    when: ansible_distribution_release in [ "xenial" ]
+    become: yes
+    tags:
+      - mailhog
+
+  - name: Mailhog | Restart
+    service: name=mailhog state=restarted
+    when: ansible_distribution_release in [ "xenial" ] and docker_test is not defined # no systemd on docker in travis
     become: yes
     tags:
       - mailhog
