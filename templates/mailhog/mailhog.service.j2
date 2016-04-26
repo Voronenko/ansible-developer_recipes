@@ -3,14 +3,8 @@ Description=Mailhog Daemon
 After=network.target
 
 [Service]
-Type=simple
-User=nobody
-Group=nobody
 ExecStart=/usr/local/bin/MailHog
-Restart=always
-StandardOutput=syslog
-StandardError=syslog
-SyslogIdentifier=mailhog
+StandardOutput=journal
 
 [Install]
 WantedBy=multi-user.target
