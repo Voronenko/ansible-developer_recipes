@@ -7,7 +7,7 @@
       - mailhog
 
   - name: Mailhog | Create upstart
-    template: src={{root_dir}}/files/mailhog/mailhog.conf.j2 dest=/etc/init/mailhog.conf mode=0644
+    template: src={{root_dir}}/templates/mailhog/mailhog.conf.j2 dest=/etc/init/mailhog.conf mode=0644
     when: ansible_distribution_release in [ "trusty" ]
     become: yes
     tags:
