@@ -12,10 +12,13 @@
         "ecs:StartTelemetrySession",
         "ecs:Submit*",
 
+        "ecr:GetAuthorizationToken",
         "ecr:BatchCheckLayerAvailability",
-        "ecr:BatchGetImage",
         "ecr:GetDownloadUrlForLayer",
-        "ecr:GetAuthorizationToken"
+        "ecr:GetRepositoryPolicy",
+        "ecr:DescribeRepositories",
+        "ecr:ListImages",
+        "ecr:BatchGetImage"
       ],
       "Resource": [
         "*"
