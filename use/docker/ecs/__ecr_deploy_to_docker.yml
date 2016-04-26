@@ -2,7 +2,7 @@
   # input params  ecr_source_docker_image   example: company/wordpress:latest
   # input params  ecr_target_docker_image   example: wordpress:latest
   - name: AWS ECR | Get docker login info
-    shell: aws ecr get-login --region us-east-1
+    shell: aws ecr get-login --region {{aws_region}}
     register: docker_login
     tags:
       - ecr
