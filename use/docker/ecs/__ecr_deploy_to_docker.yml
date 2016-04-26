@@ -1,0 +1,44 @@
+---
+  # input params  ecr_source_docker_image   example: company/wordpress:latest
+  # input params  ecr_target_docker_image   example: wordpress:latest
+  - name: AWS ECR | Get docker login info
+    shell: aws ecr get-login --region us-east-1
+    register: docker_login
+    tags:
+      - ecr
+
+  - name: AWS ECR | get login
+    set_fact:
+      ecr_docker_username: "{{docker_login.stdout.split(' ')[3]}}"
+      ecr_docker_password: "{{docker_login.stdout.split(' ')[5]}}"
+      ecr_docker_repository: "{{docker_login.stdout.split(' ')[8]}}"
+      ecr_docker_repository_base: "{{docker_login.stdout.split(' ')[8].replace('https://','')}}"
+    tags:
+      - ecr
+
+  - debug: var="ecr_docker_username"
+
+  - debug: var="ecr_docker_password"
+
+  - debug: var="ecr_docker_repository"
+
+  - debug: var="ecr_docker_repository_base"
+
+  - name: AWS ECR | Docker login to aws
+    shell: "{{docker_login.stdout}}"
+    tags:
+      - ecr
+
+  - debug: msg="docker tag {{ecr_source_docker_image}} {{ecr_docker_repository_base}}/{{ecr_target_docker_image}}"
+
+  - name: AWS ECR | Match local tag to ECR repo tag
+    shell: docker tag {{ecr_source_docker_image}} {{ecr_docker_repository_base}}/{{ecr_target_docker_image}}
+    tags:
+      - ecr
+
+  - debug: msg="docker push {{ecr_docker_repository_base}}/{{ecr_target_docker_image}}"
+
+  - name: AWS ECR | Push to AWS ECR
+    shell: docker push {{ecr_docker_repository_base}}/{{ecr_target_docker_image}}
+    tags:
+      - ecr
