@@ -11,20 +11,20 @@
   - name: HipChat | Add  gpg keys
     shell: wget -O - https://www.hipchat.com/keys/hipchat-linux.key | apt-key add -
     when: hipchat_present.rc == 1
-    become: yes
+    become: true
     tags:
       - hipchat
 
   - name: HipChat | Add Debian apt repository
     apt_repository: repo="deb http://downloads.hipchat.com/linux/apt stable main"
     when: hipchat_present.rc == 1
-    become: yes
+    become: true
     tags:
       - hipchat
 
   - name: HipChat | Install hipchat client
     apt:  name=hipchat state=present update-cache=yes
     when: hipchat_present.rc == 1
-    become: yes
+    become: true
     tags:
       - hipchat

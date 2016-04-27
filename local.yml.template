@@ -133,6 +133,7 @@
 #     - include: tools/tasks_speak_io.yml                    # speak.io client
 #     - include: tools/tasks_slack_client.yml               # slack
 #     - include: tools/tasks_hipchat_client.yml             # hipchat
+#     - include: tools/tasks_viber.yml                      # viber
 
 #  TIME TRACKING
 #     - include: tools/tasks_toggle.yml

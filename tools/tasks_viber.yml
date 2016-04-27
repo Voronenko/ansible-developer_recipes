@@ -1,0 +1,24 @@
+
+  - name: Viber | Check if is present
+    command: dpkg-query -W viber
+    register: viber_present
+    become: yes
+    failed_when: viber_present.rc > 1
+    changed_when: viber_present.rc == 1
+    tags:
+      - viber
+
+  - name: Viber | download package
+    get_url:
+      url="http://download.cdn.viber.com/cdn/desktop/Linux/viber.deb"
+      dest="/tmp/viber.deb"
+    when: viber_present.rc == 1
+    tags:
+      - slack
+
+  - name: Viber | install package
+    apt: deb="/tmp/viber.deb"
+    become: true
+    when: viber_present.rc == 1
+    tags:
+      - viber
