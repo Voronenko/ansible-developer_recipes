@@ -4,3 +4,4 @@ prod.yml
 .idea/
 user_vars.yml
 local.yml
+*.retry

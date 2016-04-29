@@ -1,0 +1,34 @@
+---
+
+  - name: Terraform | Check if installed
+    command: test -x {{apps_dir}}/terraform/terraform
+    ignore_errors: yes
+    register: terraform_present
+    tags:
+      -terraform
+
+  - name: Terraform | Create destination dir
+    file: path="{{apps_dir}}/terraform" state="directory" owner="{{ansible_user_id}}"
+    when: terraform_present | failed
+    become: yes
+    tags:
+      - terraform
+
+  - name: Terraform | Download distributive
+    get_url: url="https://releases.hashicorp.com/terraform/{{terraform_version}}/terraform_{{terraform_version}}_{{terraform_platform | default('linux')}}_amd64.zip"  dest=/tmp/terraform.zip
+    when: terraform_present | failed
+    tags: 
+      - terraform
+
+  - name: Terraform | Unpack distribution
+    unarchive: src="/tmp/terraform.zip"  dest="{{apps_dir}}/terraform" copy=no owner="{{ansible_user_id}}"
+    become: yes
+    when: terraform_present | failed
+    tags: 
+      - terraform
+
+  - name: Terraform | add to path
+    include: use/__add_to_path.yml extra_path="{{apps_dir}}/terraform"
+    when: terraform_present | failed
+    tags:
+      - terraform

@@ -49,6 +49,8 @@
     rubymine_version: 7.1.4
 #    s3cmd_version: 1.6.1
     travis_version: 1.8.2
+    terraform_version: 0.6.15
+
     vagrant_version: 1.8.1
     vagrant_plugins:
       - vagrant-vbguest
@@ -155,6 +157,9 @@
 #     - include: tools/tasks_veracrypt.yml  # truecrypt implementation and successor
 #     - include: tool/tasks_chrome_remote_desktop.yml  # remote access to your box
 #     - include: tool/tasks_dpr.yml # d.pr python client, recently had issues with running
+
+# Devops tools
+#     - include: tasks_terraform.yml 
 
 
   handlers:
