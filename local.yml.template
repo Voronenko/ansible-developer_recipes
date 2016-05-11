@@ -31,6 +31,7 @@
     doxygen_version: 1.8.11
     intellij_version: 2016.1.1 #14.1.4
     java_version: 8
+    lighttable_version: 0.8.1
     mailhog_version: 0.1.6
     mongo_version: 3
     monit_version: "5.14-2"
@@ -153,6 +154,7 @@
 # 3rd party code editors
 #     - include: tools/tasks_microsoft_visual_studio_code.yml
 #     - include: tools/tasks_brackets_io.yml
+#     - include: tools/tasks_lighttable.yml
 
 # 3rd party tools
 #     - include: tools/tasks_s3cmd.yml  # amazon s3 helper tool

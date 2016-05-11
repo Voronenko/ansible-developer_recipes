@@ -1,0 +1,55 @@
+  - name: LightTable | Check if is present
+    command: test -x {{apps_dir}}/LightTable
+    ignore_errors: yes
+    register: lighttable_present
+    tags:
+      - lighttable
+
+  - name: LightTable | get pack
+    get_url: url="https://github.com/LightTable/LightTable/releases/download/{{lighttable_version}}/lighttable-{{lighttable_version}}-linux.tar.gz" dest="/tmp/lighttable.tgz"
+    when: lighttable_present|failed
+    tags:
+      - lighttable
+
+  - name: LightTable | setup pack
+    unarchive:
+      src="/tmp/lighttable.tgz"
+      dest="{{apps_dir}}"
+      copy=no
+    when: lighttable_present|failed
+    tags:
+      - lighttable
+
+  - shell: ls -d {{apps_dir}}/lighttable-*
+    register: lighttable_dir
+    when: lighttable_present | failed
+    tags:
+      -lighttable
+
+  - name: LightTable| Move to {{apps_dir}}/LightTable
+    command: "mv {{lighttable_dir.stdout}} {{apps_dir}}/LightTable"
+    when: lighttable_present | failed 
+    args:
+      chdir: "{{apps_dir}}"
+    tags:
+      -lighttable_present | failed
+    ignore_errors: true
+
+
+  - name: Lighttable| Create desktop entry
+    template:
+      src={{root_dir}}/templates/desktopentry.j2
+      dest=/home/{{deploy_user}}/Desktop/LightTable.desktop
+      mode=755
+    with_items:
+      - {
+      name: "Light Table",
+      exec: "{{apps_dir}}/LightTable/LightTable",
+      icon: "{{apps_dir}}/LightTable/resources/app/core/img/lticon.png",
+      comment: "Develop with Light Table!",
+      categories: "Development;IDE;",
+      startupwmclass: "editor"
+      }
+    tags:
+      -lighttable
+
