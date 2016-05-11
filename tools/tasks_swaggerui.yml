@@ -1,0 +1,37 @@
+---
+  - name: SwaggerUI | Create target directory
+    file: path="{{install_dir | default('/var/www/swagger')}}" state="directory" owner="{{ansible_user_id}}"
+    become: yes
+    tags:
+      - swagger
+
+  - name: SwaggerUI | Download distribution
+    get_url: url=https://github.com/swagger-api/swagger-ui/archive/v{{swaggerui_version}}.zip dest=/tmp/swagger.zip
+    tags:
+      - swagger
+
+  - name: SwaggerUI | Unpack distribution
+    unarchive: src=/tmp/swagger.zip dest=/tmp copy=no
+    tags:
+      - swagger
+
+  - name: SwaggerUI | NPM Install
+    shell: npm install
+    args:
+      chdir: "/tmp/swagger-ui-{{swaggerui_version}}"
+    tags:
+      - swagger
+
+  - name: SwaggerUI | NPM Build
+    shell: npm run build
+    args:
+      chdir: "/tmp/swagger-ui-{{swaggerui_version}}"
+    tags:
+      - swagger
+
+  - name: SwaggerUI | Copy build files
+    shell: "cp -r * {{install_dir | default('/var/www/swagger')}}"
+    args:
+      chdir: "/tmp/swagger-ui-{{swaggerui_version}}/dist"
+    tags:
+      - swagger

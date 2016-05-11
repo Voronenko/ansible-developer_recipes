@@ -1,0 +1,24 @@
+---
+  - name: Brackets IO | Check if app is installed
+    command: dpkg-query -W brackets
+    register: brackets_check_deb
+    become: yes
+    failed_when: brackets_check_deb.rc > 1
+    changed_when: brackets_check_deb.rc == 1
+    tags:
+      -brackets
+
+  - name: Brackets IO | download package
+    get_url:
+      url="https://github.com/adobe/brackets/releases/download/release-{{brackets_io_version}}/Brackets.Release.{{brackets_io_version}}.64-bit.deb"
+      dest="/tmp/brackets.deb"
+    when: brackets_check_deb.rc == 1
+    tags:
+      -brackets
+
+  - name: Brackets IO | install package
+    apt: deb="/tmp/brackets.deb"
+    become: true
+    when: brackets_check_deb.rc == 1
+    tags:
+      -brackets

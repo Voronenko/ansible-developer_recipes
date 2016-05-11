@@ -25,6 +25,7 @@
     mysql_root_password: devroot
     apache_mode: worker # use prefork or worker variables
 
+    brackets_io_version: 1.6
     dbeawer_version: 3.6.3
     chruby_version: 0.3.9
     doxygen_version: 1.8.11
@@ -50,6 +51,7 @@
 #    s3cmd_version: 1.6.1
     travis_version: 1.8.2
     terraform_version: 0.6.15
+    swaggerui_version: 2.1.4
 
     vagrant_version: 1.8.1
     vagrant_plugins:
@@ -129,6 +131,7 @@
 
 #    DEVELOPMENT
 #     - include: tools/tasks_mailhog.yml                    # Web and API based SMTP testing
+#     - include: tools/tasks_swaggerui.yml                  # REST API documentation viewer
 
 # COMMUNICATIONS
 #     - include: tools/tasks_skype.yml                       # skype 4.3
@@ -149,6 +152,7 @@
 
 # 3rd party code editors
 #     - include: tools/tasks_microsoft_visual_studio_code.yml
+#     - include: tools/tasks_brackets_io.yml
 
 # 3rd party tools
 #     - include: tools/tasks_s3cmd.yml  # amazon s3 helper tool
