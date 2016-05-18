@@ -1,0 +1,20 @@
+# CI/CD managed
+# Do NOT modify this file by hand!
+
+description "{{item.description|default('The service')}}"
+
+start on runlevel [2345]
+stop on runlevel [016]
+
+{% for key in item.env|default({}) %}
+env {{key}}={{item.env[key]}}
+{% endfor %}
+
+chdir {{srv.workingdirectory|default('/tmp')}}
+setuid {{item.user|default('root')}}
+exec {{item.execstart}}
+{% for line in item.extralines|default([]) %}
+{{ line|default('') }}
+{% endfor %}
+respawn
+console log

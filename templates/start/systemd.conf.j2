@@ -1,0 +1,24 @@
+# CI/CD managed
+# Do NOT modify this file by hand!
+
+[Unit]
+Description={{item.description|default('The service')}}
+After=network.target
+Requires=network.target
+
+[Service]
+ExecStart={{item.execstart}}
+WorkingDirectory={{item.workingdirectory|default('/tmp')}}
+User={{item.user|default('root')}}
+{% if item.pidfile|default(False) %}
+PIDFile={{item.pidfile}}
+{% endif %}
+{% for line in item.extralines|default([]) %}
+{{ line|default('') }}
+{% endfor %}
+Restart=always
+RestartSec=5
+TimeoutSec=5
+
+[Install]
+WantedBy=multi-user.target
