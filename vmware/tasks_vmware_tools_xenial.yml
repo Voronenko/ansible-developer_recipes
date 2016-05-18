@@ -1,0 +1,14 @@
+---
+  - name: VMWare | Open VMW tools
+    apt: name=open-vm-tools state=present
+    become: yes
+    tags:
+      -vmware
+      -esx
+
+  - name: VMWare | Open VMW tools
+    apt: name=open-vm-tools-desktop state=present
+    become: yes
+    tags:
+      -vmware
+      -esx
