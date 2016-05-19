@@ -29,6 +29,7 @@
     dbeawer_version: 3.6.3
     chruby_version: 0.3.9
     doxygen_version: 1.8.11
+    go_version: 1.6
     intellij_version: 2016.1.1 #14.1.4
     java_version: 8
     lighttable_version: 0.8.1
@@ -121,6 +122,9 @@
 #     - include: lamp/phploc.yml                            # phploc tool
 #     - include: lamp/phpcs.yml                             # phpcs tool
 #     - include: lamp/phpmd.yml                             # phpmd tool
+
+#     GO language
+#     - include: tasks_go.yml                              # google go language
 
 #     - include: tools/tasks_expect.yml                    # expect tool
 #     - include: tools/tasks_plantuml.yml                  # plant uml

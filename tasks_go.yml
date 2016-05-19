@@ -1,0 +1,53 @@
+#  installs Go (http://golang.org/)  Dependency for gitlab
+---
+
+  - name: GO | Check if installed
+    command: test -x /usr/local/go/bin/go
+    ignore_errors: yes
+    register: go_present
+    tags:
+      -go
+
+  - name: Go | Download distribution
+    get_url: url="https://storage.googleapis.com/golang/go{{go_version | default('1.6')}}.linux-amd64.tar.gz"  dest=/tmp/go.tar.gz
+    when: go_present | failed
+    tags:
+      -go
+
+  - name: Go | Unpack distribution
+    unarchive: src=/tmp/go.tar.gz dest=/usr/local  copy=no
+    become: yes
+    when: go_present | failed
+    tags:
+      -go
+
+  - name: GO | prepare  /etc/profile.d/go_path.sh
+    file: path=/etc/profile.d/go_path.sh  state=touch mode="u=rw,g=r,o=r"
+    become: yes
+    tags:
+      -go
+
+  - name: Add the Go bin directory to the PATH environment variable for all users
+    lineinfile: dest=/etc/profile.d/go_path.sh regexp="{{item.regexp}}" line="{{item.line}}"
+    become: yes
+#    when: go_present | failed
+    with_items:
+      - {regexp: "^export PATH=.*", line: "^export PATH=$PATH:/usr/local/go/bin"}
+    tags:
+      -go
+
+  - name: GO | prepare /etc/profile.d/go_path.sh
+    file: path=/etc/profile.d/go_path.sh  state=touch mode="u=rw,g=r,o=r"
+    become: yes
+    tags:
+      -go
+
+  - name: Set GOPATH for all users
+    lineinfile: dest=/etc/profile.d/go_path.sh regexp="{{item.regexp}}" line="{{item.line}}"
+    with_items:
+      - {regexp: "^export GOPATH=.*", line: "export GOPATH=$HOME/go"}
+      - {regexp: "^export PATH=.*", line: "export PATH=$GOPATH/bin:$PATH"}
+    become: yes
+#    when: go_present | failed
+    tags:
+      -go
