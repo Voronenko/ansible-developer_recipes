@@ -3,29 +3,25 @@
     when: ansible_os_family == "Debian"
     ignore_errors: yes
     register: docker_present
-    tags: 
-        -java
-        -setup
+    tags:
+        -docker
 
   - name: Docker | Add docker gpg keys
     shell: wget -qO- https://get.docker.com/gpg | sudo apt-key add -
     when: ansible_os_family == "Debian" and docker_present|failed
     become: yes
-    tags: 
+    tags:
         -docker
-        -setup
 
   - name: Docker | Install docker via web installer
     shell: wget -qO- https://get.docker.com/ | sh
     when: ansible_os_family == "Debian" and docker_present|failed
     become: yes
-    tags: 
+    tags:
         -docker
-        -setup
 
   - name: Docker | Add current user to docker group
     user: name={{ deploy_user }} groups=docker append=yes
     become: yes
-    tags: 
+    tags:
         -docker
-        -setup

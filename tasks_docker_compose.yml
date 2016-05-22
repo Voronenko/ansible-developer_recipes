@@ -1,0 +1,13 @@
+- name: Docker Composer | Installing pypi package
+  pip: name=docker-compose  state=present
+  when: docker_compose_venv_directory is not defined
+  become: yes
+  tags:
+    - docker-compose
+
+- name: Docker Composer | Installing pypi package in venv
+  pip: name=docker-compose  virtualenv="{{ docker_compose_venv_directory }}" state=present
+  when: docker_compose_venv_directory is defined
+  become: yes
+  tags:
+    - docker-compose
