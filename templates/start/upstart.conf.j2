@@ -10,7 +10,7 @@ stop on runlevel [016]
 env {{key}}={{item.env[key]}}
 {% endfor %}
 
-chdir {{srv.workingdirectory|default('/tmp')}}
+chdir {{item.workingdirectory|default('/tmp')}}
 setuid {{item.user|default('root')}}
 exec {{item.execstart}}
 {% for line in item.extralines|default([]) %}
