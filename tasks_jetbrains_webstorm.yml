@@ -1,0 +1,102 @@
+---
+  - name: JetBrains| ensure apps folder exists
+    file: path="{{apps_dir}}" state=directory
+
+  - name: JetBrains WEBStorm| Check webstorm_version variable
+    assert:
+      that: webstorm_version in [ "2016.1.2b", "11.0.4", "10.0.5", "9.0.4", "8.0.3", "8.0.6", "7.0.5", "6.0.3", "5.0.4", "4.0.3", "3.0.3", "2.1.5", "1.0.2" ]
+    tags:
+      -jetbrains
+      -webstorm
+      -setup
+
+  - name: JetBrains WEBStorm| Test if folder exist
+    stat:
+      path={{apps_dir}}/webstorm
+    register: webstorm_exist
+    tags:
+      -jetbrains
+      -webstorm
+      -setup
+
+  - name: JetBrains WEBStorm| Download WEBStorm archive
+    get_url:
+      url=https://download.jetbrains.com/webstorm/WebStorm-{{webstorm_version}}.tar.gz
+      dest={{apps_dir}}/webstorm.tar.gz
+    when: webstorm_exist.stat.exists == False
+    tags:
+      -jetbrains
+      -webstorm
+      -setup
+
+
+  - name: JetBrains WEBStorm| Decompress phpStorm archive
+    unarchive:
+      src={{apps_dir}}/webstorm.tar.gz
+      dest={{apps_dir}}
+      copy=no
+    when: webstorm_exist.stat.exists == False
+    tags:
+      -jetbrains
+      -webstorm
+      -setup
+
+  - shell: ls -d {{apps_dir}}/WebStorm-*
+    register: webstorm_version
+    when: webstorm_exist.stat.exists == False
+    tags:
+      -jetbrains
+      -phpstorm
+      -setup
+
+
+  - name: JetBrains WEBStorm| Move webStorm folder
+    command: "mv {{webstorm_version.stdout}} {{apps_dir}}/webstorm"
+    when: phpstorm_exist.stat.exists == False
+    args:
+      chdir: "{{apps_dir}}"
+    tags:
+      -jetbrains
+      -webstorm
+      -setup
+    ignore_errors: true
+
+
+  - name: JetBrains WEBStorm| Create symlink
+    file:
+      src={{apps_dir}}/webstorm/bin/webstorm.sh
+      dest=/usr/bin/webstorm
+      state=link
+    become: yes
+    tags:
+      -jetbrains
+      -webstorm
+      -setup
+
+  - name: JetBrains WEBStorm| Create desktop entry
+    template:
+      src={{root_dir}}/files/jetbrains/desktopentry.j2
+      dest=/home/{{deploy_user}}/Desktop/WebStorm.desktop
+      mode=755
+    with_items:
+      - {
+      name: "PHPStorm",
+      exec: "{{apps_dir}}/phpstorm/bin/webstorm.sh",
+      icon: "{{apps_dir}}/phpstorm/bin/webide.png",
+      comment: "Develop with WebStorm!",
+      categories: "Development;IDE;",
+      startupwmclass: "jetbrains-webstorm"
+      }
+    tags:
+      -jetbrains
+      -webstorm
+      -setup
+
+#- name:JetBrains WEBStorm| Remove webStorm archive
+#  file:
+#    path={{apps_dir}}/webstorm.tar.gz
+#    state=absent
+#  tags:
+#    -jetbrains
+#    -webstorm
+#    -setup
