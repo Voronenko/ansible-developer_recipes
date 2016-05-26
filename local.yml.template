@@ -84,6 +84,7 @@
 #     - include: tasks_python.yml                          # basic updates to py & pip
 #     - include: tasks_worktools.yml                       # swiss knife for desktop utilities
 #     - include: tools/tasks_tmux.yml                      # If you are the tmux fun
+#     - include: tools/tasks_ssvnc.yml                     # VNC Viewer (alternative to Reminna, to overcome some issues with specific VNC servers)
 
 #     - include: tasks_mongodb_3.yml                       # mongodb 3.0
 #     - include: tasks_mysql.yml                           # MYSQL 5.5

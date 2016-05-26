@@ -1,0 +1,16 @@
+
+  - name: SSVNC | Check if is present
+    command: dpkg-query -W viber
+    register: ssvnc_present
+    become: yes
+    failed_when: ssvnc_present.rc > 1
+    changed_when: ssvnc_present.rc == 1
+    tags:
+      - ssvnc
+
+  - name: SSVNC | install package
+    apt: pkg="ssvnc" state="present
+    become: true
+    when: ssvnc_present.rc == 1
+    tags:
+      - ssvnc
