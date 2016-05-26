@@ -1,0 +1,8 @@
+---
+  - name: SETTINGS | keys in sysctl.conf
+    sysctl: name={{item.name}} value={{item.value}} ignoreerrors=yes state={{item.state | default('present')}}
+    with_items: "{{ sysctl_conf_lines | default()}}"
+    become: yes
+    tags:
+      - settings
+      - sysctl
