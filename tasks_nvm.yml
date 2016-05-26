@@ -1,0 +1,65 @@
+---
+  - name: NVM | Check if nvm is present
+    command: test -s ~/.nvm/nvm.sh
+    ignore_errors: yes
+    register: nvm_present
+    tags:
+      - nodejs
+
+  - name: NVM | Install dependencies
+    apt: pkg={{ item }} update_cache=yes
+    with_items:
+      - build-essential
+      - curl
+      - git
+      - libssl-dev
+    become: true
+    when: nvm_present | failed
+    tags:
+      - nvm
+
+  - name: NVM | Install nvm {{ nvm_version }}
+    become: "{{ deploy_user }}"
+    git: repo=https://github.com/creationix/nvm.git dest=~/.nvm version=v{{ nvm_version }}
+    when: nvm_present | failed
+    tags:
+      - nvm
+
+  - name: NVM | Source nvm into ~/.profile
+    become: "{{ deploy_user }}"
+    lineinfile: dest=~/.profile line="source ~/.nvm/nvm.sh"  create=yes
+    when: nvm_present | failed
+    tags:
+      - nvm
+
+  - name: NVM | Install {{ nodejs_version }} with nvm
+    shell: source ~/.profile && nvm install {{ nodejs_version }}
+    args:
+      executable: /bin/bash
+    become: "{{ deploy_user }}"
+    register: node_install_result
+    when: option_nodejs_install_with_nvm and nvm_present | failed
+    changed_when: "'is already installed.' not in node_install_result.stdout"
+    tags:
+      - nvm
+
+  - name: NVM | Upgrade default node version to {{ nodejs_version }}, if needed (1/2)
+    shell: source ~/.profile && nvm ls | grep -e 'default -> {{ nodejs_version }}'
+    args:
+      executable: /bin/bash
+    become: "{{ deploy_user }}"
+    register: default_nodejs_version_ok
+    changed_when: False
+    ignore_errors: True
+    when: option_nodejs_install_with_nvm and nvm_present | failed
+    tags:
+      - nvm
+
+  - name: NVM | Upgrade default node version to {{ nodejs_version }}, if needed (2/2)
+    shell: source ~/.profile && nvm alias default {{ nodejs_version }}
+    args:
+      executable: /bin/bash
+    become: "{{ deploy_user }}"
+    when: option_nodejs_install_with_nvm and default_nodejs_version_ok | failed and nvm_present | failed
+    tags:
+      - nvm
