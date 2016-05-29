@@ -9,5 +9,5 @@
     become: yes
     register: upstart_detect_raw
 
-  set_fact:
-    upstart_system: upstart_detect_raw.stdout
+  - set_fact:
+      upstart_system: "{{upstart_detect_raw.stdout}}"
