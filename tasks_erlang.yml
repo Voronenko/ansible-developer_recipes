@@ -1,0 +1,25 @@
+---
+  - name: ERLANG | Add signing key
+    apt_key: url=https://packages.erlang-solutions.com/ubuntu/erlang_solutions.asc state=present
+    become: yes
+    tags:
+      - erlang
+
+  - name: ERLANG | Add custom repository
+    apt_repository: repo="deb https://packages.erlang-solutions.com/ubuntu {{ ansible_distribution_release | lower }} contrib"  state=present
+    become: yes
+    tags:
+      - erlang
+
+  - name: ERLANG | Install main package
+    apt: pkg="{{erlang_package | default('erlang')}}" update_cache=yes state=present
+    become: yes
+    tags:
+      - erlang
+
+  - name: ERLANG | install additional packages, if any
+    apt: pkg="{{ item }}" state="present"
+    with_items: erlang_additional_packages | default([])
+    become: yes
+    tags:
+      - erlang

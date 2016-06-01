@@ -135,6 +135,10 @@
 #     GO language
 #     - include: tasks_go.yml                              # google go language
 
+#     ERLANG & ELIXIR
+#     - include: tasks_erlang.yml
+#     - include: tasks_elixir.yml
+
 #     - include: tools/tasks_expect.yml                    # expect tool
 #     - include: tools/tasks_plantuml.yml                  # plant uml
 #     - include: tools/tasks_toggle.yml                    # toggle time tracker
