@@ -1,0 +1,13 @@
+---
+  - name: WSI Workplace | Detect npm
+    shell: 'source /home/{{deploy_user}}/.profile && dirname "`which npm`"'
+    args:
+       executable: /bin/bash
+    register: npm_path_detected_raw
+    become: "{{deploy_user}}"
+
+  - set_fact:
+      npm_path_detected: "{{ npm_path_detected_raw.stdout }}"
+      npm_is_global: "{{npm_path_detected_raw.stdout.find('.nvm') == -1}}"
+
+  - debug: msg="{{ npm_path_detected_raw }} thus npm global is {{npm_is_global}}"

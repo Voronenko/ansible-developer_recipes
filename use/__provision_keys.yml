@@ -1,0 +1,7 @@
+---
+  - name: .SSH | Provision key to remote
+    copy: src={{item}} dest="~/.ssh" owner="{{deploy_user}}"  mode=0400
+    with_items:
+      - "{{deploy_user_id_rsa}}"
+      - "{{deploy_user_id_rsa_pub}}"
+    when: deploy_user_id_rsa is defined
