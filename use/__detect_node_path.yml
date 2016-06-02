@@ -1,5 +1,5 @@
 ---
-  - name: WSI Workplace | Detect npm
+  - name: NODE LOCATION | Detect npm
     shell: 'source /home/{{deploy_user}}/.profile && dirname "`which npm`"'
     args:
        executable: /bin/bash
