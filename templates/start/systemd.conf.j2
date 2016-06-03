@@ -2,18 +2,26 @@
 # Do NOT modify this file by hand!
 
 [Unit]
-Description={{item.description|default('The service')}}
+Description={{item.startup.description|default('The service')}}
 After=network.target
 Requires=network.target
 
 [Service]
-ExecStart={{item.execstart}}
-WorkingDirectory={{item.workingdirectory|default('/tmp')}}
-User={{item.user|default('root')}}
-{% if item.pidfile|default(False) %}
-PIDFile={{item.pidfile}}
+{% for key in item.startup.env|default({}) %}
+Environment="{{key}}={{item.startup.env[key]}}"
+{% endfor %}
+Environment="WORKDIR={{item.startup.workingdirectory|default('/tmp')}}"
+ExecStart={{item.startup.execstart}}
+{% if item.startup.execstop|default(False) %}
+ExecStop={{item.startup.execstop}}
 {% endif %}
-{% for line in item.extralines|default([]) %}
+
+WorkingDirectory={{item.startup.workingdirectory|default('/tmp')}}
+User={{item.startup.user|default('root')}}
+{% if item.startup.pidfile|default(False) %}
+PIDFile={{item.startup.pidfile}}
+{% endif %}
+{% for line in item.startup.extralines|default([]) %}
 {{ line|default('') }}
 {% endfor %}
 Restart=always
