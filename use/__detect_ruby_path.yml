@@ -1,0 +1,13 @@
+---
+  - name: RUBY LOCATION | Detect ruby
+    shell: 'source /home/{{deploy_user}}/.profile && dirname "`which ruby`"'
+    args:
+       executable: /bin/bash
+    register: ruby_path_detected_raw
+    become: "{{deploy_user}}"
+
+  - set_fact:
+      ruby_path_detected: "{{ ruby_path_detected_raw.stdout }}"
+      ruby_is_global: "{{ruby_path_detected_raw.stdout.find('/usr/local/bin') == 0}}"
+
+  - debug: msg="{{ ruby_path_detected_raw }} thus ruby global is {{ruby_is_global}}"
