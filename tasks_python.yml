@@ -34,3 +34,9 @@
     become: yes
     tags:
       -python
+
+  - name: Python | virtualenvwrapper console support
+    apt: pkg="virtualenvwrapper" state="latest"
+    become: yes
+    tags:
+      -python
