@@ -49,7 +49,7 @@
     php_xdebug_version: 2.2.4
     phpcs_version: 2.5.1
     phpcbf_version: 2.5.1
-    pycharm_version: "2016.1" #5.0.1 # 4.5.4
+    pycharm_version: "2016.1.4" #"2016.1"# 5.0.1 # 4.5.4
 #    pycharm_edition: community # professional | community
     robomongo_version: 0.8.5
     rubies_location: /opt/rubies
@@ -71,7 +71,7 @@
     php_family: default # 5.4 | 5.5 | 5.6 | default
     hypervisor: esx
     # "git-blame" fails to compile with recent atom
-    atom_packages: ["angularjs","atom-css-comb", "meteor-api", "emmet", "file-icons", "tag", "expand-region", "atom-alignment", "atom-beautify", "minimap", "set-syntax", "jshint", "linter", "linter-jscs", "linter-flake8", "linter-swagger", "jscs-fixer", "highlight-line", "highlight-column", "autocomplete-plus", "toggle-quotes", "monokai"]
+    atom_packages: ["angularjs","atom-css-comb", "meteor-api", "emmet", "file-icons", "tag", "expand-region", "atom-alignment", "atom-beautify", "minimap", "set-syntax", "jshint", "linter", "linter-jscs", "linter-flake8", "linter-swagger", "jscs-fixer", "highlight-line", "highlight-column", "autocomplete-plus", "toggle-quotes", "monokai", "language-restructuredtext"]
 
     sshd_config_lines:
       - {regexp: "^Protocol.*", line: "Protocol 2"}

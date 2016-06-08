@@ -16,7 +16,7 @@
 
   - name: JetBrains Pycharm| Check pycharm_version variable
     assert:
-      that: pycharm_version in ["2016.1", "5.0.1", "4.5.4"]
+      that: pycharm_version in ["2016.1.4", "2016.1", "5.0.1", "4.5.4"]
     tags:
       -jetbrains
       -pycharm
