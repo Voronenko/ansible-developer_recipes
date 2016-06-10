@@ -1,0 +1,45 @@
+---
+  - name: Jython | Check if is present
+    command: test -x /usr/local/lib/jython/bin/jython
+    ignore_errors: yes
+    register: jython_present
+    tags:
+        -jython
+
+  - name: Jython | Get installer
+    get_url: url="http://search.maven.org/remotecontent?filepath=org/python/jython-installer/{{jython_version}}/jython-installer-{{jython_version}}.jar" dest="/tmp/jython-installer-{{jython_version}}.jar"
+    when: jython_present | failed
+    tags:
+        -jython
+
+  - name: Jython | Install Jython
+    shell: "java -jar /tmp/jython-installer-{{jython_version}}.jar --silent -d /usr/local/lib/jython"
+    when: jython_present | failed
+    become: yes
+    tags:
+        -jython
+
+  - name: Jython | sudo ln -s /usr/local/lib/jython/bin/jython /usr/local/bin/
+    file: src=/usr/local/lib/jython/bin/jython dest=/usr/local/bin/jython state=link
+    when: jython_present | failed
+    become: yes
+    tags:
+        -jython
+
+  - name: Jython | Get setup tools
+    get_url: url="http://peak.telecommunity.com/dist/ez_setup.py" dest=/tmp/ez_setup.py
+    when: jython_present | failed
+    tags:
+        -jython
+
+  - name: Jython | Get setup tools
+    shell: "jython /tmp/ez_setup.py"
+    when: jython_present | failed
+    become: yes
+    tags:
+        -jython
+
+  - name: Jython | Put version to log
+    shell: jython --version
+    when: jython_present | failed
+    changed_when: False
