@@ -11,3 +11,13 @@
       npm_is_global: "{{npm_path_detected_raw.stdout.find('.nvm') == -1}}"
 
   - debug: msg="{{ npm_path_detected_raw }} thus npm global is {{npm_is_global}}"
+  
+# Usage example:
+#    - name: Install ember-cli
+#    npm: name=ember-cli state=present version="{{node.ember.version}}" global=yes executable="{{npm_path_detected}}/npm"
+#    become: "{{npm_is_global}}"
+#    environment:
+#      PATH: "{{npm_path_detected}}:{{ ansible_env.PATH }}"       # can be different depending on nvm version
+#    tags:
+#      - create
+
