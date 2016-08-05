@@ -1,4 +1,7 @@
 #!/usr/bin/python
+# This file is part of Ansible Developer Recipes
+# https://github.com/Voronenko/ansible-developer_recipes
+
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 

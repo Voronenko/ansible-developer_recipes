@@ -1,8 +1,7 @@
+#!/usr/bin/python
 # This file is part of Ansible Developer Recipes
 # https://github.com/Voronenko/ansible-developer_recipes
 
-
-#!/usr/bin/python
 import os
 from ansible.errors import AnsibleError
 from ansible.plugins.action import ActionBase
