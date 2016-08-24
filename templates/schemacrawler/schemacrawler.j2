@@ -1,0 +1,2 @@
+#!/bin/sh
+java -cp $(echo {{schemacrawler_base_dir | default("/opt/schemacrawler/schemacrawler/_schemacrawler/")}}lib/*.jar | tr ' ' ':') schemacrawler.Main $*
