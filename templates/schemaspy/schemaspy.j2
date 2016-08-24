@@ -1,7 +1,5 @@
 #!/bin/sh
 
-SCHEMASPY={{schemaspy_jar|default('/opt/schemaspy/schemaspy.jar')}}
-
 if [ -n "${JAVA_HOME}" ] && [ -x "${JAVA_HOME}/bin/java" ] ; then
     JAVA="${JAVA_HOME}/bin/java"
 elif [ -x /usr/bin/java ] ; then
@@ -11,4 +9,4 @@ else
     exit 1
 fi
 
-$JAVA -jar ${SCHEMASPY} ${@}
+java -cp $(echo {{schemaspy_base_dir | default("/opt/schemaspy/")}}*.jar | tr ' ' ':') net.sourceforge.schemaspy.Main $*

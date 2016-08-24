@@ -35,7 +35,7 @@
       - schemacrawler
 
   - name: SchemaCrawler | unarchive jar
-    unarchive: src=/opt/schemacrawler/schemacrawler.zip dest=/opt/schemacrawler/
+    unarchive: src=/opt/schemacrawler/schemacrawler.zip dest=/opt/schemacrawler/ copy=no
     when: schemacrawler_present|failed
     become: yes
     tags:
