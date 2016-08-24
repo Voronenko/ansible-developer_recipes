@@ -1,0 +1,35 @@
+  - name: SchemaSpy | Check if is present
+    command: test -x /usr/bin/schemaspy
+    when: ansible_system == "Linux"
+    ignore_errors: yes
+    register: schemaspy_present
+    tags:
+      - schemaspy
+
+  - name: SchemaSpy | Install graphviz dependency
+    apt:  name=graphviz state=present
+    when: schemaspy_present|failed
+    become: yes
+    tags:
+      - schemaspy
+
+  - name: SchemaSpy | create opt dir
+    file: path=/opt/schemaspy/ state=directory
+    when: schemaspy_present|failed
+    become: yes
+    tags:
+      - schemaspy
+
+  - name: SchemaSpy | copy jar
+    get_url: url=http://sourceforge.net/projects/schemaspy/files/schemaSpy_5.0.0.jar/download dest=/opt/schemaspy/schemaspy.jar
+    when: schemaspy_present|failed
+    become: yes
+    tags:
+      - schemaspy
+
+  - name: SchemaSpy | create launcher
+    template: src={{root_dir}}/templates/schemaspy/schemaspy.j2 dest=/usr/bin/schemaspy mode=755
+    when: schemaspy_present|failed
+    become: yes
+    tags:
+      - schemaspy

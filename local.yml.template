@@ -147,6 +147,7 @@
 #     - include: tools/tasks_expect.yml                    # expect tool
 #     - include: tools/tasks_plantuml.yml                  # plant uml
 #     - include: tools/tasks_schemacrawler.yml             # DB Schema crawler
+#     - include: tools/tasks_schemaspy.yml                 # DB Schema Spy tool
 #     - include: tools/tasks_toggle.yml                    # toggle time tracker
 #     - include: tools/tasks_dpr.yml                       # d.pr screenshoting tool
 
