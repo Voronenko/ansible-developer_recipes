@@ -7,6 +7,8 @@
       else echo UNKNOWN;
       fi
     become: yes
+    args:
+      executable: /bin/bash
     register: upstart_detect_raw
 
   - set_fact:
