@@ -205,7 +205,7 @@ Helper ansible repository for my devbox box configuration. Suitable for: LAMP, M
 * [Gliffy](https://www.gliffy.com/go/commerce/index) html5 based online diagramming tool with BMPN 2.0 support
 * [SchemaSpy](http://schemaspy.sourceforge.net/) old but still good documentator for databases
 * [SchemaCrawler](http://sualeh.github.io/SchemaCrawler/) Similar to SchemaSpy, under development, but more complex to use
-
+* [Pandoc](https://github.com/jgm/pandoc) Universal markup converter (i.e. docx to rst & so on)
 
 ## Virtualization
 * [Docker](https://www.docker.com/) Necessary docker components to build and run docker containers locally
