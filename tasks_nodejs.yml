@@ -94,6 +94,7 @@
       - bower
       - grunt
       - grunt-cli
+      - david
     become: yes
     tags:
        -nodejs
