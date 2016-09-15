@@ -26,7 +26,7 @@
        -setup
 
   - name: NodeJS | Import the NodeSource GPG key into apt
-    apt_key: url=https://deb.nodesource.com/gpgkey/nodesource.gpg.key state=present
+    apt_key: url=https://deb.nodesource.com/gpgkey/nodesource.gpg.key state=present validate_certs="{{option_global_validate_certs | default('no')}}"
     become: yes
     when: ansible_os_family == "Debian" and node_present|failed
     tags:
