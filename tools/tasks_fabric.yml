@@ -1,0 +1,6 @@
+- name: Fabfile(fabric) | Installing pypi package
+  pip: name=fabric state=present
+  become: yes
+  tags:
+    - fabfile
+    - fabric    

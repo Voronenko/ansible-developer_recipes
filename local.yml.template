@@ -157,13 +157,14 @@
 #    DEVELOPMENT
 #     - include: tools/tasks_mailhog.yml                    # Web and API based SMTP testing
 #     - include: tools/tasks_swaggerui.yml                  # REST API documentation viewer
+#     - include: tools/tasks_swaggerui.yml                  # REST API documentation viewer
 
 # COMMUNICATIONS
 #     - include: tools/tasks_skype.yml                       # skype 4.3
 #     - include: tools/tasks_speak_io.yml                    # speak.io client
 #     - include: tools/tasks_slack_client.yml               # slack
 #     - include: tools/tasks_hipchat_client.yml             # hipchat
-#     - include: tools/tasks_viber.yml                      # viber
+#     - include: tools/tasks_fabric.yml                     # http://www.fabfile.org/ deployment tool
 
 #  TIME TRACKING
 #     - include: tools/tasks_toggle.yml
