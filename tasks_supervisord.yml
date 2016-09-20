@@ -1,0 +1,32 @@
+---
+
+  - name: SupervisorD | Check if is present
+    command: test -x /usr/local/bin/supervisord
+    ignore_errors: yes
+    register: supervisord_present
+    tags:
+        - supervisord
+
+  - name: SupervisorD | install package
+    apt: pkg=supervisor state=present
+    tags:
+        - supervisord
+
+  - name: SupervisorD | update defaults
+    shell: update-rc.d supervisor defaults
+    become: yes
+    tags:
+        - supervisord
+
+  - name: SupervisorD | ensure service enabled
+    service: name=supervisor enabled=yes
+    become: yes
+    tags:
+        - supervisord
+
+  - name: SupervisorD | ensure service started
+    service: name=supervisor state=restarted
+    when: docker_test is not defined
+    become: yes
+    tags:
+        - supervisord
