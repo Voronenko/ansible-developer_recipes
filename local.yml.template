@@ -185,6 +185,7 @@
 #     - include: tools/tasks_s3cmd.yml  # amazon s3 helper tool
 #     - include: tools/tasks_openshift_rhctools.yml  # redhat openshift cli
 #     - include: tools/tasks_travis_clienttools.yml  # travis cli
+#     - include: tools/tasks_truecrypt.yml  # legacy truecrypt implementation
 #     - include: tools/tasks_veracrypt.yml  # truecrypt implementation and successor
 #     - include: tool/tasks_chrome_remote_desktop.yml  # remote access to your box
 #     - include: tool/tasks_dpr.yml # d.pr python client, recently had issues with running

@@ -1,0 +1,20 @@
+---
+
+  - name: TRUECRYPT | Add ppa repositories
+    apt_repository: repo='ppa:stefansundin/truecrypt' state=present
+    become: yes
+    tags:
+      - truecrypt
+
+  - name: TRUECRYPT | Install package
+    apt: pkg="truecrypt" update_cache="yes"
+    become: yes
+    tags:
+      - truecrypt
+
+  - name: TRUECRYPT | Install dmsetup
+    apt: pkg="dmsetup"
+    become: yes
+    tags:
+      - truecrypt
+
