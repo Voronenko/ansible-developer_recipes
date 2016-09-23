@@ -29,8 +29,8 @@
 
   - name: Worktools | action "open in terminal" for Nautilus
     apt: state=present pkg=nautilus-open-terminal
+    when: ansible_distribution_release != "xenial"
     become: yes
-    when: ansible_distribution_release in [ "trusty" ]
     tags:
       -worktools
       -setup
@@ -79,7 +79,7 @@
     become: yes
     when: sublime_check_deb.rc == 1
     tags:
-      -sublime
+      -atom
       -setup
 
   - name: Worktools | Check if atom is installed
@@ -128,8 +128,9 @@
 
   - name: Worktools | Add zeal ppa
     apt_repository: repo=ppa:zeal-developers/ppa state=present
+    when: ansible_distribution_release != "xenial"
     become: yes
-    when: zeal_check_deb.rc == 1 and ansible_distribution_release in [ "trusty" ]
+    when: zeal_check_deb.rc == 1
     tags:
       -zeal
       -setup
@@ -137,7 +138,6 @@
   - name: Worktools | Install zeal
     apt: update_cache=yes pkg=zeal state=installed
     become: yes
-    when: ansible_distribution_release in [ "trusty" ]
     tags:
       -zeal
       -setup
