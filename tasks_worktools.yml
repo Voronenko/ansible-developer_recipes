@@ -1,3 +1,13 @@
+  - name: Worktools | VI dependencies
+    apt: state=present pkg="{{item}}"
+    with_items:
+      - vim-gui-common
+      - vim-runtime
+    become: yes
+    tags:
+      -worktools
+      -setup
+
   - name: Worktools | Midnight Commander
     apt: state=present pkg=mc
     become: yes
