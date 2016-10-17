@@ -33,6 +33,8 @@ class SaHashiVault:
         if s is None:
             raise AnsibleError("No secret specified")
 
+        self.default = kwargs.get('default', None)
+
         s_f = s.split(':')
         self.secret = s_f[0]
         if len(s_f) >= 2:
@@ -50,7 +52,10 @@ class SaHashiVault:
     def get(self):
         data = self.client.read(self.secret)
         if data is None:
-            raise AnsibleError("The secret %s doesn't seem to exist"
+            if not self.default is None:
+                return self.default
+            else:
+                raise AnsibleError("The secret %s doesn't seem to exist"
                                % self.secret)
 
         if self.secret_field == '':  # secret was specified with trailing ':'
