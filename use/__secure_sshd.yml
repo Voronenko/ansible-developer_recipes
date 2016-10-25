@@ -1,5 +1,5 @@
   - name: SSH | Secure SSHD
-    lineinfile: dest=/etc/ssh/sshd_config regexp="{{item.regexp}}" line="{{item.line}}"
+    lineinfile: dest=/etc/ssh/sshd_config regexp="{{item.regexp}}" line="{{item.line}}" insertafter="{{item.insertafter | default('EOF')}}"
     with_items: sshd_config_lines
     become: yes
     tags:
