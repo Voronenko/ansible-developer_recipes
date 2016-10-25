@@ -26,7 +26,7 @@
     apache_mode: worker # use prefork or worker variables
 
     brackets_io_version: 1.6
-    dbeawer_version: 3.6.3
+    dbeawer_version: 3.7.2
     chruby_version: 0.3.9
     doxygen_version: 1.8.11
     go_version: 1.6
@@ -46,7 +46,7 @@
     option_integrate_w_zsh: false
     # /nvm
     oracle_vbox_version: 4.3
-    phpstorm_version: "2016.1" # 10.0.3  | "10.0" | 9.0.2 | 8.0.3 | 8.0.1 | 7.1.4 | 6.0.3 | 5.0.4
+    phpstorm_version: "2016.2" #"2016.1" # 10.0.3  | "10.0" | 9.0.2 | 8.0.3 | 8.0.1 | 7.1.4 | 6.0.3 | 5.0.4
     php_xdebug_version: 2.2.4
     phpcs_version: 2.5.1
     phpcbf_version: 2.5.1
@@ -59,6 +59,7 @@
     ruby_version: 2.3.0
     rubymine_version: 7.1.4
 #    s3cmd_version: 1.6.1
+    schema_crawler_version: "14.09.03"
     travis_version: 1.8.2
     terraform_version: 0.6.15
     swaggerui_version: 2.1.4
@@ -72,7 +73,7 @@
     php_family: default # 5.4 | 5.5 | 5.6 | default
     hypervisor: esx
     # "git-blame" fails to compile with recent atom
-    atom_packages: ["angularjs","atom-css-comb", "meteor-api", "emmet", "file-icons", "tag", "expand-region", "atom-alignment", "atom-beautify", "minimap", "set-syntax", "jshint", "linter", "linter-jscs", "linter-flake8", "linter-swagger", "jscs-fixer", "highlight-line", "highlight-column", "autocomplete-plus", "toggle-quotes", "monokai", "language-restructuredtext"]
+    atom_packages: ["angularjs","atom-css-comb", "meteor-api", "emmet", "file-icons", "tag", "expand-region", "atom-alignment", "atom-beautify", "minimap", "set-syntax", "jshint", "linter", "linter-jscs", "linter-flake8", "linter-swagger", "jscs-fixer", "highlight-line", "highlight-column", "autocomplete-plus", "toggle-quotes", "todo-show", "monokai", "language-restructuredtext"]
 
     sshd_config_lines:
       - {regexp: "^Protocol.*", line: "Protocol 2"}
@@ -119,6 +120,7 @@
 #     - include: tasks_dbeawer.yml                         # mysql | postgre GUI tool
 
 #     - include: tasks_docker.yml                          # docker
+#     - include: tasks_docker_compose.yml                  # docker compose
 
 #     - include: tasks_oracle_virtualbox.yml               # Oracle Virtual Box
 #     - include: tasks_vagrant.yml                         # Vagrant
@@ -144,6 +146,8 @@
 
 #     - include: tools/tasks_expect.yml                    # expect tool
 #     - include: tools/tasks_plantuml.yml                  # plant uml
+#     - include: tools/tasks_schemacrawler.yml             # DB Schema crawler
+#     - include: tools/tasks_schemaspy.yml                 # DB Schema Spy tool
 #     - include: tools/tasks_toggle.yml                    # toggle time tracker
 #     - include: tools/tasks_dpr.yml                       # d.pr screenshoting tool
 
@@ -153,13 +157,14 @@
 #    DEVELOPMENT
 #     - include: tools/tasks_mailhog.yml                    # Web and API based SMTP testing
 #     - include: tools/tasks_swaggerui.yml                  # REST API documentation viewer
+#     - include: tools/tasks_swaggerui.yml                  # REST API documentation viewer
 
 # COMMUNICATIONS
 #     - include: tools/tasks_skype.yml                       # skype 4.3
 #     - include: tools/tasks_speak_io.yml                    # speak.io client
 #     - include: tools/tasks_slack_client.yml               # slack
 #     - include: tools/tasks_hipchat_client.yml             # hipchat
-#     - include: tools/tasks_viber.yml                      # viber
+#     - include: tools/tasks_fabric.yml                     # http://www.fabfile.org/ deployment tool
 
 #  TIME TRACKING
 #     - include: tools/tasks_toggle.yml
@@ -180,6 +185,7 @@
 #     - include: tools/tasks_s3cmd.yml  # amazon s3 helper tool
 #     - include: tools/tasks_openshift_rhctools.yml  # redhat openshift cli
 #     - include: tools/tasks_travis_clienttools.yml  # travis cli
+#     - include: tools/tasks_truecrypt.yml  # legacy truecrypt implementation
 #     - include: tools/tasks_veracrypt.yml  # truecrypt implementation and successor
 #     - include: tool/tasks_chrome_remote_desktop.yml  # remote access to your box
 #     - include: tool/tasks_dpr.yml # d.pr python client, recently had issues with running

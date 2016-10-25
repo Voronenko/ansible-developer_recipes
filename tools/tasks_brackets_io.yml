@@ -8,6 +8,22 @@
     tags:
       -brackets
 
+  - name: Brackets IO | download package libgcrypt11 (shame to Adobe)
+#    shell: "wget https://launchpad.net/~ubuntu-security-proposed/+archive/ubuntu/ppa/+build/7110687/+files/libgcrypt11_1.5.4-2ubuntu1.1_amd64.deb -O /tmp/libgcrypt11.deb"
+    get_url: 
+      url="https://launchpad.net/~ubuntu-security-proposed/+archive/ubuntu/ppa/+build/7110687/+files/libgcrypt11_1.5.4-2ubuntu1.1_amd64.deb"
+      dest="/tmp/libgcrypt11.deb"
+    when: brackets_check_deb.rc == 1 and ansible_distribution_release != "trusty"
+    tags:
+      -brackets
+
+  - name: Brackets IO | install package libgcrypt11 (shame to Adobe)
+    apt: deb="/tmp/libgcrypt11.deb"
+    become: true
+    when: brackets_check_deb.rc == 1 and ansible_distribution_release != "trusty"
+    tags:
+      -brackets
+
   - name: Brackets IO | download package
     get_url:
       url="https://github.com/adobe/brackets/releases/download/release-{{brackets_io_version}}/Brackets.Release.{{brackets_io_version}}.64-bit.deb"

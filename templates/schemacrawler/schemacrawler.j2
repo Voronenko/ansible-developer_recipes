@@ -1,0 +1,12 @@
+#!/bin/sh
+
+if [ -n "${JAVA_HOME}" ] && [ -x "${JAVA_HOME}/bin/java" ] ; then
+    JAVA="${JAVA_HOME}/bin/java"
+elif [ -x /usr/bin/java ] ; then
+    JAVA=/usr/bin/java
+else
+    echo Cannot find JVM
+    exit 1
+fi
+
+$JAVA -cp $(echo {{schemacrawler_base_dir | default("/opt/schemacrawler/schemacrawler/_schemacrawler/")}}lib/*.jar | tr ' ' ':') schemacrawler.Main $*

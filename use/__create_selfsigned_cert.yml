@@ -1,11 +1,20 @@
 --- # Credits https://github.com/StarterSquad/prudentia/blob/master/prudentia/tasks/ssl-self-certificate.yml
+  - name: Self signed | Check presense
+    shell: test -x {{target_dir}}/{{key}}.key && test -x {{target_dir}}/{{crt}}.crt
+    become: yes
+    ignore_errors: true
+    register: selfsignedcert_present
+
   - name: Self signed | Install last stable
     apt: update-cache=yes force=yes state=present pkg=openssl
+    when: selfsignedcert_present | failed
     become: yes
 
   - name: Self signed | Generate self signed passwordless certificate
     command: openssl req -new -newkey rsa:4096 -days 3650 -nodes -x509 -subj "/C=EU/ST=Ukraine/L=Lviv/O=Dis/CN={{fqdn}}" -keyout {{key}}.key  -out {{crt}}.crt
+    when: selfsignedcert_present | failed
 
   - name: Self signed | Move files to target dir
     command: mv -t {{target_dir}} {{key}}.key {{crt}}.crt
+    when: selfsignedcert_present | failed
     become: yes

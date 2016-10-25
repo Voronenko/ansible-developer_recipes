@@ -9,7 +9,7 @@
       - ssvnc
 
   - name: SSVNC | install package
-    apt: pkg="ssvnc" state="present
+    apt: pkg="ssvnc" state="present"
     become: true
     when: ssvnc_present.rc == 1
     tags:

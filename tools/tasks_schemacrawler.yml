@@ -1,0 +1,64 @@
+  - name: SchemaCrawler | Check if is present
+    command: test -x /usr/bin/schemacrawler
+    when: ansible_system == "Linux"
+    ignore_errors: yes
+    register: schemacrawler_present
+    tags:
+      - schemacrawler
+
+  - name: SchemaCrawler | Install graphviz dependency
+    apt:  name=graphviz state=present
+    when: schemacrawler_present|failed
+    become: yes
+    tags:
+      - schemacrawler
+
+  - name: SchemaCrawler | ensure folder empty
+    file: path=/opt/schemacrawler/ state=absent
+    when: schemacrawler_present|failed
+    become: yes
+    tags:
+      - schemacrawler
+
+  - name: SchemaCrawler | create opt dir
+    file: path=/opt/schemacrawler/ state=directory owner="{{ansible_user_id}}"
+    when: schemacrawler_present|failed
+    become: yes
+    tags:
+      - schemacrawler
+
+  - name: SchemaCrawler | get jar zip
+    get_url: url=https://github.com/sualeh/SchemaCrawler/releases/download/v{{schema_crawler_version | default("14.09.03")}}/schemacrawler-{{schema_crawler_version | default("14.09.03")}}-main.zip dest=/opt/schemacrawler/schemacrawler.zip
+    when: schemacrawler_present|failed
+    become: yes
+    tags:
+      - schemacrawler
+
+  - name: SchemaCrawler | unarchive jar
+    unarchive: src=/opt/schemacrawler/schemacrawler.zip dest=/opt/schemacrawler/ copy=no
+    when: schemacrawler_present|failed
+    become: yes
+    tags:
+      - schemacrawler
+
+  - name: SchemaCrawler | rename to schemacrawler
+    shell: mv schema*main schemacrawler
+    when: schemacrawler_present|failed
+    args:
+      chdir: /opt/schemacrawler/
+    become: yes
+    tags:
+      - schemacrawler
+
+  - name: SchemaCrawler | set file permissions
+    file: dest=/opt/schemacrawler/ owner="{{ansible_user_id}}" recurse=yes
+    become: yes
+    tags:
+      - schemacrawler
+
+  - name: SchemaCrawler | create launcher
+    template: src={{root_dir}}/templates/schemacrawler/schemacrawler.j2 dest=/usr/bin/schemacrawler mode=755
+    when: schemacrawler_present|failed
+    become: yes
+    tags:
+      - schemacrawler
