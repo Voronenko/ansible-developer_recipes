@@ -73,7 +73,7 @@
     php_family: default # 5.4 | 5.5 | 5.6 | default
     hypervisor: esx
     # "git-blame" fails to compile with recent atom
-    atom_packages: ["angularjs","atom-css-comb", "meteor-api", "emmet", "file-icons", "tag", "expand-region", "atom-alignment", "atom-beautify", "minimap", "set-syntax", "jshint", "linter", "linter-jscs", "linter-flake8", "linter-swagger", "jscs-fixer", "highlight-line", "highlight-column", "autocomplete-plus", "toggle-quotes", "todo-show", "monokai", "language-restructuredtext"]
+    atom_packages: ["angularjs","atom-css-comb", "meteor-api", "emmet", "file-icons", "tag", "expand-region", "atom-alignment", "atom-beautify", "minimap", "set-syntax", "jshint", "linter", "linter-jscs", "linter-flake8", "linter-swagger", "jscs-fixer", "highlight-line", "highlight-column", "autocomplete-plus", "toggle-quotes", "todo-show", "monokai", "language-restructuredtext", "merge-conflict", "pigments", "atom-typescript"]
 
     sshd_config_lines:
       - {regexp: "^Protocol.*", line: "Protocol 2"}
