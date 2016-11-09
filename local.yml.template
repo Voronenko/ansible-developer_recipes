@@ -158,6 +158,7 @@
 #     - include: tools/tasks_mailhog.yml                    # Web and API based SMTP testing
 #     - include: tools/tasks_swaggerui.yml                  # REST API documentation viewer
 #     - include: tools/tasks_swaggerui.yml                  # REST API documentation viewer
+#     - include: tools/tasks_pgweb.yml                      # WEB GUI for postgres  
 
 # COMMUNICATIONS
 #     - include: tools/tasks_skype.yml                       # skype 4.3
