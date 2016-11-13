@@ -1,0 +1,23 @@
+---
+  - name: Scan Hosts | Make sure the known hosts file exists
+    file: path="/home/{{scan_for_user|default(ansible_user_id)}}/.ssh/known_hosts" state=touch
+    become: true
+
+
+  - name: Check host name availability
+    shell: "ssh-keygen -f /home/{{scan_for_user|default(ansible_user_id)}}/.ssh/known_hosts -F {{ item }}"
+    with_items: "{{ssh_known_hosts | default([])}}"
+    when: ssh_known_hosts is defined
+    become: true
+    register: ssh_known_host_results
+    ignore_errors: yes
+
+  - name: Scan the public key
+    shell: "ssh-keyscan -H -T 10 {{ item.item }} >> /home/{{scan_for_user|default(ansible_user_id)}}/.ssh/known_hosts"
+    with_items: "{{ssh_known_host_results.results}}"
+    when: item.stdout == ""
+    become: true
+
+  - name: Set the security
+    file: path="/home/{{scan_for_user|default(ansible_user_id)}}/.ssh/known_hosts" owner="{{scan_for_user|default(ansible_user_id)}}" group="{{scan_for_user|default(ansible_user_id)}}" mode=0600
+    become: true
