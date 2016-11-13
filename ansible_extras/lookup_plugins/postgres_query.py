@@ -41,7 +41,8 @@ class LookupModule(LookupBase):
         database = paramvals['database']
         user = paramvals['user']
         password = paramvals['password']
-        sql = paramvals['sql']
+        sql = paramvals['sql'].replace("~~eq", "=")
+
         # Connection to postgresql
         con = None
         try:
