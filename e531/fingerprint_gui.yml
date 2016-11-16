@@ -1,0 +1,16 @@
+---
+  - name: FINGER PRINT  | Validity Sensors, Inc. VFS5011 Fingerprint Reader PPA
+    apt_repository: repo='ppa:fingerprint/fingerprint-gui'
+    become: yes
+    tags:
+      - fingerprints
+
+  - name: FINGER PRINT  | Validity Sensors, Inc. VFS5011 Fingerprint Reader packages
+    apt: pkg="{{item}}" state="latest" update_cache="yes"
+    with_items:
+      - "libbsapi"
+      - "policykit-1-fingerprint-gui"
+      - "fingerprint-gui"
+    become: yes
+    tags:
+      - fingerprints
