@@ -56,7 +56,7 @@
     rubies_location: /opt/rubies
     ruby_install_version: 0.6.0
     option_ruby_install_setsystem: true
-    ruby_version: 2.3.0
+    ruby_version: 2.3.3
     rubymine_version: 7.1.4
 #    s3cmd_version: 1.6.1
     schema_crawler_version: "14.09.03"
