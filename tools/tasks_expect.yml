@@ -6,3 +6,14 @@
   tags:
     -worktools
     -expect
+
+
+# http://www.admin-magazine.com/Articles/Automating-with-Expect-Scripts
+- name: Expect | install expect-dev package http://expect.sourceforge.net/
+  apt: state=present pkg=expect-dev
+  when: option_install_expect_dev
+  become: yes
+  tags:
+    -worktools
+    -expect
+
