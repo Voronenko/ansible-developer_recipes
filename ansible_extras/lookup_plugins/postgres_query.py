@@ -11,24 +11,31 @@ class LookupModule(LookupBase):
 
     postgresql module used to query tables in postgresql database.
 
-    Example: lookup('postgres_query','database=database user=user password=password sql=SQL query')
+    Example: lookup('postgres_query','database=database user=user password=password', sql)
 
     """
     def run(self, terms, variables, **kwargs):
 
         ret = []
+
+        sql_query = terms[1] if len(terms)>1 else 'query'
+
         if not isinstance(terms, list):
-            terms = [terms]
+            lookupTerms = [terms]
+        else:
+            lookupTerms = terms[0]
 
         for term in terms:
-            params = term.split(' ', 3)
+            params = lookupTerms.split(' ', 3)
 
         paramvals = {
             'database': 'database',
             'user': 'user',
             'password': 'password',
-            'sql': 'query',
+            'sql': sql_query
         }
+
+
         try:
             for param in params:
                 name, value = param.split('=')
