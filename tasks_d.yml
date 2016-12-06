@@ -1,0 +1,25 @@
+- name: DMD | Check if my_package is installed
+  command: dpkg-query -W dmd-bin
+  register: dmd_check_deb
+  become: yes
+  failed_when: dmd_check_deb.rc > 1
+  changed_when: dmd_check_deb.rc == 1
+  tags:
+    -dmd
+
+- name: DMD | download package
+  get_url:
+    url="http://downloads.dlang.org/releases/2.x/{{dmd_version}}/dmd_{{dmd_version}}-0_amd64.deb"
+    dest="/tmp/dmd.deb"
+  when: dmd_check_deb.rc == 1
+  tags:
+    -dmd
+
+- name: DMD | install package
+  apt: deb="/tmp/dmd.deb"
+  become: true
+  when: dmd_check_deb.rc == 1
+  tags:
+    -dmd
+
+

@@ -27,6 +27,7 @@
 
     brackets_io_version: 1.6
     dbeawer_version: 3.7.2
+    dmd_version: 2.072.1
     chruby_version: 0.3.9
     doxygen_version: 1.8.11
     go_version: 1.6
@@ -110,6 +111,7 @@
 #     - include: tasks_jython.yml                          # python for jvm (Jython project)
 #     - include: tasks_php_apache.yml                      # php 5.5 for apache
 #     - include: tasks_ruby.yml                            # Set system ruby to 2.1
+#     - include: tasks_d.yml                               # D Language
 
 #     - include: tasks_jetbrains_phpstorm.yml              # PHP IDE
 #     - include: tasks_jetbrains_pycharm_community.yml     # PY IDE
