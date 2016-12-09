@@ -192,6 +192,7 @@
 #     - include: tools/tasks_veracrypt.yml  # truecrypt implementation and successor
 #     - include: tool/tasks_chrome_remote_desktop.yml  # remote access to your box
 #     - include: tool/tasks_dpr.yml # d.pr python client, recently had issues with running
+#     - include: tool/tasks_osquery.yml  # osquery.io package to query server data via sql like syntax  
 
 # Devops tools
 #     - include: tasks_terraform.yml

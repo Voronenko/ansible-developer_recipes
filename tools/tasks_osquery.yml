@@ -1,0 +1,31 @@
+- name: OSQUERY | Check if my_package is installed
+  command: dpkg-query -W osquery
+  register: osquery_check_deb
+  become: yes
+  failed_when: osquery_check_deb.rc > 1
+  changed_when: osquery_check_deb.rc == 1
+  tags:
+    -osquery
+
+- name: OSQUERY | Add apt key
+  apt_key: keyserver=keyserver.ubuntu.com  id=1484120AC4E9F8A1A577AEEE97A80C63C9D8B80B
+  when: osquery_check_deb.rc == 1
+  become: yes
+  tags:
+    -osquery
+
+- name: OSQUERY | Add apt repository
+  apt_repository:  repo="deb [arch=amd64] https://osquery-packages.s3.amazonaws.com/{{ansible_distribution_release}} {{ansible_distribution_release}} main" state=present
+  when: osquery_check_deb.rc == 1
+  become: yes
+  tags:
+    -osquery
+
+- name: OSQUERY | Install package
+  apt: name="osquery" state="present" update_cache="yes"
+  when: osquery_check_deb.rc == 1
+  become: yes
+  tags:
+    -osquery
+
+
