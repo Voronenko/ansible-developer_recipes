@@ -79,7 +79,7 @@ class SaHashiVault:
 class ActionModule(ActionBase):
     ''' Write operations with hashicorp vault '''
 
-    VALID_ARGS = set(['action', 'url', 'token', 'secret', 'value'])
+    VALID_ARGS = set(['action', 'url', 'token', 'secret', 'value', 'dest'])
     VALID_ACTIONS = set(['read', 'write', 'delete'])
 
     def run(self, tmp=None, task_vars=None):
@@ -104,6 +104,13 @@ class ActionModule(ActionBase):
 
         if action == 'read':
             result['value'] = vault_conn.get()
+            dest = self._task.args.get('dest','')
+            if dest != '':
+                dest_file = os.path.abspath(args['dest'])
+                text_file = open(dest_file, "w")
+                text_file.write(value)
+                text_file.close()
+ 
             result['changed'] = True
         elif action == 'write':
             result['status'] = vault_conn.write()

@@ -39,10 +39,10 @@
     -setup
 
 - name: Vagrant | install plugins (default - vbguest, hostsupdater, auto_network)
-  shell: vagrant plugin install vagrant-vbguest
+  shell: "vagrant plugin install {{item}}"
   become: yes
   when: vagrant_plugins is defined
-  with_items: "{{vagrant_plugins}}"
+  with_items: "{{vagrant_plugins | default(['vbguest', 'hostupdater', 'auto_network'])}}"
   tags:
     -vagrant
     -setup
