@@ -198,6 +198,14 @@
 #     - include: tasks_terraform.yml
 
 
+# Security tools
+#     - include: secure/tasks_auditd.yml
+#     - include: secure/tasks_debsums.yml
+#     - include: secure/tasks_lynis.yml
+#     - include: secure/tasks_rkhunter.yml
+ 
+
+
   handlers:
     - name: restart apache2
       service: name=apache2 state=restarted

@@ -1,0 +1,25 @@
+---
+
+  - name: Lynis | Clone repo
+    git: accept_hostkey=false update=yes dest="/usr/local/lynis" repo="https://github.com/CISOfy/lynis.git"  version="{{ lynis_version | default('2.4.0') }}"
+    become: true
+    tags:
+      - lynus
+
+  - name: Lynis | Reset rights
+    file: path="/usr/local/lynis" owner="{{ lynis_user }}" group="root" recurse=true
+    become: true
+    tags:
+      - lynus
+
+  - name: Lynis | Reset rights
+    file: path="/usr/local/lynis" owner="{{ lynis_user }}" group="root" recurse=true
+    become: true
+    tags:
+      - lynus
+
+  - name: Lynis | symlink tool
+    file: src=/usr/local/lynis/lynis dest=/usr/bin/lynis state=link
+    become: true
+    tags:
+      - lynus

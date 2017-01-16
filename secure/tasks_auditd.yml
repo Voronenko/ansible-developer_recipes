@@ -1,0 +1,21 @@
+---
+  - name: AuditD | Install packages
+    apt: pkg="{{item}}"
+    with_items:
+      - auditd
+    become: yes
+    tags:
+      - auditd
+
+  - name: AuditD | Patch /etc/audit/auditd.conf
+    lineinfile: dest=/etc/audit/auditd.conf  regexp="{{item.regexp}}" line="{{item.line}}" insertafter="{{item.insertafter | default('EOF')}}"
+    with_items: "{{auditd_conf_default_props | default([])}}"
+    become: yes
+    tags:
+      - auditd
+
+  - name: SASLAUTHD |  Restart service
+    service: name=auditd state=restarted enabled=yes
+    when: docker_test is not defined
+    tags:
+      - auditd
