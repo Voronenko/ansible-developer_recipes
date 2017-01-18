@@ -16,6 +16,7 @@ description:
     - This module gathers facts about the Linux users and groups that exist
       on the system.
 author: major@mhtx.net
+refactored to lookup module: git@voronenko.info
 """
 
 EXAMPLES = '''
