@@ -190,9 +190,11 @@
 #     - include: tools/tasks_travis_clienttools.yml  # travis cli
 #     - include: tools/tasks_truecrypt.yml  # legacy truecrypt implementation
 #     - include: tools/tasks_veracrypt.yml  # truecrypt implementation and successor
-#     - include: tool/tasks_chrome_remote_desktop.yml  # remote access to your box
-#     - include: tool/tasks_dpr.yml # d.pr python client, recently had issues with running
-#     - include: tool/tasks_osquery.yml  # osquery.io package to query server data via sql like syntax  
+#     - include: tools/tasks_chrome_remote_desktop.yml  # remote access to your box
+#     - include: tools/tasks_dpr.yml # d.pr python client, recently had issues with running
+#     - include: tools/tasks_osquery.yml  # osquery.io package to query server data via sql like syntax  
+#     - include  tools/tasks_logwatch.yml # logwatch
+#     - include: tools/tasks_rsyslog.yml  # syslog server
 
 # Devops tools
 #     - include: tasks_terraform.yml
