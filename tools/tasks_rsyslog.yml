@@ -1,0 +1,41 @@
+---
+
+  - name: RSysLog | Install base packages
+    apt: pkg="{{item}}"
+    become: yes
+    with_items:
+      - "rsyslog"
+      - "rsyslog-gnutls"
+      - "ca-certificates"
+    tags:
+      - rsyslog 
+
+  - name: RSysLog | Patch /etc/rsyslog.conf for remote collecting and enable conf.d parts.
+    lineinfile: dest=/etc/rsyslog.conf  regexp="{{item.regexp}}" line="{{item.line}}" insertafter="{{item.insertafter | default('EOF')}}"
+    with_items: "{{rsyslog_conf_default_props | default([])}}"
+    become: yes
+    tags:
+      - rsyslog
+
+  - name: RSysLog | Patch /etc/rsyslog.conf for server specific rsyslog.conf parts
+    lineinfile: dest=/etc/rsyslog.conf  regexp="{{item.regexp}}" line="{{item.line}}" insertafter="{{item.insertafter | default('EOF')}}"
+    with_items: "{{rsyslog_conf_props | default([])}}"
+    become: yes
+    tags:
+      - rsyslog
+
+  - name: RSysLog | Insert server specific configuration pieces
+    template: src="{{item.src}}" dest="/etc/rsyslog.d/{{item.dest}}.conf"
+    with_items: "{{rsyslog_confd_parts | default([])}}"
+    become: yes
+    tags:
+      - rsyslog
+
+
+  - name: RSysLog | Restart service
+    service: name=rsyslog state=restarted enabled=yes
+    when: docker_test is not defined
+    become: yes
+    tags:
+      - rsyslog
+
