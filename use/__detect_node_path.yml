@@ -1,17 +1,35 @@
 ---
+
+  - name: Node Location | Check if user .profile present
+    command: test -e /home/{{deploy_user}}/.profile
+    ignore_errors: yes
+    become: "{{deploy_user}}"
+    register: dot_profile_present
+
   - name: NODE LOCATION | Detect npm
     shell: 'source /home/{{deploy_user}}/.profile && dirname "`which npm`"'
+    when: not (dot_profile_present | failed)
     args:
        executable: /bin/bash
     register: npm_path_detected_raw
     become: "{{deploy_user}}"
+
+
+  - name: NODE LOCATION | Detect npm
+    shell: 'dirname "`which npm`"'
+    when: dot_profile_present | failed
+    args:
+       executable: /bin/bash
+    register: npm_path_detected_raw
+    become: "{{deploy_user}}"
+
 
   - set_fact:
       npm_path_detected: "{{ npm_path_detected_raw.stdout }}"
       npm_is_global: "{{npm_path_detected_raw.stdout.find('.nvm') == -1}}"
 
   - debug: msg="{{ npm_path_detected_raw }} thus npm global is {{npm_is_global}}"
-  
+
 # Usage example:
 #    - name: Install ember-cli
 #    npm: name=ember-cli state=present version="{{node.ember.version}}" global=yes executable="{{npm_path_detected}}/npm"
@@ -20,4 +38,3 @@
 #      PATH: "{{npm_path_detected}}:{{ ansible_env.PATH }}"       # can be different depending on nvm version
 #    tags:
 #      - create
-
