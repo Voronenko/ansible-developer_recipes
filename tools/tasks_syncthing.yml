@@ -1,0 +1,41 @@
+---
+  - name: Syncthing | Add apt key
+    apt_key: url="https://syncthing.net/release-key.txt" state=present
+    become: yes
+    tags:
+      - syncthing
+
+  - name: Syncthing | Add apt repository
+    apt_repository: repo="deb https://apt.syncthing.net/ syncthing release" filename='syncthing' state=present
+    become: yes
+    tags:
+      - syncthing
+
+  - name: Syncthing | Install package
+    apt: pkg="syncthing" update_cache="yes"
+    become: yes
+    tags:
+      - syncthing
+
+  - name: Syncthing | ufw allow syncthing
+    shell: ufw allow syncthing
+    when: option_syncthing_allow_ufw
+    become: yes
+    tags:
+      - syncthing
+
+  - block:
+
+    - name: Syncthing-gtk | Add ppa:nilarimogard/webupd8
+      apt_repository: repo='ppa:nilarimogard/webupd8' state=present
+      become: yes
+      tags:
+        - syncthing-gtk
+
+    - name: Syncthing-gtk | Install package
+      apt: pkg="syncthing-gtk" update_cache="yes"
+      become: yes
+      tags:
+        - syncthing-gtk
+
+    when: option_syncthing_gtk_gui
