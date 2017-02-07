@@ -88,7 +88,7 @@
 
   tasks:
 
-      - include: use/__detect_init_system.yml
+     - include: use/__detect_init_system.yml
 
 #     - include: tasks_cleanupubuntu.yml                   # removes games, lens, etc
 #     - include: tools/tasks_ubuntu_disableguestlogin.yml  # disable guest login enabled by default
