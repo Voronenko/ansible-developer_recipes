@@ -88,6 +88,7 @@
 
   tasks:
 
+      - include: use/__detect_init_system.yml
 
 #     - include: tasks_cleanupubuntu.yml                   # removes games, lens, etc
 #     - include: tools/tasks_ubuntu_disableguestlogin.yml  # disable guest login enabled by default
@@ -195,6 +196,7 @@
 #     - include: tools/tasks_osquery.yml  # osquery.io package to query server data via sql like syntax  
 #     - include  tools/tasks_logwatch.yml # logwatch
 #     - include: tools/tasks_rsyslog.yml  # syslog server
+#     - include: tools/tasks_syncthing.yml # opensource file synchronizer
 
 # Devops tools
 #     - include: tasks_terraform.yml

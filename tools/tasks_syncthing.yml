@@ -39,3 +39,41 @@
         - syncthing-gtk
 
     when: option_syncthing_gtk_gui
+
+  - name: Syncthing |  configure startup (upstart)
+    template: src="{{role_dir}}/templates/syncthing/syncthing_upstart.conf.j2" dest="/etc/init/syncthing.conf"
+    when: upstart_system == "upstart"
+    become: yes
+    tags:
+      - syncthing
+
+  - name: Syncthing |  configure startup (systemd)
+    template: src="{{role_dir}}/templates/syncthing/syncthing_systemd.conf.j2" dest="/etc/systemd/system/syncthing.service" mode=0644
+    when: upstart_system == "systemd"
+    become: yes
+    tags:
+      - syncthing
+
+  - name: Syncthing |  configure resume fallback (systemd)
+    template: src="{{role_dir}}/templates/syncthing/syncthing-resume.service.j2" dest="/etc/systemd/system/syncthing-resume.service" mode=0644
+    when: upstart_system == "systemd"
+    become: yes
+    tags:
+      - syncthing
+
+  - name: SyncThing | Generate initial config / obtain DeviceID
+    become: yes
+    shell: "syncthing -generate {{syncthing_home}} | grep INFO"
+    tags:
+      - syncthing
+    register: device_id_raw
+
+  - name: SyncThing | Enable and Start service
+    service: name="syncthing" started="yes" enabled="yes"
+    when: docker_test is not defined
+    become: yes
+    tags:
+      - syncthing
+
+  -  debug: msg="WEB GUI  http://127.0.0.1:8384/"
+  -  debug: msg="{{device_id_raw.stdout}}"
