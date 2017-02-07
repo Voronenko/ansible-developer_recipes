@@ -19,7 +19,7 @@
 
   - name: Syncthing | ufw allow syncthing
     shell: ufw allow syncthing
-    when: option_syncthing_allow_ufw
+    when: option_syncthing_allow_ufw | default(false)
     become: yes
     tags:
       - syncthing
@@ -38,7 +38,7 @@
       tags:
         - syncthing-gtk
 
-    when: option_syncthing_gtk_gui
+    when: option_syncthing_gtk_gui | default(false)
 
   - name: Syncthing |  configure startup (upstart)
     template: src="{{role_dir}}/templates/syncthing/syncthing_upstart.conf.j2" dest="/etc/init/syncthing.conf"
@@ -48,7 +48,7 @@
       - syncthing
 
   - name: Syncthing |  configure startup (systemd)
-    template: src="{{role_dir}}/templates/syncthing/syncthing_systemd.conf.j2" dest="/etc/systemd/system/syncthing.service" mode=0644
+    template: src="{{role_dir}}/templates/syncthing/syncthing_systemd.service.j2" dest="/etc/systemd/system/syncthing.service" mode=0644
     when: upstart_system == "systemd"
     become: yes
     tags:
@@ -69,7 +69,7 @@
     register: device_id_raw
 
   - name: SyncThing | Enable and Start service
-    service: name="syncthing" started="yes" enabled="yes"
+    service: name="syncthing" state="started" enabled="yes"
     when: docker_test is not defined
     become: yes
     tags:

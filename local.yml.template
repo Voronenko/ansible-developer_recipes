@@ -85,6 +85,7 @@
       - {regexp: "^PasswordAuthentication.*", line: "PasswordAuthentication no"}
       - {regexp: "^MaxAuthTries.*", line: "MaxAuthTries 3"}
 
+    syncthing_home: "home/{{deploy_user}}"
 
   tasks:
 
