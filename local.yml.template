@@ -90,6 +90,8 @@
   tasks:
 
      - include: use/__detect_init_system.yml
+     - include: use/__detect_node_path.yml
+     - include: use/__detect_ruby_path.yml
 
 #     - include: tasks_cleanupubuntu.yml                   # removes games, lens, etc
 #     - include: tools/tasks_ubuntu_disableguestlogin.yml  # disable guest login enabled by default
@@ -129,6 +131,9 @@
 
 #     - include: tasks_oracle_virtualbox.yml               # Oracle Virtual Box
 #     - include: tasks_vagrant.yml                         # Vagrant
+
+#     MICROSOFT
+#     - include: tools/tasks_azure_tools.yml              # Azure tools as per https://docs.microsoft.com/en-us/azure/xplat-cli-install
 
 #      RUBY
 #     - include: ruby/ch_ruby.yml                          # chruby

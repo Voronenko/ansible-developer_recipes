@@ -1,0 +1,8 @@
+  - name: AZURE| Install azure tools
+    npm: name=ember-cli state=present global=yes executable="{{npm_path_detected}}/npm"
+    become: "{{npm_is_global}}"
+    environment:
+      PATH: "{{npm_path_detected}}:{{ ansible_env.PATH }}"       # can be different depending on nvm version
+    tags:
+      - azure
+
