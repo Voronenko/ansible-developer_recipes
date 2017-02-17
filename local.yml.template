@@ -110,7 +110,8 @@
 #     - include: tasks_nodejs.yml                          # node 0.10.* 0.12.*
 #     - include: tasks_nvm.yml                             # - // - using nvm
 #     - include: tasks_java.yml                            # java 6-7-8
-#     - include: tasks_jython.yml                          # python for jvm (Jython project)
+#     - include: java/tasks_jython.yml                     # python for jvm (Jython project)
+#     - include: java/tasks_gradle.yml                     # gradle java build tool
 #     - include: tasks_php_apache.yml                      # php 5.5 for apache
 #     - include: tasks_ruby.yml                            # Set system ruby to 2.1
 #     - include: tasks_d.yml                               # D Language

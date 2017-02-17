@@ -1,0 +1,39 @@
+---
+
+  - name: Gradle | Install dependencies
+    apt: pkg="{{item}}" state="present"
+    with_items:
+      - unzip
+    become: yes
+    tags:
+      - gradle
+
+  - name: Gradle | Create installation directory
+    file: path="{{gradle_install_dir | default('/opt/gradle')}}" state="directory" 
+    become: yes
+    tags:
+      - gradle
+
+  - name: Gradle | Download distribution
+    get_url:
+      url: "https://services.gradle.org/distributions/gradle-{{gradle_version | default('3.3')}}-bin.zip"
+      dest: "/tmp/gradle.zip"
+    tags:
+      - gradle
+
+  - name: Gradle | Unpack distribution
+    unarchive: src="/tmp/gradle.zip" dest="{{gradle_install_dir | default('/opt/gradle')}}" remote_src=True
+    become: yes
+    tags:
+      - gradle
+
+  - name: Gradle | Add to path for all users
+    lineinfile: dest=/etc/environment regexp='^PATH=*{{gradle_install_dir | default('/opt/gradle')}}*' line='PATH=$PATH:{{gradle_install_dir | default('/opt/gradle')}}'
+    when: (option_gradle_in_path|default(False))
+    become: yes
+    tags:
+     - gradle   
+
+  - debug: msg="Make sure to add export PATH=$PATH:{{gradle_install_dir | default('/opt/gradle')}}/gradle-{{gradle_version|default(3.3)}}/bin to path"
+    when: not (option_gradle_in_path|default(False))
+
