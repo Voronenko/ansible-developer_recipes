@@ -10,6 +10,7 @@
     args:
       executable: /bin/bash
     register: upstart_detect_raw
+    changed_when: False
 
   - set_fact:
       upstart_system: "{{upstart_detect_raw.stdout}}"
