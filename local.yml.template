@@ -20,6 +20,7 @@
     role_dir: "{{root_dir}}"
     deploy_user: "{{ansible_user_id}}"
     apps_dir: "/home/{{ansible_user_id}}/apps"
+    desktop_dir: "Desktop"
     icons_dir: "{{apps_dir}}/shared_icons"
     mysql_root_user: root
     mysql_root_password: devroot
@@ -51,7 +52,7 @@
     php_xdebug_version: 2.2.4
     phpcs_version: 2.5.1
     phpcbf_version: 2.5.1
-    pycharm_version: "2016.2" #"2016.1.4" #"2016.1"# 5.0.1 # 4.5.4
+    pycharm_version: "2016.3.2" #"2016.2" #"2016.1.4" #"2016.1"# 5.0.1 # 4.5.4
 #    pycharm_edition: community # professional | community
     robomongo_version: 0.8.5
     rubies_location: /opt/rubies
