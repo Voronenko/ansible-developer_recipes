@@ -32,7 +32,7 @@
     chruby_version: 0.3.9
     doxygen_version: 1.8.11
     go_version: 1.6
-    intellij_version: 2016.1.1 #14.1.4
+    intellij_version: 2016.3.4 #2016.1.1 #14.1.4
     java_version: 8
     jython_version: 2.7.0
     lighttable_version: 0.8.1
@@ -205,6 +205,7 @@
 #     - include  tools/tasks_logwatch.yml # logwatch
 #     - include: tools/tasks_rsyslog.yml  # syslog server
 #     - include: tools/tasks_syncthing.yml # opensource file synchronizer
+#     - include: tools/tasks_kindlegen.yml # Installs kindle convertor for publishing books to amazon
 
 # Devops tools
 #     - include: tasks_terraform.yml
