@@ -19,7 +19,7 @@
 
   - name: NodeJS | Check nodejs_version variable
     assert:
-      that: nodejs_version in [ "0.10", "0.12", "4.x", "5.x" ]
+      that: nodejs_version in [ "0.10", "0.12", "4.x", "5.x", "6.x", "7.x"  ]
     when: ansible_os_family == "Debian" and node_present|failed
     tags:
        -nodejs
@@ -71,7 +71,7 @@
        -nodejs
        -setup
 
-  - name: NodeJS | Install Node.js 4.x 5.x family
+  - name: NodeJS | Install Node.js 4.x 5.x 6.x 7.x family
     apt: pkg=nodejs state=installed update_cache=yes
     become: yes
     when: ansible_os_family == "Debian" and nodejs_version not in [ "0.10", "0.12" ]  and node_present|failed
@@ -88,7 +88,7 @@
        -setup
 
 
-  - name: NodeJS | Install gulp, bower, grunt, grunt-cli tools tool
+  - name: NodeJS | Install gulp, bower and other tools as globals
     shell: npm install -g {{ item }}
     when: ansible_os_family == "Debian" and node_present|failed
     with_items:

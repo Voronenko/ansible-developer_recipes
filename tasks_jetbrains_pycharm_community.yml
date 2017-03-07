@@ -70,7 +70,7 @@
       src={{apps_dir}}/pycharm/bin/pycharm.sh
       dest=/usr/bin/pycharm
       state=link
-    sudo: yes
+    become: yes
     tags:
       -jetbrains
       -pycharm
