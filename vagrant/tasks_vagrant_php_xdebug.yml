@@ -105,7 +105,7 @@
 
 - name: XDebug | Errors to browser
   template:
-    src: "{{role_dir}}/files/php_debug/devbox.ini.j2"
+    src: "{{root_dir}}/files/php_debug/devbox.ini.j2"
     dest: "{{ php_extension_conf_path.stdout.replace('/cli/','/apache2/') }}/devbox.ini"
     owner: root
     group: root
@@ -123,7 +123,7 @@
 
 - name: XDebug | Errors to browser
   template:
-    src: "{{role_dir}}/files/php_debug/devbox.ini.j2"
+    src: "{{root_dir}}/files/php_debug/devbox.ini.j2"
     dest: "{{ php_extension_conf_path.stdout.replace('/cli/','/fpm/') }}/devbox.ini"
     owner: root
     group: root
