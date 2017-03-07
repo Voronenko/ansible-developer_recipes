@@ -1,0 +1,14 @@
+- name: NodeJS | Remove Node.js 0.10 0.12 family
+  apt: pkg=nodejs={{ nodejs_version }}.* state=absent update_cache=yes
+  become: yes
+  when: ansible_os_family == "Debian" and nodejs_version in [ "0.10", "0.12" ]
+  tags:
+     -nodejs
+     -setup
+- name: NodeJS | Remove Node.js 4.x 5.x 6.x 7.x family
+  apt: pkg=nodejs state=absent update_cache=yes
+  become: yes
+  when: ansible_os_family == "Debian" and nodejs_version not in [ "0.10", "0.12" ]
+  tags:
+     -nodejs
+     -setup
