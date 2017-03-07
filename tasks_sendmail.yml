@@ -1,0 +1,4 @@
+- name: Sendmail | Install Sendmail (Debian)
+  apt: pkg=sendmail state=installed update_cache=yes
+  when: ansible_os_family == "Debian"
+  become: true
