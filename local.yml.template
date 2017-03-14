@@ -25,12 +25,14 @@
     mysql_root_user: root
     mysql_root_password: devroot
     apache_mode: worker # use prefork or worker variables
+    docker_machine_dir: /opt/docker
 
     brackets_io_version: 1.6
     dbeawer_version: 3.7.2
     dmd_version: 2.072.1
     chruby_version: 0.3.9
     doxygen_version: 1.8.11
+    docker_machine_version: "0.10.0"
     go_version: 1.6
     intellij_version: 2016.3.4 #2016.1.1 #14.1.4
     java_version: 8
@@ -129,6 +131,7 @@
 
 #     - include: tasks_docker.yml                          # docker
 #     - include: tasks_docker_compose.yml                  # docker compose
+#     - include: tasks_docker_machine.yml                  # docker machine
 
 #     - include: tasks_oracle_virtualbox.yml               # Oracle Virtual Box
 #     - include: tasks_vagrant.yml                         # Vagrant

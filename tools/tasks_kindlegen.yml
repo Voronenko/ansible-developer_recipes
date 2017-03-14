@@ -14,6 +14,7 @@
 
   - name: KindleGen | Create installation directory
     file: path="{{kindlegen_dir|default('/opt/kindlegen')}}" owner="root" state="directory"
+    become: yes
     when: kindlegen_present | failed
     tags:
       - kindlegen

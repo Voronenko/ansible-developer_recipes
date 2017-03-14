@@ -1,0 +1,34 @@
+---
+  - name: Docker Machine | Test if is present
+    command: test -x /usr/local/bin/docker-machine
+    ignore_errors: yes
+    register: docker_machine_present
+    tags:
+      - docker_machine
+
+  - name: Docker Machine | Create installation directory
+    file: path="{{docker_machine_dir|default('/opt/docker')}}" owner="root" state="directory"
+    become: yes
+    when: docker_machine_present | failed
+    tags:
+      - kindlegen
+    
+  - name: Docker Machine | download and install package
+    get_url: validate_certs="false" url="https://github.com/docker/machine/releases/download/v{{docker_machine_version | default('0.10.0')}}/docker-machine-{{ansible_system}}-{{ansible_architecture}}" dest="{{docker_machine_dir|default('/opt/docker')}}/docker-machine" mode=0755
+    when: docker_machine_present | failed
+    become: yes
+    tags:
+      - docker_machine
+
+  - name: Docker Machine | Link executable
+    file:  src="{{docker_machine_dir|default('/opt/docker')}}/docker-machine" dest="/usr/local/bin/docker-machine"  owner="root"  state=link
+    become: yes
+    when: docker_machine_present | failed
+    tags:
+      - kindlegen
+
+
+   
+   
+
+
