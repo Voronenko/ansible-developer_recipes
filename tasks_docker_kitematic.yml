@@ -1,0 +1,38 @@
+---
+- name: Docker kitematic | Check if package is installed
+  command: dpkg-query -W kitematic
+  register: kitematic_check_deb
+  become: yes
+  failed_when: kitematic_check_deb.rc > 1
+  changed_when: kitematic_check_deb.rc == 1
+  tags:
+    -kitematic
+
+- name: Docker kitematic  | Install dependencies
+  apt: pkg="unzip"
+  become: true
+  when: kitematic_check_deb.rc == 1
+  tags:
+    -kitematic
+
+- name: Docker kitematic | Download package
+  get_url: url="https://github.com/docker/kitematic/releases/download/v{{kitematic_version | default('0.13.1')}}/Kitematic-{{kitematic_version | default('0.13.1')}}-Ubuntu.zip" dest="/tmp/kitematic.zip"
+  when: kitematic_check_deb.rc == 1
+  tags:
+    -kitematic
+
+- name: Docker kitematic | unpack package 
+  unarchive: src="/tmp/kitematic.zip"  dest="/tmp"  remote_src="True"
+  become: true
+  when: kitematic_check_deb.rc == 1
+  tags:
+    -kitematic
+
+- name: Docker kitematic  | Install package
+  apt: deb="/tmp/dist/Kitematic_{{kitematic_version | default('0.13.1')}}_amd64.deb"
+  become: true
+  when: kitematic_check_deb.rc == 1
+  tags:
+    -kitematic
+
+    

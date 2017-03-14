@@ -132,6 +132,7 @@
 #     - include: tasks_docker.yml                          # docker
 #     - include: tasks_docker_compose.yml                  # docker compose
 #     - include: tasks_docker_machine.yml                  # docker machine
+#     - include: tasks_docker_kitematic.yml                # docker kitematic
 
 #     - include: tasks_oracle_virtualbox.yml               # Oracle Virtual Box
 #     - include: tasks_vagrant.yml                         # Vagrant
