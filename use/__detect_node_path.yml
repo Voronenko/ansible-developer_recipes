@@ -31,6 +31,7 @@
     args:
        executable: /bin/bash
     register: npm_path_detected_raw
+    ignore_errors: true
     become: "{{deploy_user}}"
 
 #  - debug: var="npm_path_detected_raw"
@@ -38,8 +39,10 @@
   - set_fact:
       npm_path_detected: "{{ npm_path_detected_raw.stdout }}"
       npm_is_global: "{{npm_path_detected_raw.stdout.find('.nvm') == -1}}"
+    when: not npm_path_detected_raw | failed
 
   - debug: msg="{{ npm_path_detected_raw }} thus npm global is {{npm_is_global}}"
+    when: not npm_path_detected_raw | failed
 
 # Usage example:
 #    - name: Install ember-cli
