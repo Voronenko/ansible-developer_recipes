@@ -1,11 +1,15 @@
 ---
+  # params
+  #  deploy_user - user for whom to detect node
+  #  deploy_user_nvm_path - provide hint on nvm path, if location is unusual
 
   - set_fact:
       npm_source_prefix: ""
 
   - name: USE | Detect Node Location overrides
     shell: |
-      if [[ -f /home/{{deploy_user}}/.nvm/nvm.sh ]]; then echo /home/{{deploy_user}}/.nvm/nvm.sh;
+      if [[ -f {{deploy_user_nvm_path | default('')}}/.nvm/nvm.sh ]]; then echo {{deploy_user_nvm_path | default('')}}.nvm/nvm.sh;
+      elif [[ -f /home/{{deploy_user}}/.nvm/nvm.sh ]]; then echo /home/{{deploy_user}}/.nvm/nvm.sh;
       elif [[ /{{deploy_user}}/.nvm/nvm.sh ]]; then echo /{{deploy_user}}/.nvm/nvm.sh;
       elif [[ -f /home/{{deploy_user}}/.profile ]]; then echo /home/{{deploy_user}}/.profile;
       elif [[ -f /{{deploy_user}}/.profile ]]; then echo /{{deploy_user}}/.profile;
