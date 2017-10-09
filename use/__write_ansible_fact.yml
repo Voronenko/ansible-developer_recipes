@@ -1,0 +1,24 @@
+---
+  - name: Write ansible fact | create ansible facts.d directory
+    file:
+      state: directory
+      dest: /etc/ansible/facts.d
+      owner: root
+      group: root
+      mode: 'u=rwx,go=rx'
+    become: yes
+
+  - name: Write ansible fact | install fact
+    template:
+      src: "{{fact_template | default('fact.j2')}}"
+      dest: "/etc/ansible/facts.d/{{ fact_group_name }}.fact"
+      owner: root
+      group: root
+      mode: 'u=rw,g=r,o=r'
+    register: current_fact
+    become: yes
+
+  - name: Write ansible fact | re-read facts
+    setup:
+      filter: ansible_local
+    when: current_fact|changed
