@@ -34,7 +34,7 @@
     doxygen_version: 1.8.11
     docker_machine_version: "0.10.0"
     go_version: 1.6
-    intellij_version: 2017.1.5 #2016.3.4 #2016.1.1 #14.1.4
+    intellij_version: 2017.3.1 # 2017.1.5 #2016.3.4 #2016.1.1 #14.1.4
     java_version: 8
     jython_version: 2.7.0
     lighttable_version: 0.8.1
@@ -50,11 +50,11 @@
     option_integrate_w_zsh: false
     # /nvm
     oracle_vbox_version: 4.3
-    phpstorm_version: "2017.1.4" # "2016.3.2" # "2016.2" "2016.1" # 10.0.3  | "10.0" | 9.0.2 | 8.0.3 | 8.0.1 | 7.1.4 | 6.0.3 | 5.0.4
+    phpstorm_version: "2017.3.1" # "2017.2.4" # "2017.3.1" # "2017.1.4" # "2016.3.2" # "2016.2" "2016.1" # 10.0.3  | "10.0" | 9.0.2 | 8.0.3 | 8.0.1 | 7.1.4 | 6.0.3 | 5.0.4
     php_xdebug_version: 2.2.4
     phpcs_version: 2.5.1
     phpcbf_version: 2.5.1
-    pycharm_version: "2016.3.2" #"2016.2" #"2016.1.4" #"2016.1"# 5.0.1 # 4.5.4
+    pycharm_version: "2017.3.1" # "2016.3.2" #"2016.2" #"2016.1.4" #"2016.1"# 5.0.1 # 4.5.4
 #    pycharm_edition: community # professional | community
     robomongo_version: 0.8.5
     rubies_location: /opt/rubies

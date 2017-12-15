@@ -5,6 +5,7 @@
   - name: JetBrains PHPStorm| Check phpstorm_version variable
     assert:
       that: phpstorm_version in ["2017.1.4", "2016.3.2", "2016.2", "2016.1.2", "2016.1", "10.0.3", "10.0.2", "10.0", "9.0.2", "8.0.3", "8.0.1", "7.1.4", "6.0.3", "5.0.4" ]
+    ignore_errors: yes
     tags:
       -jetbrains
       -phpstorm
@@ -77,7 +78,7 @@
 
   - name: JetBrains PHPStorm| Create desktop entry
     template:
-      src={{root_dir}}/files/jetbrains/desktopentry.j2
+      src={{role_dir}}/files/jetbrains/desktopentry.j2
       dest=/home/{{deploy_user}}/Desktop/PhpStorm.desktop
       mode=755
     with_items:
