@@ -1,4 +1,5 @@
 """
+https://github.com/Voronenko/ansible-developer_recipes/tree/master/ansible_extras
 Description: This lookup takes cloud front distributionId
 name and returns a matching etag needed to dismount distribution
 Example Usage:

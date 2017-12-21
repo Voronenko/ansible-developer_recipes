@@ -1,11 +1,20 @@
+"""
+https://github.com/Voronenko/ansible-developer_recipes/tree/master/ansible_extras
+Description: This lookup takes an hashicorp vault secret path  and a token
+and returns matching secret. Note: specifiing default supresses exception, if token is wrong.
+Example Usage:
+{{ lookup('sa_hashi_vault', 'secret=secret/my token=mytoken default=SOMEDEFAULT') }}
+"""
+
 from __future__ import (absolute_import, division, print_function)
-import os
+import os, logging
 from ansible.errors import AnsibleError
 from ansible.plugins.lookup import LookupBase
 
 __metaclass__ = type
 
 ANSIBLE_HASHI_VAULT_ADDR = 'http://127.0.0.1:8200'
+ANSIBLE_HASHI_VAULT_TOKEN = "PLEASE SPECIFY VIA ENV OR AS PARAM"
 
 if os.getenv('VAULT_ADDR') is not None:
     ANSIBLE_HASHI_VAULT_ADDR = os.environ['VAULT_ADDR']
@@ -21,7 +30,11 @@ class SaHashiVault:
         except ImportError:
             AnsibleError("Please pip install hvac to use this module")
 
+        self.isAuthenticated = False
         self.url = kwargs.get('url', ANSIBLE_HASHI_VAULT_ADDR)
+
+        if 'default' in kwargs:
+          self.default = kwargs.get('default', "")
 
         self.token = kwargs.get('token', ANSIBLE_HASHI_VAULT_TOKEN)
         if self.token is None:
@@ -33,8 +46,6 @@ class SaHashiVault:
         if s is None:
             raise AnsibleError("No secret specified")
 
-        self.default = kwargs.get('default', None)
-
         s_f = s.split(':')
         self.secret = s_f[0]
         if len(s_f) >= 2:
@@ -45,14 +56,20 @@ class SaHashiVault:
         self.client = hvac.Client(url=self.url, token=self.token)
 
         if self.client.is_authenticated():
+            self.isAuthenticated=True
             pass
+        elif hasattr(self, 'default'):
+           self.isAuthenticated=False
+           pass
         else:
             raise AnsibleError("Invalid Hashicorp Vault Token Specified")
 
     def get(self):
-        data = self.client.read(self.secret)
+        data = None
+        if self.isAuthenticated:
+          data = self.client.read(self.secret)
         if data is None:
-            if not self.default is None:
+            if hasattr(self, 'default'):
                 return self.default
             else:
                 raise AnsibleError("The secret %s doesn't seem to exist"

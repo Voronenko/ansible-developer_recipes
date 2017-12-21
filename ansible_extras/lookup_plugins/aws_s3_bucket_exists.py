@@ -1,4 +1,5 @@
 """
+https://github.com/Voronenko/ansible-developer_recipes/tree/master/ansible_extras
 Description: This lookup takes an AWS region and an s3 bucket name.
 Example Usage:
 {{ lookup('aws_s3_bucket_exists', 'bucketname') }}

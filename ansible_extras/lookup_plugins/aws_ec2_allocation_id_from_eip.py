@@ -1,4 +1,5 @@
 """
+https://github.com/Voronenko/ansible-developer_recipes/tree/master/ansible_extras
 Description: This lookup takes an AWS region and an elastic ip address
 and returns the allocation id.
 Example Usage:
