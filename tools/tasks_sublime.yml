@@ -1,0 +1,25 @@
+  - name: Worktools | Check if sublime is installed
+    command: dpkg-query -W sublime-text
+    register: sublime_check_deb
+    failed_when: sublime_check_deb.rc > 1
+    changed_when: sublime_check_deb.rc == 1
+    tags:
+      -sublime
+      -setup
+
+
+  - name: Worktools | Add sublime ppa
+    apt_repository: repo=ppa:webupd8team/sublime-text-2 state=present
+    become: yes
+    when: sublime_check_deb.rc == 1
+    tags:
+      -sublime
+      -setup
+
+  - name: Worktools | Install Sublime
+    apt: update_cache=yes pkg=sublime-text state=installed
+    become: yes
+    when: sublime_check_deb.rc == 1
+    tags:
+      -atom
+      -setup

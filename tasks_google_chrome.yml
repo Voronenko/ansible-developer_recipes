@@ -1,0 +1,31 @@
+  - name: Google | Check google apt
+    command: test -f /etc/apt/sources.list.d/google-chrome.list
+    register: google_apt_exists
+    ignore_errors: True
+    tags:
+      -chrome
+      -setup
+
+
+  - name: Google | Add Google Chrome key
+    shell: wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+    become: yes
+    when: google_apt_exists.rc == 1
+    tags:
+      -chrome
+      -setup
+
+  - name: Google | Add Google Chrome repo
+    copy: content="deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" dest=/etc/apt/sources.list.d/google-chrome.list owner=root group=root mode=644
+    when: google_apt_exists.rc == 1
+    become: yes
+    tags:
+      -chrome
+      -setup
+
+  - name: Google | Install Google Chrome
+    apt: update_cache=yes pkg=google-chrome-stable state=installed
+    become: yes
+    tags:
+      -chrome
+      -setup

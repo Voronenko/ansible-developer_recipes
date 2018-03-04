@@ -1,0 +1,24 @@
+  - name: Zeal | Check if zeal is installed
+    command: dpkg-query -W zeal
+    register: zeal_check_deb
+    failed_when: zeal_check_deb.rc > 1
+    changed_when: zeal_check_deb.rc == 1
+    tags:
+      -zeal
+      -setup
+
+
+  - name: Zeal | Add zeal ppa
+    apt_repository: repo=ppa:zeal-developers/ppa state=present
+    become: yes
+    when: ansible_distribution_release != "xenial" and zeal_check_deb.rc == 1
+    tags:
+      -zeal
+      -setup
+
+  - name: Zeal | Install zeal
+    apt: update_cache=yes pkg=zeal state=installed
+    become: yes
+    tags:
+      -zeal
+      -setup

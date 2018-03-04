@@ -1,0 +1,33 @@
+- name: Worktools | Check if atom is installed
+  command: dpkg-query -W atom
+  register: atom_check_deb
+  failed_when: atom_check_deb.rc > 1
+  changed_when: atom_check_deb.rc == 1
+  tags:
+    -atom
+    -setup
+
+
+- name: Worktools | Add atom ppa
+  apt_repository: repo=ppa:webupd8team/atom state=present
+  become: yes
+  when: atom_check_deb.rc == 1
+  tags:
+    -atom
+    -setup
+
+- name: Worktools | Install atom
+  apt: update_cache=yes pkg=atom state=installed
+  when: atom_check_deb.rc == 1
+  become: yes
+  tags:
+    -atom
+    -setup
+
+- name: Worktools | Install atom packages
+  shell: apm install {{item}}
+  with_items: "{{atom_packages}}"
+  when: atom_packages is defined
+  tags:
+    -atom
+    -setup
