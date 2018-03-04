@@ -1,3 +1,6 @@
+  - fail: msg="Ubuntu only"
+    when: ansible_distribution not in ["Ubuntu"] 
+
   - name: Ubuntu | Uninstall games
     apt: pkg={{item}} state=absent
     with_items:
