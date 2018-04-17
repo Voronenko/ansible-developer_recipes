@@ -33,7 +33,7 @@
     chruby_version: 0.3.9
     doxygen_version: 1.8.11
     docker_machine_version: "0.10.0"
-    go_version: 1.6
+    go_version: "1.10.1"
     intellij_version: 2017.3.1 # 2017.1.5 #2016.3.4 #2016.1.1 #14.1.4
     java_version: 8
     jython_version: 2.7.0

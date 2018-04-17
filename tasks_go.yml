@@ -32,7 +32,7 @@
     become: yes
 #    when: go_present | failed
     with_items:
-      - {regexp: "^export PATH=.*", line: "^export PATH=$PATH:/usr/local/go/bin"}
+      - {regexp: "^export PATH=.*", line: "export PATH=$PATH:/usr/local/go/bin"}
     tags:
       -go
 
