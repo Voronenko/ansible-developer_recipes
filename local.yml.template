@@ -56,6 +56,7 @@
     phpcbf_version: 2.5.1
     pycharm_version: "2017.3.1" # "2016.3.2" #"2016.2" #"2016.1.4" #"2016.1"# 5.0.1 # 4.5.4
 #    pycharm_edition: community # professional | community
+    python_version: "3.6.5"
     robomongo_version: 0.8.5
     rubies_location: /opt/rubies
     ruby_install_version: 0.6.0
@@ -100,6 +101,7 @@
 #     - include: tools/tasks_ubuntu_disableguestlogin.yml  # disable guest login enabled by default
 #     - include: tasks_git.yml                             # upgrade git to the most recent one
 #     - include: tasks_python.yml                          # basic updates to py & pip
+#     - include: tasks_python3.yml                         # python3 
 #     - include: tasks_worktools.yml                       # swiss knife for desktop utilities
 #     - include: tasks_google_chrome.yml                   # google chrome browser
 #     - include: tools/tasks_tmux.yml                      # If you are the tmux fun
