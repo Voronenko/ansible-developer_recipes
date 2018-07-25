@@ -45,6 +45,7 @@
   - name: Set GOPATH for all users
     lineinfile: dest=/etc/profile.d/go_path.sh regexp="{{item.regexp}}" line="{{item.line}}"
     with_items:
+      - {regexp:"^export PATH=", line:"export PATH=$PATH:/usr/local/go/bin"}
       - {regexp: "^export GOPATH=.*", line: "export GOPATH=$HOME/go"}
       - {regexp: "^export PATH=.*", line: "export PATH=$GOPATH/bin:$PATH"}
     become: yes
