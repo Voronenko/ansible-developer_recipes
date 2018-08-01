@@ -14,14 +14,14 @@
 
   - name: D.PR | get pack
     get_url: url=http://d.pr/f/LMD4+ dest={{apps_dir}}/dpr.tgz
-    when: dpr_present|failed
+    when: dpr_present is failed
     tags:
       - dpr
 
   - name: D.PR | Install dependencies
     shell: pip install simplejson
     become: yes
-    when: dpr_present|failed
+    when: dpr_present is failed
     tags:
       - dpr
 
@@ -30,7 +30,7 @@
       src="{{apps_dir}}/dpr.tgz"
       dest="{{apps_dir}}"
       copy=no
-    when: dpr_present|failed
+    when: dpr_present is failed
     tags:
       - dpr
 
@@ -40,7 +40,7 @@
       dest: /usr/bin/dewdrop
       state: link
     become: yes
-    when: dpr_present|failed
+    when: dpr_present is failed
     tags:
       - dpr
 
@@ -58,6 +58,6 @@
       categories: "tools;",
       startupwmclass: "tools"
       }
-    when: dpr_present|failed
+    when: dpr_present is failed
     tags:
       - dpr

@@ -7,14 +7,14 @@
 
   - name: Java | Add apt repository
     apt_repository: repo='ppa:webupd8team/java'
-    when: java_present|failed
+    when: java_present is failed
     become: yes
     tags: 
         -java
 
   - name: Java | Accept the Oracle license before the installation
     shell: echo oracle-java{{java_version}}-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
-    when: java_present|failed
+    when: java_present is failed
     become: yes
     tags: 
         -java
@@ -22,7 +22,7 @@
 
   - name: Java | Install
     apt: update-cache=yes force=yes state=present pkg=oracle-java{{java_version}}-installer
-    when: java_present|failed
+    when: java_present is failed
     become: yes
     tags: 
         -java

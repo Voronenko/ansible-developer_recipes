@@ -8,20 +8,20 @@
   - name: PHPCS | Download phpcs distribution
     get_url: url="https://github.com/squizlabs/PHP_CodeSniffer/releases/download/{{phpcs_version}}/phpcs.phar"
              dest="/tmp/phpcs.phar"
-    when: phpcs_present|failed
+    when: phpcs_present is failed
     tags: phpcs
 
   - name: PHPCS | mv phpcs.phar /usr/local/bin/phpcs
     command: mv phpcs.phar /usr/local/bin/phpcs
              chdir="/tmp"
     become: yes
-    when: phpcs_present|failed
+    when: phpcs_present is failed
     tags: phpcs
 
   - name: PHPCS | set executable attr
     file: path=/usr/local/bin/phpcs state=touch mode="u=rwx,g=rx,o=rx"
     become: yes
-    when: phpcs_present|failed
+    when: phpcs_present is failed
     tags: phpcs
 
 
@@ -34,20 +34,20 @@
   - name: PHPCBF | Download phpcbf distribution
     get_url: url="https://github.com/squizlabs/PHP_CodeSniffer/releases/download/{{phpcbf_version}}/phpcbf.phar"
              dest="/tmp/phpcbf.phar"
-    when: phpcbf_present|failed
+    when: phpcbf_present is failed
     tags: phpcbf
 
   - name: PHPCBF | mv phpcbf.phar /usr/local/bin/phpcbf
     command: mv phpcbf.phar /usr/local/bin/phpcbf
              chdir="/tmp"
     become: yes
-    when: phpcbf_present|failed
+    when: phpcbf_present is failed
     tags: phpcbf
 
   - name: PHPCBF | set executable attr
     file: path=/usr/local/bin/phpcbf state=touch mode="u=rwx,g=rx,o=rx"
     become: yes
-    when: phpcbf_present|failed
+    when: phpcbf_present is failed
     tags: phpcbf
 
 # phpcs --report=xml --report-file=build/phpcs.xml --ignore=*/.git/*,*/vendor/*,vendor/* $SOURCE_PATH

@@ -7,7 +7,7 @@
 
   - name: DOXYGEN | Install dependencies
     apt: pkg={{ item }} state=present
-    when: doxygen_present|failed
+    when: doxygen_present is failed
     with_items:
       - cmake
       - bison
@@ -22,7 +22,7 @@
   - name: DOXYGEN | Download doxygen distribution
     get_url: url="http://ftp.stack.nl/pub/users/dimitri/doxygen-{{doxygen_version}}.src.tar.gz"
              dest="{{apps_dir}}/doxygen.tar.gz"
-    when: doxygen_present|failed
+    when: doxygen_present is failed
     tags: doxygen
 
   - name: DOXYGEN | unpack distribution
@@ -30,21 +30,21 @@
       src="{{apps_dir}}/doxygen.tar.gz"
       dest={{apps_dir}}
       copy=no
-    when: doxygen_present|failed
+    when: doxygen_present is failed
     tags: doxygen
 
   - name: DOXYGEN | build step 1
     shell: mkdir -v build
     args:
       chdir: "{{apps_dir}}/doxygen-{{doxygen_version}}"
-    when: doxygen_present|failed
+    when: doxygen_present is failed
     tags: doxygen
 
   - name: DOXYGEN | build step 2
     shell: cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -Dbuild_wizard=ON -DCMAKE_INSTALL_PREFIX=/usr ..
     args:
       chdir: "{{apps_dir}}/doxygen-{{doxygen_version}}/build"
-    when: doxygen_present|failed
+    when: doxygen_present is failed
     tags: doxygen
 
   - name: DOXYGEN | build step 3
@@ -52,11 +52,11 @@
     args:
       chdir: "{{apps_dir}}/doxygen-{{doxygen_version}}/build"
     become: yes
-    when: doxygen_present|failed
+    when: doxygen_present is failed
     tags: doxygen
 
   - name: DOXYGEN | clean build dir
     file: path="{{apps_dir}}/doxygen-{{doxygen_version}}" state=absent
-    when: doxygen_present|failed
+    when: doxygen_present is failed
     tags: doxygen
 

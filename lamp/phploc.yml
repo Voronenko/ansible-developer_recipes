@@ -8,20 +8,20 @@
   - name: PHPLOC | Download phploc distribution
     get_url: url="https://phar.phpunit.de/phploc.phar"
              dest="/tmp/phploc.phar"
-    when: phploc_present|failed
+    when: phploc_present is failed
     tags: phploc
 
   - name: PHPLOC | mv phploc.phar /usr/local/bin/phploc
     command: mv phploc.phar /usr/local/bin/phploc
              chdir="/tmp"
     become: yes
-    when: phploc_present|failed
+    when: phploc_present is failed
     tags: phploc
 
   - name: PHPLOC | set executable attr
     file: path=/usr/local/bin/phploc state=touch mode="u=rwx,g=rx,o=rx"
     become: yes
-    when: phploc_present|failed
+    when: phploc_present is failed
     tags: phploc
 
 # phploc --log-xml build/phploc.xml --progress --exclude vendor/ $SOURCE_PATH

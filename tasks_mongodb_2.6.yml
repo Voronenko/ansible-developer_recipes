@@ -9,7 +9,7 @@
 
   - name: MongoDB | Add GPG key to apt keyring
     shell: apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
-    when: ansible_os_family == "Debian" and mongo_present|failed
+    when: ansible_os_family == "Debian" and mongo_present is failed
     become: yes
     tags:
         -mongodb
@@ -17,7 +17,7 @@
 
   - name: MongoDB | Add apt repository
     copy: src={{root_dir}}/files/mongodb/apt-source dest=/etc/apt/sources.list.d/mongodb.list mode=644
-    when: ansible_os_family == "Debian" and mongo_present|failed
+    when: ansible_os_family == "Debian" and mongo_present is failed
     become: yes
     tags:
         -mongodb
@@ -25,7 +25,7 @@
 
   - name: MongoDB | Install
     apt: update-cache=yes force=yes state=present pkg=mongodb-org
-    when: ansible_os_family == "Debian" and mongo_present|failed
+    when: ansible_os_family == "Debian" and mongo_present is failed
     become: yes
     tags:
         -mongodb

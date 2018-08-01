@@ -19,7 +19,7 @@
 
   - name: PHP | Add apt repository for php 5.4
     apt_repository: repo='ppa:ondrej/php5-oldstable'
-    when: php_family == "5.4" and php_present|failed
+    when: php_family == "5.4" and php_present is failed
     become: yes
     tags: 
       -php
@@ -27,7 +27,7 @@
 
   - name: PHP | Add apt repository for php 5.5
     apt_repository: repo='ppa:ondrej/php5'
-    when: php_family == "5.5" and php_present|failed
+    when: php_family == "5.5" and php_present is failed
     become: yes
     tags: 
       -php
@@ -35,7 +35,7 @@
 
   - name: PHP | Add apt repository for php 5.6
     apt_repository: repo='ppa:ondrej/php5-5.6'
-    when: php_family == "5.6" and php_present|failed
+    when: php_family == "5.6" and php_present is failed
     become: yes
     tags: 
       -php

@@ -8,7 +8,7 @@
 
   - name: Toggle | get pack
     get_url: url="https://www.toggl.com/api/v8/installer?app=td&platform=linux&channel=stable" dest="{{apps_dir}}/toggle.tgz"
-    when: toggle_present|failed
+    when: toggle_present is failed
     tags:
       - toggle
 
@@ -17,6 +17,6 @@
       src="{{apps_dir}}/toggle.tgz"
       dest="{{apps_dir}}"
       copy=no
-    when: toggle_present|failed
+    when: toggle_present is failed
     tags:
       - toggle

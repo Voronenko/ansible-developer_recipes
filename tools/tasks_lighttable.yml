@@ -7,7 +7,7 @@
 
   - name: LightTable | get pack
     get_url: url="https://github.com/LightTable/LightTable/releases/download/{{lighttable_version}}/lighttable-{{lighttable_version}}-linux.tar.gz" dest="/tmp/lighttable.tgz"
-    when: lighttable_present|failed
+    when: lighttable_present is failed
     tags:
       - lighttable
 
@@ -16,7 +16,7 @@
       src="/tmp/lighttable.tgz"
       dest="{{apps_dir}}"
       copy=no
-    when: lighttable_present|failed
+    when: lighttable_present is failed
     tags:
       - lighttable
 

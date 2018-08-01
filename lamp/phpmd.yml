@@ -8,20 +8,20 @@
   - name: PHPMD | Download phploc distribution
     get_url: url="http://static.phpmd.org/php/latest/phpmd.phar"
              dest="/tmp/phpmd.phar"
-    when: phpmd_present|failed
+    when: phpmd_present is failed
     tags: phpmd
 
   - name: PHPMD | mv phpmd.phar /usr/local/bin/phpmd
     command: mv phpmd.phar /usr/local/bin/phpmd
              chdir="/tmp"
     become: yes
-    when: phpmd_present|failed
+    when: phpmd_present is failed
     tags: phpmd
 
   - name: PHPMD | set executable attr
     file: path=/usr/local/bin/phpmd state=touch mode="u=rwx,g=rx,o=rx"
     become: yes
-    when: phpmd_present|failed
+    when: phpmd_present is failed
     tags: phpmd
 
 # phpmd $SOURCE_PATH xml cleancode,codesize,controversial,design,naming,unusedcode --reportfile build/phpmd.xml --exclude=*/.git/*,*/vendor/*,vendor/*

@@ -8,14 +8,14 @@
 
   - name: Docker | Add docker gpg keys
     shell: wget -qO- https://get.docker.com/gpg | sudo apt-key add -
-    when: ansible_os_family == "Debian" and docker_present|failed
+    when: ansible_os_family == "Debian" and docker_present is failed
     become: yes
     tags:
         -docker
 
   - name: Docker | Install docker via web installer
     shell: wget -qO- https://get.docker.com/ | sh
-    when: ansible_os_family == "Debian" and docker_present|failed
+    when: ansible_os_family == "Debian" and docker_present is failed
     become: yes
     tags:
         -docker
