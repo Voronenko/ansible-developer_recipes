@@ -1,22 +1,37 @@
 
-- name: Oracle VBox | add apt repository
-  apt_repository: repo='deb http://download.virtualbox.org/virtualbox/debian {{ansible_distribution_release}} contrib' state=present
-  when: ansible_os_family == "Debian"
-  become: yes
-  tags:
-    -oracle_vbox
-    -setup
+- block:
 
-- name:  Oracle VBox | register signing key
-  apt_key: url=http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc state=present  
-  become: yes
-  tags:
-    -oracle_vbox
-    -setup
+  - name: Oracle VBox | add apt repository
+    apt_repository: repo='deb http://download.virtualbox.org/virtualbox/debian {{ansible_distribution_release}} contrib' state=present
+    when: ansible_os_family == "Debian"
+    become: yes
+    tags:
+      -oracle_vbox
+      -setup    
 
-- name: Oracle VBox | Install oracle virtualbox
-  apt: update_cache=yes pkg=virtualbox-{{oracle_vbox_version}} state=present
-  become: yes
-  tags:
-    -oracle_vbox
-    -setup
+  - name:  Oracle VBox | register signing key
+    apt_key: url=http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc state=present  
+    become: yes
+    tags:
+      -oracle_vbox
+      -setup
+
+  - name: Oracle VBox | Install oracle virtualbox
+    apt: update_cache=yes pkg=virtualbox-{{oracle_vbox_version}} state=present
+    become: yes
+    tags:
+      -oracle_vbox
+      -setup
+  when: ansible_distribution_release in ["precise", "trusty", "xenial"]   
+
+- block:
+
+  - name: Oracle VBox | Install oracle virtualbox
+  
+    apt: update_cache=yes pkg=virtualbox state=present
+    become: yes
+    tags:
+      -oracle_vbox
+      -setup
+
+  when: ansible_distribution_release not in ["precise", "trusty", "xenial"]   

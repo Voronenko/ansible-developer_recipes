@@ -81,8 +81,8 @@ Helper ansible repository for my devbox box configuration. Suitable for: LAMP, M
 #     - include_tasks: tools/tasks_toggle.yml
 
 #  DESKTOP shortcuts
-#     - include_tasks: e531/desktop_icons_pack.yml              # desktop icons
-#     - include_tasks: e531/shortcuts.yml                       # desktop shortcuts
+#     - include_tasks: thinkpad/desktop_icons_pack.yml              # desktop icons
+#     - include_tasks: thinkpad/shortcuts.yml                       # desktop shortcuts
 
 # Local LAMP debugging
 #     - include_tasks: vagrant/tasks_vagrant_php_xdebug.yml

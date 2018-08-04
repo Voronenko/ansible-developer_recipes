@@ -1,0 +1,12 @@
+  - name: Thinkpad | Install power management related packages
+    apt: update_cache=yes  pkg={{ item }} state=present
+    become: yes
+    with_items:
+      - lm-sensors
+      - powertop
+      - tlp
+      - tlp-rdw      
+      - tp-smapi-dkms      
+      - acpi-call-dkms      
+    tags:
+        -thinkpad
