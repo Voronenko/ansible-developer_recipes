@@ -15,7 +15,7 @@
     -setup
 
 - name: Oracle VBox | Install oracle virtualbox
-  apt: update_cache=yes pkg=virtualbox-{{oracle_vbox_version}} state=installed
+  apt: update_cache=yes pkg=virtualbox-{{oracle_vbox_version}} state=present
   become: yes
   tags:
     -oracle_vbox

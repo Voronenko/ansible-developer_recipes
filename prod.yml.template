@@ -32,7 +32,7 @@
   
   tasks:
 
-    - include: tasks_webmin.yml
+    - include_tasks: tasks_webmin.yml
 
   handlers:
     - name: restart apache2

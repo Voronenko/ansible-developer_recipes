@@ -1,6 +1,6 @@
 
   - name: SSH | Install fail2ban
-    apt: pkg=fail2ban state=installed update-cache=yes
+    apt: pkg=fail2ban state=present update-cache=yes
     become: yes
     tags:
       - ssh 

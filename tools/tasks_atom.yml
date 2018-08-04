@@ -17,7 +17,7 @@
     -setup
 
 - name: Worktools | Install atom
-  apt: update_cache=yes pkg=atom state=installed
+  apt: update_cache=yes pkg=atom state=present
   when: atom_check_deb.rc == 1
   become: yes
   tags:

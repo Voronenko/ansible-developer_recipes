@@ -1,5 +1,5 @@
   - name: E531 | Install e531 related packages
-    apt: update_cache=yes  pkg={{ item }} state=installed
+    apt: update_cache=yes  pkg={{ item }} state=present
     become: yes
     with_items:
       - linux-headers-generic

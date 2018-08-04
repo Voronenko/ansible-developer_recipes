@@ -17,7 +17,7 @@
       -setup
 
   - name: Zeal | Install zeal
-    apt: update_cache=yes pkg=zeal state=installed
+    apt: update_cache=yes pkg=zeal state=present
     become: yes
     tags:
       -zeal

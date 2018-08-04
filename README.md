@@ -17,83 +17,83 @@ Helper ansible repository for my devbox box configuration. Suitable for: LAMP, M
 
 <pre>
 
-#     - include: tasks_cleanupubuntu.yml                   # removes games, lens, etc
-#     - include: tasks_python.yml                          # basic updates to py & pip
-#     - include: tasks_worktools.yml                       # swiss knife for desktop utilities
-#     - include: tools/tasks_tmux.yml                      # If you are the tmux fun
+#     - include_tasks: tasks_cleanupubuntu.yml                   # removes games, lens, etc
+#     - include_tasks: tasks_python.yml                          # basic updates to py & pip
+#     - include_tasks: tasks_worktools.yml                       # swiss knife for desktop utilities
+#     - include_tasks: tools/tasks_tmux.yml                      # If you are the tmux fun
 
-#     - include: tasks_mongodb_3.yml                       # mongodb 3.0
-#     - include: tasks_mysql.yml                           # MYSQL 5.5
-#     - include: tasks_percona_toolkit.yml                 # percona tools for mysql
+#     - include_tasks: tasks_mongodb_3.yml                       # mongodb 3.0
+#     - include_tasks: tasks_mysql.yml                           # MYSQL 5.5
+#     - include_tasks: tasks_percona_toolkit.yml                 # percona tools for mysql
 
 
-#     - include: tasks_nginx.yml                           # nginx
-#     - include: tasks_apache.yml                          # apache prefork|worker
+#     - include_tasks: tasks_nginx.yml                           # nginx
+#     - include_tasks: tasks_apache.yml                          # apache prefork|worker
 
-#     - include: tasks_nodejs.yml                          # node 0.10.* 0.12.*
-#     - include: tasks_java.yml                            # java 6-7-8
-#     - include: tasks_php_apache.yml                      # php 5.5 for apache
-#     - include: tasks_ruby.yml                            # Set system ruby to 2.1
+#     - include_tasks: tasks_nodejs.yml                          # node 0.10.* 0.12.*
+#     - include_tasks: tasks_java.yml                            # java 6-7-8
+#     - include_tasks: tasks_php_apache.yml                      # php 5.5 for apache
+#     - include_tasks: tasks_ruby.yml                            # Set system ruby to 2.1
 
-#     - include: tasks_jetbrains_phpstorm.yml              # PHP IDE
-#     - include: tasks_jetbrains_pycharm_community.yml     # PY IDE
-#     - include: tasks_jetbrains_rubymine.yml              # RUBY IDE
-#     - include: tasks_jetbrains_intellij_community.yml    # JAVA IDE
+#     - include_tasks: tasks_jetbrains_phpstorm.yml              # PHP IDE
+#     - include_tasks: tasks_jetbrains_pycharm_community.yml     # PY IDE
+#     - include_tasks: tasks_jetbrains_rubymine.yml              # RUBY IDE
+#     - include_tasks: tasks_jetbrains_intellij_community.yml    # JAVA IDE
 
-#     - include: tasks_robomongo.yml                       # mongo GUI tool
-#     - include: tasks_dbeawer.yml                         # mysql | postgre GUI tool
+#     - include_tasks: tasks_robomongo.yml                       # mongo GUI tool
+#     - include_tasks: tasks_dbeawer.yml                         # mysql | postgre GUI tool
 
-#     - include: tasks_docker.yml                          # docker
+#     - include_tasks: tasks_docker.yml                          # docker
 
-#     - include: tasks_oracle_virtualbox.yml               # Oracle Virtual Box
-#     - include: tasks_vagrant.yml                         # Vagrant
+#     - include_tasks: tasks_oracle_virtualbox.yml               # Oracle Virtual Box
+#     - include_tasks: tasks_vagrant.yml                         # Vagrant
 
 #      RUBY
-#     - include: ruby/ch_ruby.yml                          # chruby
-#     - include: ruby/ruby_install.yml                     # ruby-install
-#     - include: ruby/ruby.yml                             # installs ruby itself
+#     - include_tasks: ruby/ch_ruby.yml                          # chruby
+#     - include_tasks: ruby/ruby_install.yml                     # ruby-install
+#     - include_tasks: ruby/ruby.yml                             # installs ruby itself
 
 #      LAMP
-#     - include: lamp/phpdox.yml                            # phpdox documentator
-#     - include: lamp/doxygen.yml                           # doxygen documentator
-#     - include: lamp/phploc.yml                            # phploc tool
-#     - include: lamp/phpcs.yml                             # phpcs tool
-#     - include: lamp/phpmd.yml                             # phpmd tool
+#     - include_tasks: lamp/phpdox.yml                            # phpdox documentator
+#     - include_tasks: lamp/doxygen.yml                           # doxygen documentator
+#     - include_tasks: lamp/phploc.yml                            # phploc tool
+#     - include_tasks: lamp/phpcs.yml                             # phpcs tool
+#     - include_tasks: lamp/phpmd.yml                             # phpmd tool
 
-#     - include: tools/tasks_expect.yml                    # expect tool
-#     - include: tools/tasks_plantuml.yml                  # plant uml
-#     - include: tools/tasks_toggle.yml                    # toggle time tracker
-#     - include: tools/tasks_dpr.yml                       # d.pr screenshoting tool
+#     - include_tasks: tools/tasks_expect.yml                    # expect tool
+#     - include_tasks: tools/tasks_plantuml.yml                  # plant uml
+#     - include_tasks: tools/tasks_toggle.yml                    # toggle time tracker
+#     - include_tasks: tools/tasks_dpr.yml                       # d.pr screenshoting tool
 
 #     VMWARE
-#     - include: vmware/tasks_vmware_tools.yml             # ESX vmware tools
+#     - include_tasks: vmware/tasks_vmware_tools.yml             # ESX vmware tools
 
 #    DEVELOPMENT
-#     - include: tools/tasks_mailhog.yml                    # Web and API based SMTP testing
+#     - include_tasks: tools/tasks_mailhog.yml                    # Web and API based SMTP testing
 
 # COMMUNICATIONS
-#     - include: tools/tasks_skype.yml                       # skype 4.3
-#     - include: tools/tasks_speak_io.yml                    # speak.io client
-#     - include: tools/tasks_slack_client.yml               # slack
-#     - include: tools/tasks_hipchat_client.yml             # hipchat
+#     - include_tasks: tools/tasks_skype.yml                       # skype 4.3
+#     - include_tasks: tools/tasks_speak_io.yml                    # speak.io client
+#     - include_tasks: tools/tasks_slack_client.yml               # slack
+#     - include_tasks: tools/tasks_hipchat_client.yml             # hipchat
 
 #  TIME TRACKING
-#     - include: tools/tasks_toggle.yml
+#     - include_tasks: tools/tasks_toggle.yml
 
 #  DESKTOP shortcuts
-#     - include: e531/desktop_icons_pack.yml              # desktop icons
-#     - include: e531/shortcuts.yml                       # desktop shortcuts
+#     - include_tasks: e531/desktop_icons_pack.yml              # desktop icons
+#     - include_tasks: e531/shortcuts.yml                       # desktop shortcuts
 
 # Local LAMP debugging
-#     - include: vagrant/tasks_vagrant_php_xdebug.yml
+#     - include_tasks: vagrant/tasks_vagrant_php_xdebug.yml
 
 # 3rd party code editors
-#     - include: tools/tasks_microsoft_visual_studio_code.yml
+#     - include_tasks: tools/tasks_microsoft_visual_studio_code.yml
 
 # 3rd party tools
-#     - include: tools/tasks_s3cmd.yml
-#     - include: tools/tasks_openshift_rhctools.yml
-#     - include: tools/tasks_travis_clienttools.yml
+#     - include_tasks: tools/tasks_s3cmd.yml
+#     - include_tasks: tools/tasks_openshift_rhctools.yml
+#     - include_tasks: tools/tasks_travis_clienttools.yml
 
 </pre>
 
@@ -101,12 +101,12 @@ Helper ansible repository for my devbox box configuration. Suitable for: LAMP, M
 # bundled recipes for local or vagrant based LAMP debugging
 <pre>
 
-# - include: "{{root_dir}}/vagrant/tasks_vagrant_php_webgrind.yml"                   # Webgrind
-# - include: "{{root_dir}}/vagrant/tasks_vagrant_phpmyadmin.yml"                 # PhpMyAdmin
-# - include: "{{root_dir}}/vagrant/tasks_vagrant_php_xdebug.yml"                 # XDebug extension
-# - include: "{{root_dir}}/vagrant/tasks_vagrant_write_tools.yml"                # db import script, python venv init scripts
-# - include: "{{root_dir}}/vagrant/tasks_vagrant_import_mysqldb_databag.yml"     # (re)imports databases from db folder
-# - include: "{{root_dir}}/vagrant/tasks_vagrant_apache2_devsites.yml"           # register apache websites on vagrant
+# - include_tasks: "{{root_dir}}/vagrant/tasks_vagrant_php_webgrind.yml"                   # Webgrind
+# - include_tasks: "{{root_dir}}/vagrant/tasks_vagrant_phpmyadmin.yml"                 # PhpMyAdmin
+# - include_tasks: "{{root_dir}}/vagrant/tasks_vagrant_php_xdebug.yml"                 # XDebug extension
+# - include_tasks: "{{root_dir}}/vagrant/tasks_vagrant_write_tools.yml"                # db import script, python venv init scripts
+# - include_tasks: "{{root_dir}}/vagrant/tasks_vagrant_import_mysqldb_databag.yml"     # (re)imports databases from db folder
+# - include_tasks: "{{root_dir}}/vagrant/tasks_vagrant_apache2_devsites.yml"           # register apache websites on vagrant
 
 
 </pre>

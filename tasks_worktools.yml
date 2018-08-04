@@ -39,7 +39,7 @@
 
   - name: Worktools | action "open in terminal" for Nautilus
     apt: state=present pkg=nautilus-open-terminal
-    when: ansible_distribution_release != "xenial"
+    when: ansible_distribution_release in ["precise", "trusty"]
     become: yes
     tags:
       -worktools

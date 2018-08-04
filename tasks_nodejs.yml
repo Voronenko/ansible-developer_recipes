@@ -64,7 +64,7 @@
        -setup
 
   - name: NodeJS | Install Node.js 0.10 0.12 family
-    apt: pkg=nodejs={{ nodejs_version }}.* state=installed update_cache=yes
+    apt: pkg=nodejs={{ nodejs_version }}.* state=present update_cache=yes
     become: yes
     when: ansible_os_family == "Debian" and nodejs_version in [ "0.10", "0.12" ]  and node_present is failed
     tags:
@@ -72,7 +72,7 @@
        -setup
 
   - name: NodeJS | Install Node.js 4.x 5.x 6.x 7.x family
-    apt: pkg=nodejs state=installed update_cache=yes
+    apt: pkg=nodejs state=present update_cache=yes
     become: yes
     when: ansible_os_family == "Debian" and nodejs_version not in [ "0.10", "0.12" ]  and node_present is failed
     tags:

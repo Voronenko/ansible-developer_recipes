@@ -17,7 +17,7 @@
       -setup
 
   - name: Worktools | Install Sublime
-    apt: update_cache=yes pkg=sublime-text state=installed
+    apt: update_cache=yes pkg=sublime-text state=present
     become: yes
     when: sublime_check_deb.rc == 1
     tags:
