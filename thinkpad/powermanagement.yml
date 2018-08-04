@@ -10,3 +10,10 @@
       - acpi-call-dkms      
     tags:
         -thinkpad
+
+  - name: Thinkpad | s-tui
+    shell: pip install s-tui
+    become: yes
+    tags:
+        -thinkpad
+
