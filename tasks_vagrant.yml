@@ -42,7 +42,7 @@
   shell: "vagrant plugin install {{item}}"
   become: yes
   when: vagrant_plugins is defined
-  with_items: "{{vagrant_plugins | default(['vbguest', 'hostupdater', 'auto_network'])}}"
+  with_items: "{{vagrant_plugins | default(['vagrant-vbguest', 'hostupdater', 'vagrant-auto_network'])}}"
   tags:
     -vagrant
     -setup
