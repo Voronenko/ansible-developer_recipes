@@ -204,7 +204,7 @@ Helper ansible repository for my devbox box configuration. Suitable for: LAMP, M
 * [Bizagi modeler](http://www.bizagi.com/en/products/bpm-suite/modeler) Bizagi modeler - BMPN2.0 compatible tool for drowing business flow diagrams (Windows only)
 * [Gliffy](https://www.gliffy.com/go/commerce/index) html5 based online diagramming tool with BMPN 2.0 support
 * [SchemaSpy](http://schemaspy.sourceforge.net/) old but still good documentator for databases
-* [SchemaCrawler](http://sualeh.github.io/SchemaCrawler/) Similar to SchemaSpy, under development, but more complex to use
+* [SchemaCrawler](https://www.schemacrawler.com) Similar to SchemaSpy, under development, but more complex to use
 * [Pandoc](https://github.com/jgm/pandoc) Universal markup converter (i.e. docx to rst & so on)
 
 ## Virtualization
