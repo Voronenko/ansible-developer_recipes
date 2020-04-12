@@ -9,7 +9,7 @@
   - name: TMUX | Add ppa repository
     apt_repository: repo='ppa:pi-rho/dev' state=present
     become: yes
-    when: tmux_present | failed
+    when: tmux_present is failed
     tags:
       - tmux
 
@@ -17,6 +17,6 @@
   - name: TMUX | install package
     apt: pkg=tmux update_cache=yes
     become: yes
-    when: tmux_present | failed
+    when: tmux_present is failed
     tags:
       - tmux

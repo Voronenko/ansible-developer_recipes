@@ -28,28 +28,28 @@
   - name: Ruby | Download rubyinstall
     get_url: url=http://github.com/postmodern/ruby-install/archive/v{{ ruby_install_version }}.tar.gz
            dest=/tmp/ruby-install-{{ ruby_install_version }}.tar.gz
-    when: rubyinstall_present | failed
+    when: rubyinstall_present is failed
     tags:
       - ruby
 
   - name: Ruby | Unpack ruby-install
     command: tar xf /tmp/ruby-install-{{ ruby_install_version }}.tar.gz
              chdir=/tmp
-    when: rubyinstall_present | failed
+    when: rubyinstall_present is failed
     tags:
       - ruby
 
   - name: Ruby | Run ruby-install install target
     command: make install
            chdir=/tmp/ruby-install-{{ ruby_install_version }}
-    when: rubyinstall_present | failed
+    when: rubyinstall_present is failed
     become: yes
     tags:
       - ruby
 
   - name: Ruby | Download list of rubies available
     command: ruby-install
-    when: rubyinstall_present | failed
+    when: rubyinstall_present is failed
     become: yes
     tags:
       - ruby

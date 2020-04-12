@@ -1,8 +1,9 @@
   - name: Worktools | VI dependencies
-    apt: state=present pkg="{{item}}"
-    with_items:
-      - vim-gui-common
-      - vim-runtime
+    apt:
+      state: present
+      pkg:
+        - vim-gui-common
+        - vim-runtime
     become: yes
     tags:
       -worktools

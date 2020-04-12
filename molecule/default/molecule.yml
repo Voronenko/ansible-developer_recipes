@@ -1,0 +1,128 @@
+---
+dependency:
+  name: galaxy
+#  requirements_file: tests/requirements.yml
+
+scenario:
+  name: default
+
+lint: |
+       set -e
+       yamllint .
+       ansible-lint
+       flake8
+
+molecule:
+  raw_ssh_args:
+    - -o StrictHostKeyChecking=false
+    - -o UserKnownHostsFile=/dev/null
+
+driver:
+  name: vagrant
+  provider:
+    name: virtualbox
+
+ansible:
+  lint:
+    name: ansible-lint
+  # group_vars:
+  #   some-hosts:
+  #     # This should allow docker-in-docker to work
+  #     docker_storage_driver: vfs
+
+  # host_vars:
+  #   someinstance:
+  #     docker_use_ipv4_nic_mtu: True
+  #     # Latest version 17.12.1.ce-1.el7.centos has a bug that prevents
+  #     # testing on travis: https://github.com/docker/for-linux/issues/219
+  #     docker_version: 17.09.1.ce-1.el7.centos
+  #   someinstance-inactive:
+  #     docker_systemd_setup: False
+
+  # config_file: /path/to/your/ansible.cfg
+  # playbook: /path/to/some/other_playbook.yml
+  # host_key_checking: False
+  # raw_ssh_args:
+  #   - -o UserKnownHostsFile=/dev/null
+  #   - -o IdentitiesOnly=yes
+  #   - -o ControlMaster=auto
+  #   - -o ControlPersist=60s
+  # raw_env_vars:
+  #   ANSIBLE_ACTION_PLUGINS: ../plugins
+  # ansiblecfg_defaults:
+  #   retry_files_enabled: False
+  # ansiblecfg_ssh_connection:
+  #   pipelining: True
+
+platforms:
+  - name: bionic
+    instance_raw_config_args:
+      - "vbguest.auto_update = false"   # yamllint disable-line
+      - "disksize.size = '50GB'"
+    provider_raw_config_args:
+      - "customize [ 'modifyvm', :id, '--uartmode1', 'disconnected' ]"
+    box: bento/ubuntu-18.04
+    memory: 4096
+    cpus: 2
+    groups:
+      - molecule
+
+    # optional - box is accesible from your real network
+#    interfaces:
+#      - network_name: private_network
+#        type: dhcp
+#        auto_config: true
+
+
+    # interfaces:
+    #   - auto_config: true
+    #     network_name: private_network
+    #     type: dhcp
+    #   - virtualbox__intnet: test_network
+    #     network_name: private_network
+    #     ip: 192.168.0.1
+    # provision: false
+
+  # - name: trusty
+  #   box: ubuntu/trusty64
+  #   # interfaces:
+  #   #   - network_name: public_network
+  #   #     type: dhcp
+  #   #     auto_config: true
+  # - name: xenial
+  #   box: ubuntu/xenial64
+  # - name: bionic
+  #   box: ubuntu/bionic64
+    # interfaces:
+    #   - network_name: public_network
+    #     type: dhcp
+    #     auto_config: true
+    # provider_raw_config_args:
+    # - "customize [ 'modifyvm', :id, '--uartmode1', 'disconnected' ]"
+  # - name: centos6
+  #   box: centos/6
+  #- name: centos7
+  #  box: centos/7
+  #- name: centos8
+  #  box: centos/8
+  # - name: fedora28
+  #   box: generic/fedora28
+  # - name: alpine
+  #   box: generic/alpine28
+
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      callback_whitelist: profile_roles,profile_tasks,timer
+  # playbooks:
+  #   create: ../../../../../resources/playbooks/vagrant/create.yml
+  #   destroy: ../../../../../resources/playbooks/vagrant/destroy.yml
+  # env:
+  #   ANSIBLE_ROLES_PATH: ../../../../../resources/roles/
+  lint:
+    name: ansible-lint
+verifier:
+  name: testinfra
+  env:
+    PYTHONWARNINGS: "ignore:.*U.*mode is deprecated:DeprecationWarning"

@@ -5,36 +5,36 @@
     register: kindlegen_present
     tags:
       - kindlegen
-    
+
   - name: KindleGen | download package
     get_url: validate_certs="false" url="http://kindlegen.s3.amazonaws.com/kindlegen_linux_2.6_i386_v{{kindle_version|default('2_9')}}.tar.gz" dest="/tmp/kindlegen.tar.gz"
-    when: kindlegen_present | failed
+    when: kindlegen_present is failed
     tags:
       -kindlegen
 
   - name: KindleGen | Create installation directory
     file: path="{{kindlegen_dir|default('/opt/kindlegen')}}" owner="root" state="directory"
     become: yes
-    when: kindlegen_present | failed
+    when: kindlegen_present is failed
     tags:
       - kindlegen
 
   - name: KindleGen | Unarchieve installation
     unarchive:  src="/tmp/kindlegen.tar.gz"  dest="{{kindlegen_dir|default('/opt/kindlegen')}}" remote_src=True
     become: yes
-    when: kindlegen_present | failed
+    when: kindlegen_present is failed
     tags:
       - kindlegen
 
   - name: KindleGen | Link executable
     file:  src="{{kindlegen_dir|default('/opt/kindlegen')}}/kindlegen" dest="/usr/local/sbin/kindlegen"  owner="root"  state=link
     become: yes
-    when: kindlegen_present | failed
+    when: kindlegen_present is failed
     tags:
       - kindlegen
 
 
-   
-   
+
+
 
 

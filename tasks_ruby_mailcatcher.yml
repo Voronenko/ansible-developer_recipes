@@ -49,4 +49,4 @@
   - name: MailCatcher | Start MailCatcher
     command: mailcatcher --ip=0.0.0.0 --smtp-port 25
     become: yes
-    when: mailcatcher_is_installed | failed
+    when: mailcatcher_is_installed is failed

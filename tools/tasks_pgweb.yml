@@ -10,26 +10,26 @@
   - name: PGWEB | create target directory
     file: path="/opt/pgweb" state="directory"
     become: yes
-    when: pgweb_present | failed
+    when: pgweb_present is failed
     tags:
       - pgweb
 
   - name: PGWEB | Install dependencies
     apt: pkg=unzip
     become: yes
-    when: pgweb_present | failed
+    when: pgweb_present is failed
     tags:
       - pgweb
 
   - name: PGWEB | Download distribution
     get_url: url="https://github.com/sosedoff/pgweb/releases/download/v{{pgweb_version|default('0.9.5')}}/pgweb_linux_amd64.zip" dest="/tmp/pgweb_linux_amd64.zip"
-    when: pgweb_present | failed
+    when: pgweb_present is failed
     tags:
       - pgweb
 
   - name: PGWEB | Unpack distribution
     unarchive: src=/tmp/pgweb_linux_amd64.zip dest=/opt/pgweb remote_src=yes
-    when: pgweb_present | failed
+    when: pgweb_present is failed
     become: yes
     tags:
       - pgweb
@@ -37,6 +37,6 @@
   - name: PGWEB | Link executable /opt/pgweb/pgweb
     file: src="/opt/pgweb/pgweb_linux_amd64" dest="/opt/pgweb/pgweb" state=link mode="u=rwx,g=rx,o=rx"
     become: yes
-    when: pgweb_present | failed
+    when: pgweb_present is failed
     tags:
       - pgweb

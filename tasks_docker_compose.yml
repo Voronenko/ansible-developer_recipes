@@ -1,5 +1,8 @@
 - name: Docker Composer | Installing pypi package
   pip: name=docker-compose  state=present
+  retries: 3
+  register: result
+  until: result is not failed
   when: docker_compose_venv_directory is not defined
   become: yes
   tags:
@@ -7,6 +10,9 @@
 
 - name: Docker Composer | Installing pypi package in venv
   pip: name=docker-compose  virtualenv="{{ docker_compose_venv_directory }}" state=present
+  retries: 3
+  register: result
+  until: result is not failed
   when: docker_compose_venv_directory is defined
   become: yes
   tags:

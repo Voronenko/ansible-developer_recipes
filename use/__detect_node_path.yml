@@ -3,50 +3,53 @@
   #  deploy_user - user for whom to detect node
   #  deploy_user_nvm_path - provide hint on nvm path, if location is unusual
 
-  - set_fact:
+  - name: set initial fact about npm_source_prefix
+    set_fact:
       npm_source_prefix: ""
 
   - name: USE | Detect Node Location overrides
     shell: |
-      if [[ -f {{deploy_user_nvm_path | default('')}}/.nvm/nvm.sh ]]; then echo {{deploy_user_nvm_path | default('')}}.nvm/nvm.sh;
-      elif [[ -f /home/{{deploy_user}}/.nvm/nvm.sh ]]; then echo /home/{{deploy_user}}/.nvm/nvm.sh;
-      elif [[ /{{deploy_user}}/.nvm/nvm.sh ]]; then echo /{{deploy_user}}/.nvm/nvm.sh;
-      elif [[ -f /home/{{deploy_user}}/.profile ]]; then echo /home/{{deploy_user}}/.profile;
-      elif [[ -f /{{deploy_user}}/.profile ]]; then echo /{{deploy_user}}/.profile;
-      elif [[ -f /home/{{deploy_user}}/.bashrc ]]; then echo /home/{{deploy_user}}/.bashrc;
-      elif [[ -f /{{deploy_user}}/.bashrc ]]; then echo /{{deploy_user}}/.bashrc;
+      if [[ -f {{ deploy_user_nvm_path | default('') }}/.nvm/nvm.sh ]]; then echo {{ deploy_user_nvm_path | default('') }}.nvm/nvm.sh;
+      elif [[ -f /home/{{ deploy_user }}/.nvm/nvm.sh ]]; then echo /home/{{ deploy_user }}/.nvm/nvm.sh;
+      elif [[ /{{ deploy_user }}/.nvm/nvm.sh ]]; then echo /{{ deploy_user }}/.nvm/nvm.sh;
+      elif [[ -f /home/{{ deploy_user }}/.profile ]]; then echo /home/{{ deploy_user }}/.profile;
+      elif [[ -f /{{ deploy_user }}/.profile ]]; then echo /{{ deploy_user }}/.profile;
+      elif [[ -f /home/{{ deploy_user }}/.bashrc ]]; then echo /home/{{ deploy_user }}/.bashrc;
+      elif [[ -f /{{ deploy_user }}/.bashrc ]]; then echo /{{ deploy_user }}/.bashrc;
       else echo "";
       fi
     become: yes
-    become_user: "{{deploy_user}}"
+    become_user: "{{ deploy_user }}"
     args:
       executable: /bin/bash
     register: nvm_detect_raw
 
-  - set_fact:
-      npm_source_prefix: "source {{nvm_detect_raw.stdout}} &&"
+  - name: set discovered fact about npm_source_prefix
+    set_fact:
+      npm_source_prefix: "source {{ nvm_detect_raw.stdout }} &&"
     when: nvm_detect_raw.stdout != ""
 
 
   - debug: var="npm_source_prefix"
 
   - name: NODE LOCATION | Detect npm
-    shell: '{{npm_source_prefix}} dirname "`which npm`"'
+    shell: '{{ npm_source_prefix }} dirname "`which npm`"'
     args:
        executable: /bin/bash
     register: npm_path_detected_raw
     ignore_errors: true
-    become: "{{deploy_user}}"
+    become: "{{ deploy_user }}"
 
 #  - debug: var="npm_path_detected_raw"
 
-  - set_fact:
+  - name: Set detected facts
+    set_fact:
       npm_path_detected: "{{ npm_path_detected_raw.stdout }}"
-      npm_is_global: "{{npm_path_detected_raw.stdout.find('.nvm') == -1}}"
-    when: not npm_path_detected_raw | failed
+      npm_is_global: "{{ npm_path_detected_raw.stdout.find('.nvm') == -1 }}"
+    when: not npm_path_detected_raw is failed
 
-  - debug: msg="{{ npm_path_detected_raw }} thus npm global is {{npm_is_global}}"
-    when: not npm_path_detected_raw | failed
+  - debug: msg="{{ npm_path_detected_raw }} thus npm global is {{ npm_is_global }}"
+    when: not npm_path_detected_raw is failed
 
 # Usage example:
 #    - name: Install ember-cli
