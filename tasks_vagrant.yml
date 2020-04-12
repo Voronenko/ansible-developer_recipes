@@ -10,7 +10,7 @@
 - name: Download Vagrant
   get_url: url=https://releases.hashicorp.com/vagrant/{{ vagrant_version }}/vagrant_{{ vagrant_version }}_x86_64.deb
            dest=/tmp/vagrant_{{ vagrant_version }}_x86_64.deb
-  when: vagrant_present | failed
+  when: vagrant_present is failed
   become: yes
   tags:
     -vagrant
@@ -18,7 +18,7 @@
 
 - name: Install Vagrant
   apt: deb=/tmp/vagrant_{{ vagrant_version }}_x86_64.deb state=present
-  when: vagrant_present | failed
+  when: vagrant_present is failed
   become: yes
   tags:
     -vagrant

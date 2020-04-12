@@ -1,75 +1,341 @@
 ---
-  - name: Python | install python-pip
-    apt: name=python-pip update_cache=yes state=latest
-    become: yes
-    tags:
-      -python
+  #  sa-python v 1.7.0
+  - block:
 
-  - name: Python | Update pip
-    shell: pip install -U pip
-    become: yes
-    tags:
-      -python
+    - name: Python | install python-pip
+      apt: name=python-pip update_cache=yes state=present
+      retries: 3
+      register: result
+      until: result is not failed
+      become: yes
+      tags:
+        -python
 
-  - name: Python | install python-dev
-    apt: name=python-dev update_cache=yes state=latest
-    become: yes
-    tags:
-      -python
+    - name: Python | Update pip
+      shell: pip install -U pip pyopenssl ndg-httpsclient pyasn1
+      become: yes
+      tags:
+        -python
+        -skip_ansible_lint
 
-  # - name: Python | install swig
-  #   apt: name=swig update_cache=yes state=latest
-  #   become: yes
-  #   tags:
-  #     -python
+    - name: Python | install python-dev
+      apt: name=python-dev update_cache=yes state=present
+      become: yes
+      tags:
+        -python
+        -skip_ansible_lint
 
-  - name: Python | VirtualEnv
-    shell: pip install -U virtualenv
-    become: yes
-    tags:
-      -python
+    - name: Python | VirtualEnv
+      shell: pip install -U virtualenv
+      become: yes
+      tags:
+        -python
+        -skip_ansible_lint
 
-  - name: Python | virtualenvwrapper
-    shell: pip install -U virtualenvwrapper
-    become: yes
-    tags:
-      -python
+    - name: Python | virtualenvwrapper
+      shell: pip install -U --ignore-installed six virtualenvwrapper
+      become: yes
+      tags:
+        -python
+        -skip_ansible_lint
 
-  - name: Python | virtualenvwrapper console support
-    apt: pkg="virtualenvwrapper" state="latest"
-    become: yes
-    tags:
-      -python
+    - name: Python | virtualenvwrapper console support
+      apt: pkg="virtualenvwrapper" state="present"
+      retries: 3
+      register: result
+      until: result is not failed
+      become: yes
+      tags:
+        -python
 
-  - name: Python | install ca-certificates
-    package: name="ca-certificates" state=present
-    when: ansible_os_family == 'Debian'
-    become: yes
-    tags:
-      -python
+    - name: Python | install ca-certificates
+      package: name="ca-certificates" state=present
+      retries: 3
+      register: result
+      until: result is not failed
+      when: ansible_os_family == 'Debian'
+      become: yes
+      tags:
+        -python
 
-  - name: Python | install the Python SNI support packages
-    package: name="{{ item }}" state=present
-    with_items:
-      - python-dev
-      - libssl-dev
-      - libffi-dev
-    when: ansible_os_family == 'Debian'
-      and ansible_python_version | version_compare('2.6.0', '>=')
-      and ansible_python_version | version_compare('2.7.9', '<')
-    become: yes
-    tags:
-      -python
+    - name: Python | install the Python SNI support packages
+      package: name="{{ item }}" state=present
+      retries: 3
+      register: result
+      until: result is not failed
+      with_items:
+        - python-dev
+        - libssl-dev
+        - libffi-dev
+      when: ansible_os_family == 'Debian'
+        and ansible_python_version is version_compare('2.6.0', '>=')
+        and ansible_python_version is version_compare('2.7.9', '<')
+      become: yes
+      tags:
+        -python
 
-  - name: Python | install the Python SNI python-pip dependencies.
-    pip: name="{{ item }}" state=present
-    with_items:
-      - pyopenssl
-      - ndg-httpsclient
-      - pyasn1
-    when: ansible_os_family == 'Debian'
-      and ansible_python_version | version_compare('2.6.0', '>=')
-      and ansible_python_version | version_compare('2.7.9', '<')
-    become: yes
-    tags:
-      -python
+    - name: Python | install the Python SNI python-pip dependencies.
+      pip:
+       name:
+          - pyopenssl
+          - ndg-httpsclient
+          - pyasn1
+       state: present
+      retries: 3
+      register: result
+      until: result is not failed
+      when: ansible_os_family == 'Debian'
+        and ansible_python_version is version_compare('2.6.0', '>=')
+        and ansible_python_version is version_compare('2.7.9', '<')
+      become: yes
+      tags:
+        -python
+
+    when: ansible_os_family == "Debian"
+
+#  / UBUNTU
+
+  - block:
+
+    - block:
+
+      - name: EPEL | Check if EPEL repo is already configured.
+        shell: test -e /etc/yum.repos.d/epel.repo
+        become: yes
+        register: epel_repo_exists
+        ignore_errors: true
+
+      - name: Install EPEL repo.
+        yum:
+          name: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ epel_release_version | default(ansible_distribution_major_version) }}.noarch.rpm"
+          state: present
+        retries: 5
+        delay: 10
+        when: epel_repo_exists is failed
+        become: yes
+        register: result
+        changed_when: '"installed" in result'
+        until: '"failed" not in result'
+        tags:
+          - skip_ansible_lint
+
+      - name: Import EPEL GPG key.
+        rpm_key: key="/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-{{ epel_release_version | default(ansible_distribution_major_version) }}" state="present"
+        when: epel_repo_exists is failed
+        become: yes
+
+      when: option_install_epel or  option_install_epel is not defined
+
+    - name: Python | install python-pip
+      yum: name=python-pip update_cache=yes state=present
+      retries: 3
+      register: result
+      until: result is not failed
+      become: yes
+      tags:
+        -python
+
+    - name: Python | Update pip
+      shell: pip install -U pip
+      become: yes
+      tags:
+        -python
+        -skip_ansible_lint
+
+    - name: Python | install python-dev
+      yum: name=python-devel update_cache=yes state=present
+      retries: 3
+      register: result
+      until: result is not failed
+      become: yes
+      tags:
+        -python
+
+    - name: Python | VirtualEnv
+      shell: pip install -U virtualenv
+      become: yes
+      tags:
+        -python
+        -skip_ansible_lint
+
+    - name: Python | virtualenvwrapper
+      shell: pip install -U virtualenvwrapper
+      become: yes
+      tags:
+        -python
+        -skip_ansible_lint
+
+
+    when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+# / CentOs  Redhat
+
+  - block:
+
+    - name: Set facts
+      set_fact:
+        ALPINE_GLIBC_BASE_URL: "https://github.com/sgerrand/alpine-pkg-glibc/releases/download"
+        ALPINE_GLIBC_PACKAGE_VERSION: "2.25-r0"
+
+    - name: Set facts
+      set_fact:
+        ALPINE_GLIBC_BASE_URL: "https://github.com/sgerrand/alpine-pkg-glibc/releases/download"
+        ALPINE_GLIBC_BASE_PACKAGE_FILENAME: "glibc-{{ ALPINE_GLIBC_PACKAGE_VERSION }}.apk"
+        ALPINE_GLIBC_BIN_PACKAGE_FILENAME: "glibc-bin-{{ ALPINE_GLIBC_PACKAGE_VERSION }}.apk"
+        ALPINE_GLIBC_I18N_PACKAGE_FILENAME: "glibc-i18n-{{ ALPINE_GLIBC_PACKAGE_VERSION }}.apk"
+
+    - name: Python | Check if is present
+      command: test -x /usr/bin/python
+      ignore_errors: yes
+      register: python_present
+      tags: nginx
+
+
+    - name: Alpine | Install GLIBC | Step 1
+      shell: apk add --no-cache --virtual=.build-dependencies wget ca-certificates
+      when: python_present is failed
+      tags:
+        -python
+        -skip_ansible_lint
+
+    - name: Alpine | Install GLIBC | Step 2
+      get_url:
+        url: https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub
+        dest: /etc/apk/keys/sgerrand.rsa.pub
+        validate_certs: no
+      when: python_present is failed
+
+    - name: Alpine | Install GLIBC | Step 3
+      get_url:
+        url: "{{ ALPINE_GLIBC_BASE_URL }}/{{ ALPINE_GLIBC_PACKAGE_VERSION }}/{{ ALPINE_GLIBC_BASE_PACKAGE_FILENAME }}"
+        dest: "/tmp/{{ ALPINE_GLIBC_BASE_PACKAGE_FILENAME }}"
+        validate_certs: no
+      when: python_present is failed
+      tags:
+        -python
+        -skip_ansible_lint
+
+    - name: Alpine | Install GLIBC | Step 4
+      shell: apk add --no-cache "/tmp/{{ ALPINE_GLIBC_BASE_PACKAGE_FILENAME }}"
+      when: python_present is failed
+      tags:
+        -python
+        -skip_ansible_lint
+
+    - name: Alpine | Install GLIBC | Step 5
+      get_url:
+        url: "{{ ALPINE_GLIBC_BASE_URL }}/{{ ALPINE_GLIBC_PACKAGE_VERSION }}/{{ ALPINE_GLIBC_BIN_PACKAGE_FILENAME }}"
+        dest: "/tmp/{{ ALPINE_GLIBC_BIN_PACKAGE_FILENAME }}"
+        validate_certs: no
+      when: python_present is failed
+
+    - name: Alpine | Install GLIBC | Step 6
+      shell: apk add --no-cache "/tmp/{{ ALPINE_GLIBC_BIN_PACKAGE_FILENAME }}"
+      when: python_present is failed
+      tags:
+        -python
+        -skip_ansible_lint
+
+    - name: Alpine | Install GLIBC | Step 7
+      get_url:
+        url: "{{ ALPINE_GLIBC_BASE_URL }}/{{ ALPINE_GLIBC_PACKAGE_VERSION }}/{{ ALPINE_GLIBC_I18N_PACKAGE_FILENAME }}"
+        dest: "/tmp/{{ ALPINE_GLIBC_I18N_PACKAGE_FILENAME }}"
+        validate_certs: no
+      when: python_present is failed
+
+    - name: Alpine | Install GLIBC | Step 8
+      shell: apk add --no-cache "/tmp/{{ ALPINE_GLIBC_I18N_PACKAGE_FILENAME }}"
+      when: python_present is failed
+      tags:
+        -python
+        -skip_ansible_lint
+
+    - name: Alpine | Install GLIBC | Step 9
+      file: path="/etc/apk/keys/sgerrand.rsa.pub" state="absent"
+      when: python_present is failed
+
+    - name: Alpine | Install GLIBC | Step 10
+      shell: "/usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 C.UTF-8 || true"
+      when: python_present is failed
+
+    - name: Alpine | Install GLIBC | Step 11
+      shell: echo "export LANG=C.UTF-8" > /etc/profile.d/locale.sh
+      when: python_present is failed
+      tags:
+        -python
+        -skip_ansible_lint
+
+    - name: Alpine | Install GLIBC | Step 12
+      shell: apk del glibc-i18n
+      when: python_present is failed
+      tags:
+        -python
+        -skip_ansible_lint
+
+    - name: Alpine | Install GLIBC | Step 13
+      file: path="/root/.wget-hsts" state="absent"
+      when: python_present is failed
+
+    - name: Alpine | Install GLIBC | Step 14
+      shell: apk del .build-dependencies
+      when: python_present is failed
+      tags:
+        -python
+        -skip_ansible_lint
+
+    - name: Alpine | Install GLIBC | Step 15
+      file: path="{{ item }}" state="absent"
+      with_items:
+          - "{{ ALPINE_GLIBC_BASE_PACKAGE_FILENAME }}"
+          - "{{ ALPINE_GLIBC_BIN_PACKAGE_FILENAME }}"
+          - "{{ ALPINE_GLIBC_I18N_PACKAGE_FILENAME }}"
+      when: python_present is failed
+
+    - name: Python | Install python itself | Step 1
+      shell: apk add --no-cache python python-dev ca-certificates
+      when: python_present is failed
+      tags:
+        -python
+        -skip_ansible_lint
+
+    - name: Python | Install python itself | Step 2
+      shell: python -m ensurepip
+      when: python_present is failed
+      tags:
+        -python
+        -skip_ansible_lint
+
+    - name: Python | Install python itself | Step 3
+      shell: rm -r /usr/lib/python*/ensurepip
+      when: python_present is failed
+      tags:
+        -python
+        -skip_ansible_lint
+
+    - name: Python | Install python itself | Step 4
+      shell: pip install --upgrade pip setuptools
+      when: python_present is failed
+      tags:
+        -python
+        -skip_ansible_lint
+
+    - name: Python | VirtualEnv
+      shell: pip install -U virtualenv
+      when: python_present is failed
+      tags:
+        -python
+        -skip_ansible_lint
+
+    - name: Python | virtualenvwrapper
+      shell: pip install -U virtualenvwrapper
+      when: python_present is failed
+      tags:
+        -python
+        -skip_ansible_lint
+
+    - name: Python | Install python itself | Step 5
+      file: name="/root/.cache" state="absent"
+      when: python_present is failed
+
+
+    when: ansible_os_family == "Alpine"

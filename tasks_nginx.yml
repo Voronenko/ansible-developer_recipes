@@ -1,85 +1,219 @@
 #
 # Credits: https://raw.githubusercontent.com/StarterSquad/prudentia/develop/prudentia/tasks/nginx.yml
+# based on, but refactored and improved.
 #
 
 ---
   - name: Nginx | Check if is present
     command: test -x /usr/sbin/nginx
-    when: ansible_os_family == "Debian"
     ignore_errors: yes
     register: nginx_present
-    tags: 
-      - nginx
+    changed_when: false
+    tags: nginx
 
-  - name: Nginx | Add GPG key to apt keyring
-    apt_key: url=http://nginx.org/keys/nginx_signing.key state=present
-    when: nginx_present is failed
+  - block:
+
+    - name: Nginx | Install (apk)
+      apk: update_cache=yes state=present name=nginx
+      retries: 3
+      register: result
+      until: result is not failed
+      when: nginx_present is failed
+      tags: nginx
+      become: yes
+
+    - name: Nginx | Install (apk)
+      apk: state=present name=acl
+      retries: 3
+      register: result
+      until: result is not failed
+      when: nginx_present is failed
+      tags: nginx
+      become: yes
+
+
+    when: ansible_os_family == "Alpine"
+
+
+  - block:
+
+    - name:  Nginx |  Get acl dependency (ansible unprivileged user operations magic)
+      package: name="acl" state="present"
+      retries: 3
+      register: result
+      until: result is not failed
+      become: yes
+      tags:
+        - nginx
+
+    - name: Nginx | Add GPG key to apt keyring
+      apt_key: url=http://nginx.org/keys/nginx_signing.key state=present
+      retries: 3
+      register: result
+      until: result is not failed
+      when: nginx_present is failed
+      become: yes
+      tags:
+        - nginx
+
+    - name: Nginx | Add Debian apt repository
+      apt_repository: repo="deb http://nginx.org/packages/debian/ {{ ansible_distribution_release }} nginx"
+      when: ansible_os_family == "Debian" and ansible_distribution != "Ubuntu" and nginx_present is failed
+      tags: nginx
+      become: yes
+
+    - name: Nginx | Add Ubuntu apt repository
+      apt_repository: repo="deb http://nginx.org/packages/ubuntu/ {{ ansible_distribution_release }} nginx"
+      when: ansible_distribution == "Ubuntu" and nginx_present is failed
+      tags: nginx
+      become: yes
+
+    - name: Nginx | Install (apt)
+      apt: update-cache=yes force=yes state=present pkg=nginx
+      retries: 3
+      register: result
+      until: result is not failed
+      when: nginx_present is failed
+      tags: nginx
+      become: yes
+    when: ansible_os_family == "Debian"
+
+  - block:
+
+    - name:  Nginx |  Get acl dependency (ansible unprivileged user operations magic)
+      package: name="acl" state="present"
+      retries: 3
+      register: result
+      until: result is not failed
+      become: yes
+      tags:
+        - nginx
+
+    - name: Nginx | Add  RPM official nginx key
+      rpm_key: key=http://nginx.org/keys/nginx_signing.key
+      retries: 3
+      register: result
+      until: result is not failed
+      when: ansible_distribution == 'RedHat' or ansible_distribution == 'CentOS'
+      tags: nginx
+      become: yes
+
+    - name: Nginx | add YUM official nginx repository
+      template: src="{{ role_dir }}/templates/nginx/nginx.repo.j2" dest=/etc/yum.repos.d/nginx.repo
+      when: ansible_distribution == 'RedHat' or ansible_distribution == 'CentOS'
+      tags: nginx
+      become: yes
+
+    - name: Nginx | Install (OS specific yum/dng)
+      package: state=present name=nginx
+      retries: 3
+      register: result
+      until: result is not failed
+      tags: nginx
+      become: yes
+
+    when: ansible_distribution == 'RedHat' or ansible_distribution == 'CentOS' or ansible_distribution == 'Fedora'
+
+
+  - name: Nginx | Create sites available/enabled directories
+    file: path={{ item }} state=directory mode=0755
+    with_items:
+      - /etc/nginx/sites-available
+      - /etc/nginx/sites-enabled
     become: yes
     tags:
       - nginx
 
 
-  - name: Nginx | Add Debian apt repository
-    apt_repository: repo="deb http://nginx.org/packages/debian/ {{ansible_distribution_release}} nginx"
-    when: ansible_os_family == "Debian" and ansible_distribution != "Ubuntu" and nginx_present is failed
-    become: yes
-    tags: 
-      - nginx
-
-
-  - name: Nginx | Add Ubuntu apt repository
-    apt_repository: repo="deb http://nginx.org/packages/ubuntu/ {{ansible_distribution_release}} nginx"
-    when: ansible_distribution == "Ubuntu" and nginx_present is failed
-    become: yes
-    tags: 
-      - nginx
-
-
-  - name: Nginx | Install
-    apt: update-cache=yes force=yes state=present pkg=nginx
-    when: ansible_os_family == "Debian" and nginx_present is failed
-    become: yes
-    tags: 
-      - nginx
-
-
-  - name: Nginx | Create sites available/enabled directories
-    file: path={{item}} state=directory mode=0755
-    with_items:
-      - /etc/nginx/sites-available
-      - /etc/nginx/sites-enabled
-    when: ansible_os_family == "Debian" and nginx_present is failed
-    become: yes
-    tags: 
-      - nginx
-
-
   - name: Nginx | Configure include sites-enabled
-    lineinfile: dest=/etc/nginx/nginx.conf regexp=".*sites-enabled.*" line="    include /etc/nginx/sites-enabled/*;" insertbefore="}" state=present
-    when: ansible_os_family == "Debian" and nginx_present is failed
+    lineinfile:
+      dest: /etc/nginx/nginx.conf
+      regexp: ".*sites-enabled.*"
+      line: "    include /etc/nginx/sites-enabled/*;"
+      insertbefore: "}"
+      state: present
     become: yes
-    tags: 
+    tags:
       - nginx
-
 
   - name: Nginx | Disable default site
-    file: path=/etc/nginx/default.conf state=absent
-    when: ansible_os_family == "Debian" and nginx_present is failed
+    file: path="{{ item }}" state=absent
+    with_items:
+      - /etc/nginx/default.conf
+      - /etc/nginx/conf.d/default.conf
+    when:  nginx_present is failed
     become: yes
-    tags: 
+    tags:
       - nginx
 
 
   - name: Nginx | Uncomment server_names_hash_bucket_size
-    lineinfile: dest=/etc/nginx/nginx.conf regexp="^(\s*)#\s*server_names_hash_bucket_size" line="\1server_names_hash_bucket_size 64;" backrefs=yes
+    lineinfile:
+      dest: /etc/nginx/nginx.conf
+      regexp: "^(\\s*)#\\s*server_names_hash_bucket_size"
+      line: "\\1server_names_hash_bucket_size 64;"
+      backrefs: yes
     become: yes
-    tags: 
+    tags:
       - nginx
 
-  - name: Nginx | Reload
-    service: name=nginx state=reloaded
-    when: ansible_os_family == "Debian" and docker_test is not defined  and nginx_present is failed
+  - name: Nginx | Patch basic settings /etc/nginx/nginx.conf
+    lineinfile:
+      dest: /etc/nginx/nginx.conf
+      regexp: "{{ item.regexp }}"
+      line: "{{ item.line }}"
+      insertbefore: "{{ item.insertbefore | default(omit) }}"
+      insertafter: "{{ item.insertafter | default(omit) }}"
+      backrefs: "{{ item.backrefs | default(omit) }}"
+    with_items: "{{ nginx_conf_properties | default([]) }}"
     become: yes
-    tags: 
+    tags:
+     - nginx
+
+  - name: Nginx | Create snippets directory
+    file: path={{ item }} state=directory mode=0755
+    with_items:
+      - /etc/nginx/snippets
+    become: yes
+    tags:
       - nginx
 
+  - name: Nginx | Put default snippets there
+    copy:
+      src: "{{ role_dir }}/files/snippets/{{ item }}"
+      dest: "/etc/nginx/snippets/{{ item }}"
+      owner: root
+      group: root
+      mode: u=rw,g=r,o=r
+    with_items:
+      - fastcgi.conf
+      - fastcgi_params
+      - uwsgi_params
+    become: yes
+    tags:
+      - nginx
+
+  - name: Nginx | Add nginx user to additional groups, if needed
+    user: name='nginx' groups="{{ item }}" append=yes
+    with_items: "{{ nginx_groups | default([]) }}"
+    become: yes
+    tags:
+      - nginx
+
+  - name: Nginx | custom log files workaround - allow nginx user to write files into /var/log/nginx but not read
+    acl:
+      path: /var/log/nginx
+      entity: nginx
+      etype: user
+      permissions: wx
+      state: present
+    become: yes
+    tags:
+      - nginx
+
+  - name: Nginx | Reload configuration
+    service: name=nginx state=restarted enabled=yes
+    when: nginx_present is failed and docker_test is not defined
+    become: yes
+    tags:
+      - nginx

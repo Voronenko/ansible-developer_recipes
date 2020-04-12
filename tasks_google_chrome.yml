@@ -8,7 +8,9 @@
 
 
   - name: Google | Add Google Chrome key
-    shell: wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+    apt_key:
+      url: https://dl-ssl.google.com/linux/linux_signing_key.pub
+      state: present
     become: yes
     when: google_apt_exists.rc == 1
     tags:
@@ -16,7 +18,10 @@
       -setup
 
   - name: Google | Add Google Chrome repo
-    copy: content="deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" dest=/etc/apt/sources.list.d/google-chrome.list owner=root group=root mode=644
+    apt_repository:
+      repo: deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
+      state: present
+      filename: google-chrome
     when: google_apt_exists.rc == 1
     become: yes
     tags:

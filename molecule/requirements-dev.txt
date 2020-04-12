@@ -1,0 +1,9 @@
+ansible==2.9.6
+flake8==3.7.9
+molecule==3.0.2
+molecule-digitalocean==0.1
+molecule-ec2==0.2
+molecule-vagrant==0.2
+pytest-molecule==1.2.5
+python-vagrant==0.5.15
+yamllint==1.21.0

@@ -1,27 +1,155 @@
+#
   - name: Docker | Check if is present
     command: test -x /usr/bin/docker
-    when: ansible_os_family == "Debian"
     ignore_errors: yes
     register: docker_present
+    changed_when: False
     tags:
         -docker
+
+  - debug: var="ansible_distribution"
+
+  - name: Docker | Install dependencies
+    apt:
+      name:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - software-properties-common
+      state: present
+    retries: 3
+    register: result
+    until: result is not failed
+    when: docker_present is failed and ansible_os_family == "Debian"
+    become: yes
+    tags:
+        -docker
+
 
   - name: Docker | Add docker gpg keys
-    shell: wget -qO- https://get.docker.com/gpg | sudo apt-key add -
-    when: ansible_os_family == "Debian" and docker_present is failed
+    apt_key:
+      url: https://download.docker.com/linux/ubuntu/gpg
+      state: present
+    retries: 3
+    register: result
+    until: result is not failed
+    when: docker_present is failed and ansible_os_family == "Debian"
     become: yes
     tags:
         -docker
 
-  - name: Docker | Install docker via web installer
+  - block:
+
+      - name: Docker | Add docker  repo
+        apt_repository:
+          repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+          state: present
+          filename: docker
+        become: yes
+        tags:
+          - docker
+
+      - name: Docker | Install docker
+        apt:
+          name: "docker-ce"
+          state: "present"
+          update_cache: "yes"
+        retries: 3
+        register: result
+        until: result is not failed
+        become: yes
+        tags:
+          - docker
+
+    when: docker_present is failed and ansible_distribution == "Ubuntu"
+
+  - block:
+
+      - name: Docker | Install dependencies
+        yum:
+          name:
+            - yum-utils
+            - device-mapper-persistent-data
+            - lvm2
+          state: "present"
+        retries: 3
+        register: result
+        until: result is not failed
+        become: yes
+        tags:
+          - docker
+
+      - name: Docker | add repo
+        shell: >
+            yum-config-manager
+            --add-repo
+            https://download.docker.com/linux/centos/docker-ce.repo
+        become: yes
+        tags:
+          - docker
+          - skip_ansible_lint
+
+      - name: Docker | Install docker-ce
+        yum:
+          name: "docker-ce"
+          state: "present"
+        retries: 3
+        register: result
+        until: result is not failed
+        become: yes
+        tags:
+          - docker
+    when: docker_present is failed and ansible_distribution == "CentOS"
+
+  - block:
+      - name: Docker | Install dependencies
+        dnf:
+          name:
+            - dnf-plugins-core
+          state: "present"
+        retries: 3
+        register: result
+        until: result is not failed
+        become: yes
+        tags:
+          - docker
+
+      - name: Docker | add repo
+        shell: "dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo"
+        become: yes
+        tags:
+          - docker
+          - skip_ansible_lint
+
+      - name: Docker | Install docker-ce
+        dnf:
+          name: "docker-ce"
+          state: "present"
+        retries: 3
+        register: result
+        until: result is not failed
+        become: yes
+        tags:
+          - docker
+    when: docker_present is failed and ansible_distribution == "Fedora"
+
+  - name: Docker | fallback - Install docker via web installer
     shell: wget -qO- https://get.docker.com/ | sh
-    when: ansible_os_family == "Debian" and docker_present is failed
+    when:  docker_present is failed and ansible_distribution not in ["Debian", "CentOS", "Fedora"]
     become: yes
     tags:
         -docker
+        -skip_ansible_lint
 
   - name: Docker | Add current user to docker group
-    user: name={{ deploy_user }} groups=docker append=yes
+    user: name={{ deploy_user | default(ansible_user_id) }} groups=docker append=yes
+    become: yes
+    tags:
+        -docker
+
+  - name: Docker | Start and enable service
+    service: name=docker state=restarted enabled=yes
+    when: docker_test is not defined
     become: yes
     tags:
         -docker

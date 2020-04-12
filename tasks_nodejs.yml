@@ -1,96 +1,169 @@
+# sa-node 1.9.0
+---
   - name: NodeJS | Check if is present
     command: test -x /usr/bin/node
     when: ansible_system == "Linux"
     ignore_errors: yes
     register: node_present
+    changed_when: False
     tags:
         -nodejs
         -setup
 
   - name: NodeJS | package dependencies
-    apt: pkg={{item}} state=present
-    with_items:
-       - git
+    apt:
+      name:
+         - git
+         - curl
+      state: present
+    retries: 3
+    register: result
+    until: result is not failed
     become: yes
     tags:
       - nodejs
       - setup
 
+  - name: Detect node family
+    set_fact:
+        nodejs_family_major: "{{  nodejs_version.split('.')[0] | lower }}"
+        nodejs_family: "{{  nodejs_version.split('.')[0] | lower }}.x"
+        nodejs_exact_version: false
+
+  - name: Detect node family for 0.10 0.12
+    set_fact:
+        nodejs_family: "{{  nodejs_version }}"
+    when: nodejs_version in ["0.12", "0.10" ]
+
+  - name: Detect exact version
+    set_fact:
+        nodejs_exact_version: true
+    when:
+        nodejs_version not in ["0.10", "0.12", "4.x", "5.x", "6.x", "7.x", "8.x", "9.x", "10.x", "11.x", "12.x"]
 
   - name: NodeJS | Check nodejs_version variable
     assert:
-      that: nodejs_version in [ "0.10", "0.12", "4.x", "5.x", "6.x", "7.x"  ]
-    when: ansible_os_family == "Debian" and node_present is failed
+      that: nodejs_family_major in [ "0", "4", "5", "6", "7", "8", "9", "10", "11", "12" ]
+    when: node_present is failed
     tags:
        -nodejs
        -setup
 
 # [VS] 2016-09-15 Chore caused by https://github.com/nodesource/distributions/issues/354
   - name: NodeJS | Import the NodeSource GPG key into apt
-#    apt_key: url=https://deb.nodesource.com/gpgkey/nodesource.gpg.key state=present
-    shell: curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
+    apt_key:
+      url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+      state: present
+      validate_certs: no
+#    shell: curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
+    retries: 3
+    register: result
+    until: result is not failed
     become: yes
-    when: ansible_os_family == "Debian" and node_present is failed
+    when: node_present is failed
     tags:
        -nodejs
        -setup
-
 
   - name: NodeJS | Add NodeSource deb repository
-    apt_repository: repo='deb https://deb.nodesource.com/node_{{ nodejs_version }} {{ ansible_distribution_release }} main' state=present
+    apt_repository: repo='deb https://deb.nodesource.com/node_{{ nodejs_family }} {{ ansible_distribution_release }} main' state=present
     become: yes
-    when: ansible_os_family == "Debian" and node_present is failed
+    when: node_present is failed
     tags:
-       -nodejs
-       -setup
+      -nodejs
+      -setup
 
 
   - name: NodeJS | Add NodeSource deb-src repository
-    apt_repository: repo='deb-src https://deb.nodesource.com/node_{{ nodejs_version }} {{ ansible_distribution_release }} main' state=present
+    apt_repository: repo='deb-src https://deb.nodesource.com/node_{{ nodejs_family }} {{ ansible_distribution_release }} main' state=present
     become: yes
-    when: ansible_os_family == "Debian" and node_present is failed
+    when: node_present is failed
     tags:
-       -nodejs
-       -setup
+      -nodejs
+      -setup
+
 
   - name: NodeJS | Add NodeSource repository preferences
     template:
-      src: "{{root_dir}}/templates/nodejs/deb_nodesource_com_node.pref.j2"
+      src: "{{ role_dir }}/templates/nodejs/deb_nodesource_com_node.pref.j2"
       dest: /etc/apt/preferences.d/deb_nodesource_com_node.pref
     become: yes
-    when: ansible_os_family == "Debian" and node_present is failed
+    when: node_present is failed
     tags:
        -nodejs
        -setup
 
-  - name: NodeJS | Install Node.js 0.10 0.12 family
-    apt: pkg=nodejs={{ nodejs_version }}.* state=present update_cache=yes
+  - name: NodeJS | Install versioned Node.js 0.10 0.12 family
+    apt: pkg="nodejs={{ nodejs_version }}.*" state=present update_cache=yes
     become: yes
-    when: ansible_os_family == "Debian" and nodejs_version in [ "0.10", "0.12" ]  and node_present is failed
+    when: nodejs_version in [ "0.10", "0.12" ]  and node_present is failed
     tags:
        -nodejs
        -setup
 
-  - name: NodeJS | Install Node.js 4.x 5.x 6.x 7.x family
-    apt: pkg=nodejs state=present update_cache=yes
+  - name: NodeJS | Install default Node.js 4.x 5.x 6.X 7.X 8.X 9.X 10.X 11.X 12.X family
+    apt:
+      name: nodejs
+      state: present
+      update_cache: yes
+    retries: 3
+    register: result
+    until: result is not failed
     become: yes
-    when: ansible_os_family == "Debian" and nodejs_version not in [ "0.10", "0.12" ]  and node_present is failed
+    when: nodejs_version not in [ "0.10", "0.12" ]  and node_present is failed and not nodejs_exact_version
+    tags:
+       -nodejs
+       -setup
+
+  - name: NodeJS | Install specific nodejs={{ nodejs_version }}-1nodesource1 from 4.x 5.x 6.X 7.X 8.X 9.X 10.X 11.X 12.X family
+    apt:
+      name: "nodejs={{ nodejs_version }}-1nodesource1"
+      state: present
+      update_cache: yes
+    retries: 3
+    register: result
+    until: result is not failed
+    become: yes
+    when: nodejs_version not in [ "0.10", "0.12" ]  and node_present is failed and nodejs_exact_version
+    tags:
+       -nodejs
+       -setup
+
+  - name: NodeJS | Check if npm is present
+    command: test -x /usr/bin/npm
+    ignore_errors: yes
+    register: npm_present
+    changed_when: False
+    tags:
+        -nodejs
+        -setup
+
+  - name: NodeJS | Install default npm 6.X 7.X ... 12.X family
+    apt:
+      name: npm
+      state: present
+      update_cache: yes
+    retries: 3
+    register: result
+    until: result is not failed
+    become: yes
+    when: npm_present is failed
     tags:
        -nodejs
        -setup
 
   - name: NodeJS | Self update npm to most recent one
     shell: npm install -g npm
-    when: ansible_os_family == "Debian" and node_present is failed
+    when: node_present is failed and option_install_default_packages | default(False)
     become: yes
     tags:
        -nodejs
        -setup
+       -skip_ansible_lint
 
-
-  - name: NodeJS | Install gulp, bower and other tools as globals
-    shell: npm install -g {{ item }}
-    when: ansible_os_family == "Debian" and node_present is failed
+  - name: NodeJS | Install gulp, bower, grunt, grunt-cli tools tool
+    shell: "npm install -g {{ item }}"
+    when: node_present is failed and option_install_default_packages | default(False)
     with_items:
       - gulp
       - bower
@@ -101,3 +174,4 @@
     tags:
        -nodejs
        -setup
+       -skip_ansible_lint

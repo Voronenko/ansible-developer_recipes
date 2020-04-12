@@ -22,17 +22,17 @@
 
   - shell: ls -d {{apps_dir}}/lighttable-*
     register: lighttable_dir
-    when: lighttable_present | failed
+    when: lighttable_present is failed
     tags:
       -lighttable
 
   - name: LightTable| Move to {{apps_dir}}/LightTable
     command: "mv {{lighttable_dir.stdout}} {{apps_dir}}/LightTable"
-    when: lighttable_present | failed 
+    when: lighttable_present is failed
     args:
       chdir: "{{apps_dir}}"
     tags:
-      -lighttable_present | failed
+      -lighttable_present is failed
     ignore_errors: true
 
 

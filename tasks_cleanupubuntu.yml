@@ -1,9 +1,10 @@
   - fail: msg="Ubuntu only"
-    when: ansible_distribution not in ["Ubuntu"] 
+    when: ansible_distribution not in ["Ubuntu"]
 
   - name: Ubuntu | Uninstall games
-    apt: pkg={{item}} state=absent
-    with_items:
+    apt:
+      state: absent
+      pkg:
        - gnome-sudoku
        - ace-of-penguins
        - gnomine
@@ -17,8 +18,9 @@
       - setup
 
   - name: Ubuntu | Uninstall strange things
-    apt: pkg={{item}} state=absent
-    with_items:
+    apt:
+      state: absent
+      pkg:
        - unity-scope-audacious
        - unity-scope-chromiumbookmarks
        - unity-scope-clementine
@@ -128,8 +130,9 @@
 
 
   - name: Ubuntu | Uninstall libre office
-    apt: pkg={{item}} state=absent
-    with_items:
+    apt:
+      state: absent
+      pkg:
        - libreoffice-core
        - openoffice
     become: yes
