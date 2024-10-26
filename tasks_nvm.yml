@@ -29,15 +29,15 @@
       - nvm
 
   - name: NVM | Install nvm {{ nvm_version }}
-    become: yes
+    become: true
     become_user: "{{ deploy_user }}"
-    git: repo=https://github.com/creationix/nvm.git dest=~/.nvm version=v{{ nvm_version }}
+    shell: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
     when: nvm_present is failed
     tags:
       - nvm
 
   - name: NVM | Source nvm into ~/.profile
-    become: yes
+    become: true
     become_user: "{{ deploy_user }}"
     lineinfile: dest=~/.profile line="source ~/.nvm/nvm.sh"  create=yes
     when: nvm_present is failed
@@ -48,7 +48,7 @@
     shell: source ~/.profile && nvm install {{ nodejs_version }}
     args:
       executable: /bin/bash
-    become: yes
+    become: true
     become_user: "{{ deploy_user }}"
     register: node_install_result
     when: option_nodejs_install_with_nvm
@@ -60,7 +60,7 @@
     shell: source ~/.profile && nvm ls | grep -e 'default -> {{ nodejs_version }}'
     args:
       executable: /bin/bash
-    become: yes
+    become: true
     become_user: "{{ deploy_user }}"
     register: default_nodejs_version_ok
     changed_when: False
@@ -73,7 +73,7 @@
     shell: source ~/.profile && nvm alias default {{ nodejs_version }}
     args:
       executable: /bin/bash
-    become: yes
+    become: true
     become_user: "{{ deploy_user }}"
     when: option_nodejs_install_with_nvm and default_nodejs_version_ok is failed
     tags:

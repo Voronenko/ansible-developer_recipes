@@ -14,8 +14,8 @@ SUDOERFILE="/etc/sudoers.d/$SUDOERUSER"
 sudo bash -c "touch $SUDOERFILE"
 sudo bash -c "echo $SUDOERUSER ALL=\(ALL\) NOPASSWD: ALL > $SUDOERFILE"
 
-sudo apt-get -y install -y software-properties-common git python-dev wget apt-transport-https libffi-dev libssl-dev
-sudo apt-get install -y python-pip
+sudo apt-get -y install -y software-properties-common git python3-dev wget apt-transport-https libffi-dev libssl-dev
+sudo apt-get install -y python3-pip
 sudo pip install -U pip
 sudo pip install ansible
 

@@ -12,7 +12,7 @@
        - gbrainy
        - gnome-mahjongg
        - aisleriot
-    become: yes
+    become: true
     tags:
       - cleanup
       - setup
@@ -69,7 +69,6 @@
        - activity-log-manager
        - webbrowser-app
        - ibus-pinyin
-       - evolution-data-server-online-accounts
        - account-plugin-aim
        - account-plugin-facebook
        - account-plugin-flickr
@@ -123,7 +122,7 @@
        - totem-mozilla
        - totem-plugins
 
-    become: yes
+    become: true
     tags:
       - cleanup
       - setup
@@ -135,7 +134,7 @@
       pkg:
        - libreoffice-core
        - openoffice
-    become: yes
+    become: true
     tags:
       - cleanup
       - setup
@@ -143,7 +142,7 @@
 
   - name: Ubuntu | Cleanup space
     shell: apt-get -y autoremove
-    become: yes
+    become: true
     tags:
       - cleanup
       - setup

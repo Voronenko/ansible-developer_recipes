@@ -4,7 +4,8 @@
     args:
        executable: /bin/bash
     register: ruby_path_detected_raw
-    become: "{{deploy_user}}"
+    become: yes
+    become_user: "{{deploy_user}}"
 
   - set_fact:
       ruby_path_detected: "{{ ruby_path_detected_raw.stdout }}"

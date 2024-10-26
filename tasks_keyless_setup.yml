@@ -1,0 +1,54 @@
+# Prepare for keyless setup
+
+# https://github.com/Voronenko/dotfiles/wiki/First-steps-for-yubikey---nitrokey
+
+- name: Ensure gpg is installed
+  package:
+    name: gnupg2
+    state: present
+  become: true
+
+- name: Ensure libu2f-udev is installed
+  package:
+    name: libu2f-udev
+    state: present
+  become: true
+
+- name: Download 70-u2f.rules from GitHub (1/2)
+  get_url:
+    url: https://raw.githubusercontent.com/Yubico/libfido2/main/udev/70-u2f.rules
+    dest: /etc/udev/rules.d/70-u2f.rules
+    mode: '0644'
+  become: true
+  register: download_yubi_result
+
+#- debug: var="download_yubi_result"
+
+- name: Download 70-u2f.rules from GitHub (2/2)
+  debug:
+    msg: "The 70-u2f.rules file was downloaded and updated from GitHub."
+  when: download_yubi_result.changed
+
+- name: Download 41-nitrokey.rules  from GitHub (1/2)
+  get_url:
+    url: https://raw.githubusercontent.com/Nitrokey/nitrokey-udev-rules/main/41-nitrokey.rules
+    dest: /etc/udev/rules.d/41-nitrokey.rules
+    mode: '0644'
+  become: true
+  register: download_nitro_result
+
+- name: Download 41-nitrokey.rules from GitHub (2/2)
+  debug:
+    msg: "The 41-nitrokey.rules  file was downloaded and updated from GitHub."
+  when: download_nitro_result.changed
+
+- name: Reload udev rules
+  command: udevadm control --reload-rules
+  become: true
+
+- name: Trigger udev changes
+  command: udevadm trigger
+  become: true
+
+- name: Download and import signing PGP key
+  shell: curl https://keybase.io/voronenko/pgp_keys.asc | gpg2 --import

@@ -11,7 +11,7 @@
     apt_key:
       url: https://dl-ssl.google.com/linux/linux_signing_key.pub
       state: present
-    become: yes
+    become: true
     when: google_apt_exists.rc == 1
     tags:
       -chrome
@@ -23,14 +23,14 @@
       state: present
       filename: google-chrome
     when: google_apt_exists.rc == 1
-    become: yes
+    become: true
     tags:
       -chrome
       -setup
 
   - name: Google | Install Google Chrome
     apt: update_cache=yes pkg=google-chrome-stable state=present
-    become: yes
+    become: true
     tags:
       -chrome
       -setup

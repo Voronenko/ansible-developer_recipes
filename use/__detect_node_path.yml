@@ -18,7 +18,7 @@
       elif [[ -f /{{ deploy_user }}/.bashrc ]]; then echo /{{ deploy_user }}/.bashrc;
       else echo "";
       fi
-    become: yes
+    become: true
     become_user: "{{ deploy_user }}"
     args:
       executable: /bin/bash
@@ -38,7 +38,8 @@
        executable: /bin/bash
     register: npm_path_detected_raw
     ignore_errors: true
-    become: "{{ deploy_user }}"
+    become: true
+    become_user: "{{ deploy_user }}"
 
 #  - debug: var="npm_path_detected_raw"
 

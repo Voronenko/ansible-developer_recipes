@@ -6,7 +6,7 @@
       elif [[ -f /etc/init.d/cron && ! -h /etc/init.d/cron ]]; then echo sysv-init;
       else echo {{ansible_service_mgr | default('UNKNOWN')}};
       fi
-    become: yes
+    become: true
     args:
       executable: /bin/bash
     register: upstart_detect_raw
