@@ -1,0 +1,117 @@
+version: '3.4'
+
+#x-logging: &loki-logging
+#    logging:
+#        driver: loki
+#        options:
+#            loki-url: "http://host.docker.internal:3100/loki/api/v1/push"
+
+services:
+  traefik:
+    #image: traefik:v2.8.3
+#    <<: *loki-logging
+#    image: traefik:v2.10.4
+    image: traefik:v2.11.3
+    ports:
+      - 80:80
+      - 443:443
+      - 880:8080
+#      - 5432:5432
+#      - 27017:27017
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+        preferences:
+          - spread: node.id
+      labels: []
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik_certs:/certs
+      - ./traefik_conf:/conf
+      - "./acme.json:/acme.json"
+    restart: always
+#       --docker.swarmmode
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+#      - "--providers.docker.swarmMode=true"
+      - "--providers.docker.watch=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.file.directory=/conf/"
+      - "--providers.file.watch=true"
+      - "--providers.file=true"
+      - "--providers.file.filename=/conf/rules.yml"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+#      - "--entrypoints.mongo.address=:27017"
+#      - "--entrypoints.postgres.address=:5432"
+      - "--log.level=INFO"
+      - "--accessLog"
+      - "--api"
+      - "--metrics"
+      - "--metrics.prometheus"
+      - "--providers.docker.network=traefik-public"
+      - --certificatesresolvers.le.acme.storage=./acme.json
+      - --certificatesresolvers.le.acme.tlschallenge=true
+    networks:
+      - default
+      - traefik-public
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.lvh.voronenko.net`,`traefik.fiks.im`,`traefik.me.voronenko.net`)"
+      - "traefik.http.routers.traefik.entrypoints=websecure"
+      - "traefik.http.routers.traefik.tls.certresolver=le"
+      - "traefik.http.routers.traefik.service=api@internal"
+      - "traefik.http.routers.traefik.tls=true"
+#      - "traefik.http.middlewares.authtraefik.basicauth.users=devAdmin:$2y$05$h9OxLeY20/5uiXjfPgdRxuFlrfqBf2QifYDgrwsR6rAEgX3/dpOGq" # user:devAdmin, password:devto
+      # global redirect to https
+#      - "traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)"
+#      - "traefik.http.routers.http-catchall.entrypoints=web"
+#      - "traefik.http.routers.http-catchall.middlewares=redirect-to-https"
+#      # middleware redirect
+#      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+
+  whoami:
+    image: "containous/whoami"
+    container_name: "simple-service"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`whoami.lvh.voronenko.net`,`whoami.fiks.im`,`whoami.me.voronenko.net`)"
+      - "traefik.http.routers.whoami.entrypoints=web"
+
+#      - "traefik.http.middlewares.traefik-auth.basicauth.users=USER:PASSWORD"
+#      - "traefik.http.middlewares.traefik-https-redirect.redirectscheme.scheme=https"
+#      - "traefik.http.routers.traefik.middlewares=traefik-https-redirect"
+
+      - "traefik.http.routers.whoami-secure.entrypoints=websecure"
+      - "traefik.http.routers.whoami-secure.rule=Host(`whoami.lvh.voronenko.net`, `whoami.fiks.im`, `whoami.me.voronenko.net`)"
+#      - "traefik.http.routers.whoami-secure.middlewares=traefik-auth"
+      - "traefik.http.routers.whoami-secure.tls=true"
+      - "traefik.http.routers.whoami-secure.tls.certresolver=le"
+  portainer:
+    image: portainer/portainer-ce:2.14.2
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+#    ports:
+#      - 8000:8000
+#      - 9000:9000
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.portainer-secure.loadbalancer.server.port=9000"
+      - "traefik.http.routers.portainer.rule=Host(`docker.lvh.voronenko.net`,`docker.fiks.im`,`docker.me.voronenko.net`)"
+      - "traefik.http.routers.portainer.entrypoints=web"
+      - "traefik.http.routers.portainer-secure.rule=Host(`docker.lvh.voronenko.net`,`docker.fiks.im`,`docker.me.voronenko.net`)"
+      - "traefik.http.routers.portainer-secure.entrypoints=websecure"
+      - "traefik.http.routers.portainer-secure.tls=true"
+      # Uncomment this label if your Traefik instance is using a specific Docker network and replace the network name
+      # This is not necessary if you set your default network in Traefik config/parameters
+      # - "traefik.docker.network=your-traefik-network-name"
+volumes:
+  portainer_data:
+networks:
+  traefik-public:
+    external: true

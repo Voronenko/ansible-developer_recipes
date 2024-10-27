@@ -1,0 +1,39 @@
+http:
+  # Add the router
+  routers:
+    router-port8000-backend:
+      entryPoints:
+        - "web"
+        - "websecure"
+      service: backend8000
+      rule:  "Host(`some-api.fiks.im`)"
+      middlewares:
+#        - auth
+        - redirect-to-https
+      tls:
+#        certResolver: myresolver
+        domains:
+          - main: some-api.fiks.im
+
+  # Add the service
+  services:
+    backend8000:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.3.5:8000"
+        passHostHeader: true
+    httpbin:
+      loadBalancer:
+        servers:
+          - url: "https://httpbin.org/get"
+        passHostHeader: true
+
+  middlewares:
+    redirect-to-https:
+      redirectScheme:
+        scheme: "https"
+        port: "443"
+        permanent: true
+#      basicAuth:
+#        users:
+#          - "test:XXXX"
