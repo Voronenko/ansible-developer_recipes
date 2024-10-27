@@ -1,0 +1,17 @@
+- name: Install gettext
+  apt:
+    name: gettext
+    state: present
+  become: true
+  when: ansible_os_family == 'Debian'
+
+- name: Install required packages for gnome plugins
+  apt:
+    name:
+      - gir1.2-gtop-2.0
+      - gir1.2-nm-1.0
+      - gir1.2-clutter-1.0
+      - gnome-system-monitor
+    state: present
+  become: true
+  when: ansible_os_family == 'Debian'

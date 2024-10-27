@@ -1,0 +1,6 @@
+- name: Download Teams for Linux
+  get_url:
+    url: "https://github.com/IsmaelMartinez/teams-for-linux/releases/download/v1.11.2/teams-for-linux-1.11.2.AppImage"
+    dest: "/home/{{ deploy_user }}/Applications/teams-for-linux-1.11.2.AppImage"
+  tags:
+    - teams_for_linux

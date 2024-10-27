@@ -1,0 +1,12 @@
+- name: TFENV | Ensure git is installed
+  apt:
+    name: git
+    state: present
+  become: true
+  when: ansible_os_family == "Debian"
+
+- name: TFENV | Clone TFENV repository
+  git:
+    repo: 'https://github.com/tfutils/tfenv.git'
+    dest: '~/.tfenv'
+    update: no

@@ -4,7 +4,7 @@
   register: result
   until: result is not failed
   when: docker_compose_venv_directory is not defined
-  become: yes
+  become: true
   tags:
     - docker-compose
 
@@ -14,6 +14,6 @@
   register: result
   until: result is not failed
   when: docker_compose_venv_directory is defined
-  become: yes
+  become: true
   tags:
     - docker-compose

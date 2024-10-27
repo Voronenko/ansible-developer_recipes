@@ -1,48 +1,35 @@
-- name: Check if Vagrant is already installed
-  command: test -x /usr/bin/vagrant
-  when: ansible_system == "Linux"
-  ignore_errors: yes
-  register: vagrant_present
+- name: Vagrant |Add HashiCorp GPG key
+  ansible.builtin.shell: |
+    wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+  args:
+    creates: /usr/share/keyrings/hashicorp-archive-keyring.gpg
+  become: true
   tags:
-    -vagrant
-    -setup
+    - vagrant
 
-- name: Download Vagrant
-  get_url: url=https://releases.hashicorp.com/vagrant/{{ vagrant_version }}/vagrant_{{ vagrant_version }}_x86_64.deb
-           dest=/tmp/vagrant_{{ vagrant_version }}_x86_64.deb
-  when: vagrant_present is failed
-  become: yes
-  tags:
-    -vagrant
-    -setup
 
-- name: Install Vagrant
-  apt: deb=/tmp/vagrant_{{ vagrant_version }}_x86_64.deb state=present
-  when: vagrant_present is failed
-  become: yes
-  tags:
-    -vagrant
-    -setup
+- name: Vagrant | Add HashiCorp APT repository
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com {{ ansible_lsb.codename }} main"
+    filename: hashicorp
+  become: true
 
-- name: Vagrant | update dkms
-  apt:  update_cache=yes pkg=dkms state=present
-  become: yes
-  tags:
-    -vagrant
-    -setup
+- name: Vagrant | Update APT cache
+  ansible.builtin.apt:
+    update_cache: yes
+  become: true
 
-- name: Vagrant | update dkms
-  apt:  update_cache=yes pkg=dkms state=present
-  become: yes
-  tags:
-    -vagrant
-    -setup
+- name: Vagrant | Install Vagrant
+  ansible.builtin.apt:
+    name: vagrant
+    state: present
+  become: true
 
-- name: Vagrant | install plugins (default - vbguest, hostsupdater, auto_network)
-  shell: "vagrant plugin install {{item}}"
+- name: Vagrant | install plugins
+  ansible.builtin.shell: "vagrant plugin install {{item}}"
   become: yes
   when: vagrant_plugins is defined
-  with_items: "{{vagrant_plugins | default(['vagrant-vbguest', 'hostupdater', 'vagrant-auto_network'])}}"
+  with_items: "{{ vagrant_plugins | default(['vagrant-vbguest', 'hostupdater', 'vagrant-auto_network', 'vagrant-disksize', 'vagrant-hostmanager', 'vagrant-hostsupdater', 'vagrant-reload', 'vagrant-s3auth']) }}"
   tags:
     -vagrant
     -setup

@@ -1,12 +1,15 @@
 ---
   - name: GIT | Install modern git ppa repo
-    apt_repository: repo='ppa:git-core/ppa'
-    become: yes
+    apt_repository:
+      repo: 'ppa:git-core/ppa'
+    become: true
     tags:
       - git
 
   - name: GIT | Install package
-    apt: pkg="git" state="latest"
-    become: yes
+    apt:
+      pkg: "git"
+      state: "latest"
+    become: true
     tags:
       - git

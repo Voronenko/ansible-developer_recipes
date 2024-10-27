@@ -1,0 +1,12 @@
+- name: JENV | Ensure git is installed
+  apt:
+    name: git
+    state: present
+  become: true
+  when: ansible_os_family == "Debian"
+
+- name: JENV | Clone jEnv repository
+  git:
+    repo: 'https://github.com/jenv/jenv.git'
+    dest: '~/.jenv'
+    update: no

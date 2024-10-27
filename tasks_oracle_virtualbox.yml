@@ -1,37 +1,45 @@
 
 - block:
 
+  - name:  Oracle VBox | register signing key (1/2)
+    apt_key:
+      url: https://www.virtualbox.org/download/oracle_vbox_2016.asc
+      state: present
+      keyring: /usr/share/keyrings/oracle-virtualbox-2016.gpg
+    become: true
+
+  - name:  Oracle VBox | register older debian signing key (1/2)
+    apt_key:
+      url: http://download.virtualbox.org/virtualbox/debian/oracle_vbox_2016.asc
+      state: present
+      keyring: /usr/share/keyrings/oracle-virtualbox-2016.gpg
+    become: true
+
   - name: Oracle VBox | add apt repository
-    apt_repository: repo='deb http://download.virtualbox.org/virtualbox/debian {{ansible_distribution_release}} contrib' state=present
-    when: ansible_os_family == "Debian"
-    become: yes
-    tags:
-      -oracle_vbox
-      -setup    
-
-  - name:  Oracle VBox | register signing key
-    apt_key: url=http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc state=present  
-    become: yes
+    apt_repository:
+      repo: 'deb http://download.virtualbox.org/virtualbox/debian {{ansible_distribution_release}} contrib'
+      state: present
+    become: true
     tags:
       -oracle_vbox
       -setup
 
   - name: Oracle VBox | Install oracle virtualbox
-    apt: update_cache=yes pkg=virtualbox-{{oracle_vbox_version}} state=present
-    become: yes
-    tags:
-      -oracle_vbox
-      -setup
-  when: ansible_distribution_release in ["precise", "trusty", "xenial"]   
-
-- block:
-
-  - name: Oracle VBox | Install oracle virtualbox
-  
-    apt: update_cache=yes pkg=virtualbox state=present
-    become: yes
+    apt:
+      update_cache: yes
+      pkg: virtualbox-7.1
+      state: present
+    become: true
     tags:
       -oracle_vbox
       -setup
 
-  when: ansible_distribution_release not in ["precise", "trusty", "xenial"]   
+  - name: Oracle VBox | Add current user to vboxusers group
+    user:
+      name: "{{ ansible_user_id }}"
+      groups: vboxusers
+      append: yes
+    become: true
+
+  when: ansible_os_family == "Debian"
+

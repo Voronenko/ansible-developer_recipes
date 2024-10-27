@@ -1,0 +1,19 @@
+- name: PyEnv| Ensure git is installed
+  apt:
+    name: git
+    state: present
+  become: true
+  when: ansible_os_family == "Debian"
+
+- name: PyEnv | Clone PyEnv repository
+  git:
+    repo: 'https://github.com/pyenv/pyenv.git'
+    dest: '~/.pyenv'
+    update: no
+
+- name: PyEnv | Install pyenv-virtualenv plugin
+  git:
+    repo: 'https://github.com/pyenv/pyenv-virtualenv.git'
+    dest: '~/.pyenv/plugins/pyenv-virtualenv'
+    update: no
+

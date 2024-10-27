@@ -1,0 +1,36 @@
+- name: Zoom | Check if zoom is installed
+  command: dpkg-query -W zoom
+  register: zoom_check_deb
+  become: true
+  failed_when: zoom_check_deb.rc > 1
+  changed_when: zoom_check_deb.rc == 1
+  tags:
+    - worktools
+    - zoom
+
+- name: Zoom | Download latest package
+  get_url:
+    url: "https://zoom.us/client/latest/zoom_amd64.deb"
+    dest: "/tmp/zoom.deb"
+  when: zoom_version == 'latest' and zoom_check_deb.rc != 0
+  tags:
+    - worktools
+    - zoom
+
+- name: Zoom | Download specific version package
+  get_url:
+    url: "https://zoom.us/client/{{ zoom_version }}/zoom_amd64.deb"
+    dest: "/tmp/zoom.deb"
+  when: zoom_version != 'latest' and zoom_check_deb.rc != 0
+  tags:
+    - worktools
+    - zoom
+
+- name: Zoom | Install package
+  apt:
+    deb: "/tmp/zoom.deb"
+  become: true
+  when: zoom_check_deb.rc == 1
+  tags:
+    - worktools
+    - zoom

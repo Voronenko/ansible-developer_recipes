@@ -8,29 +8,34 @@
       - ruby
 
   - name: Ruby | Download chruby distribution
-    get_url: url="http://github.com/postmodern/chruby/archive/v{{ chruby_version }}.tar.gz"
-             dest="/tmp/chruby-{{ chruby_version }}.tar.gz"
+    get_url:
+       url: "http://github.com/postmodern/chruby/archive/v{{ chruby_version }}.tar.gz"
+       dest: "/tmp/chruby-{{ chruby_version }}.tar.gz"
     when: chruby_present is failed
     tags:
       - ruby
 
   - name: Ruby | unpack chruby
     command: tar xf "/tmp/chruby-{{ chruby_version }}.tar.gz"
-             chdir="/tmp"
+    args:
+      chdir: "/tmp"
     when: chruby_present is failed
     tags:
       - ruby
 
   - name: Ruby | chruby install target
     command: make install
-             chdir="/tmp/chruby-{{ chruby_version }}"
-    become: yes
+    args:
+      chdir: "/tmp/chruby-{{ chruby_version }}"
+    become: true
     when: chruby_present is failed
     tags:
       - ruby
 
   - name: Ruby | autoload script
-    template: src="{{root_dir}}/files/ruby/ch_ruby.sh.j2" dest=/etc/profile.d/chruby.sh
-    become: yes
+    template:
+      src: "{{root_dir}}/files/ruby/ch_ruby.sh.j2"
+      dest: /etc/profile.d/chruby.sh
+    become: true
     tags:
       - ruby
