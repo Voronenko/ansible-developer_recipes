@@ -1,0 +1,5 @@
+- name: Install Nextcloud Desktop
+  package:
+    name: nextcloud-desktop
+    state: present
+  become: true

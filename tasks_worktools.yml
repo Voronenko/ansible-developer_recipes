@@ -4,10 +4,94 @@
       pkg:
         - vim-gui-common
         - vim-runtime
+    become: true
+    tags:
+      -worktools
+      -setup
+
+  - name: Worktools | Vorta
+    apt:
+      state: present
+      pkg:
+        - vorta
     become: yes
     tags:
       -worktools
       -setup
+
+  - name: Worktools | Hardware sensors lm-sensors
+    apt:
+      state: present
+      pkg:
+        - lm-sensors
+    become: yes
+    tags:
+      -worktools
+      -setup
+
+  - name: Worktools | DDCUTIL (display api management
+    apt:
+      state: present
+      pkg:
+        - ddcutil
+    become: yes
+    tags:
+      -worktools
+      -setup
+
+
+  - name: Worktools | Pass
+    apt:
+      state: present
+      pkg:
+        - pass
+    become: yes
+    tags:
+      -worktools
+      -setup
+
+  - name: Worktools | VLC
+    apt:
+      state: present
+      pkg:
+        - vlc
+    become: true
+    tags:
+      -worktools
+      -setup
+
+
+  - name: Worktools | HardInfo
+    apt:
+      state: present
+      pkg:
+        - hardinfo
+    become: yes
+    tags:
+      -worktools
+      -setup
+
+
+  - name: Worktools | NCDU
+    apt:
+      state: present
+      pkg:
+        - ncdu
+    become: yes
+    tags:
+      -worktools
+      -setup
+
+  - name: Worktools | HTOP
+    apt:
+      state: present
+      pkg:
+        - htop
+    become: yes
+    tags:
+      -worktools
+      -setup
+
 
   - name: Worktools | Midnight Commander
     apt: state=present pkg=mc
@@ -85,4 +169,19 @@
       path: /usr/local/bin/zellij
       state: file
       mode: '0755'
+    become: true
+
+# ----------- copyq -----------
+
+  - name: Worktools | Add CopyQ PPA (1/2)
+    apt_repository:
+      repo: ppa:hluk/copyq
+      state: present
+    become: true
+
+
+  - name: Worktools |  Install CopyQ (2/2)
+    apt:
+      name: copyq
+      state: present
     become: true

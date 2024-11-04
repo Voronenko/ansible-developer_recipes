@@ -8,6 +8,13 @@
     state: present
   become: true
 
+- name: Ensure smart cart daemon is installed
+  package:
+    name: scdaemon
+    state: present
+  become: true
+
+
 - name: Ensure libu2f-udev is installed
   package:
     name: libu2f-udev

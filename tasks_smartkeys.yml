@@ -1,0 +1,73 @@
+- name: Add Yubico PPA key
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: 32CBA1A9
+    state: present
+  become: true
+
+- name: Add Yubico PPA itself
+  apt_repository:
+    repo: ppa:yubico/stable
+    state: present
+  become: true
+
+- name: Update apt cache
+  apt:
+    update_cache: yes
+  become: true
+
+- name: Install YubiKey Manager (CLI)
+  apt:
+    name: yubikey-manager
+    state: present
+  become: true
+
+- name: Install YubiKey Personalization Tool (GUI)
+  apt:
+    name: yubikey-personalization-gui
+    state: present
+  become: true
+
+#- name: Install libpam-yubico
+#  apt:
+#    name: libpam-yubico
+#    state: present
+#  become: true
+#
+#- name: Install libpam-u2f
+#  apt:
+#    name: libpam-u2f
+#    state: present
+#  become: true
+
+- name: Install YubiKey Manager (GUI)
+  apt:
+    name: yubikey-manager-qt
+    state: present
+  become: true
+
+#- name: Install Yubico Authenticator
+#  apt:
+#    name: yubioath-desktop
+#    state: present
+#  become: true
+
+# ##############################################################################
+
+- name: Install pipx
+  apt:
+    name: pipx
+    state: present
+  become: true
+
+- name: Install Dependencies
+  apt:
+    name: libpcsclite-dev
+    state: present
+  become: true
+
+- name: Run pipx ensurepath
+  ansible.builtin.shell: pipx ensurepath
+
+- name: Install pynitrokey
+  ansible.builtin.shell: pipx install pynitrokey

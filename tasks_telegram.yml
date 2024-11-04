@@ -1,0 +1,5 @@
+- name: Install AppImageLauncher .deb package
+  package:
+    name: telegram-desktop
+    state: present
+  become: true

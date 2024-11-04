@@ -1,0 +1,11 @@
+- name: Download AppImageLauncher .deb file
+  get_url:
+    url: https://github.com/TheAssassin/AppImageLauncher/releases/download/v2.2.0/appimagelauncher_2.2.0-travis995.0f91801.bionic_amd64.deb
+    dest: /tmp/appimagelauncher_2.2.0-travis995.0f91801.bionic_amd64.deb
+  become: true
+
+- name: Install AppImageLauncher .deb package
+  apt:
+    deb: /tmp/appimagelauncher_2.2.0-travis995.0f91801.bionic_amd64.deb
+  become: true
+  when: ansible_os_family == "Debian"
