@@ -114,4 +114,25 @@
           groups: docker
           append: yes
         become: yes
+
+      # ctop
+      - name: Add GPG key for docker-ctop repository
+        ansible.builtin.apt_key:
+          url: https://azlux.fr/repo.gpg
+          state: present
+        become: true
+
+      - name: Add docker-ctop APT repository
+        ansible.builtin.apt_repository:
+          repo: "deb http://packages.azlux.fr/debian stable main"
+          state: present
+        become: true
+
+      - name: Update APT package index
+        ansible.builtin.apt:
+          name: docker-ctop
+          update_cache: yes
+        become: true
+
     when: ansible_os_family == 'Debian'
+

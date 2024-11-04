@@ -1,0 +1,28 @@
+- name: Add Google Cloud apt repository key to keyring
+  ansible.builtin.apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+    keyring: /usr/share/keyrings/cloud.google.gpg
+  become: true
+
+- name: Add Google Cloud apt repository key (2/2)
+  ansible.builtin.shell: |
+    curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | \
+    gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg
+  become: yes
+
+- name: Add Google Cloud apt repository
+  ansible.builtin.lineinfile:
+    path: /etc/apt/sources.list.d/google-cloud-sdk.list
+    line: 'deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main'
+    create: yes
+    state: present
+  become: true
+
+- name: Install Google Cloud Cli
+  ansible.builtin.apt:
+    name: google-cloud-cli
+    state: present
+    install_recommends: no
+    update_cache: yes
+  become: true

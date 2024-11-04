@@ -1,0 +1,22 @@
+- name: Ensure Mattermost GPG key is updated
+  ansible.builtin.apt_key:
+    url: "https://deb.packages.mattermost.com/pubkey.gpg"
+    state: present
+  become: true
+
+- name: Add Mattermost repository
+  ansible.builtin.apt_repository:
+    repo: "deb https://deb.packages.mattermost.com {{ item }} main"
+    filename: "mattermost_{{ item }}"
+  loop:
+    - stable
+  become: true
+
+- name: Install Mattermost
+  ansible.builtin.apt:
+    name: mattermost-desktop
+    state: present
+    install_recommends: no
+    update_cache: yes
+  become: true
+
