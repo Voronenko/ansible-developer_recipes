@@ -1,0 +1,21 @@
+- name: Clone asdf-vm repository
+  ansible.builtin.git:
+    repo: https://github.com/asdf-vm/asdf.git
+    dest: ~/.asdf
+    version: v0.14.1
+
+- name: Ensure dotfiles/completions directory exists
+  ansible.builtin.file:
+    path: ~/dotfiles/completions
+    state: directory
+    mode: '0755'
+
+- name: Copy _asdf to dotfiles/completions
+  ansible.builtin.copy:
+    src: ~/.asdf/completions/_asdf
+    dest: ~/dotfiles/completions/_asdf
+
+- name: Copy asdf.bash to dotfiles/completions
+  ansible.builtin.copy:
+    src: ~/.asdf/completions/asdf.bash
+    dest: ~/dotfiles/completions/asdf.bash

@@ -71,3 +71,9 @@
 
 - name: Install pynitrokey
   ansible.builtin.shell: pipx install pynitrokey
+
+- name: Install PGP kleopatra GUI
+  apt:
+    name: kleopatra
+    state: present
+  become: true
