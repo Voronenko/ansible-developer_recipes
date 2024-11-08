@@ -1,0 +1,22 @@
+- name: Download lnav
+  get_url:
+    url: https://github.com/tstack/lnav/releases/download/v0.12.2/lnav-0.12.2-linux-musl-x86_64.zip
+    dest: /tmp/lnav-0.12.2-linux-musl-x86_64.zip
+
+- name: Unarchive lnav and copy to /usr/local/bin
+  command: unzip -j /tmp/lnav-0.12.2-linux-musl-x86_64.zip -d /tmp lnav-0.12.2/lnav
+  args:
+    creates: /tmp/lnav
+
+- name: Move lnav binary to /usr/local/bin/
+  copy:
+    src: /tmp/lnav
+    dest: /usr/local/bin/lnav
+    mode: '0755'
+    remote_src: yes
+  become: true
+
+- name: Clean up temporary files
+  file:
+    path: /tmp/lnav
+    state: absent

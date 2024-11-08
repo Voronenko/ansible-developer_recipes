@@ -1,5 +1,22 @@
 - name: PyEnv| Ensure git is installed
   apt:
+    name: {{ item }}
+    state: present
+  become: true
+  with_items:
+    - libbz2-dev
+    - libsqlite3-dev
+    - python3-tk
+    - tk-dev
+    - libffi-dev
+    - libssl-dev
+    - liblzma-dev
+
+  when: ansible_os_family == "Debian"
+
+
+- name: PyEnv| Ensure git is installed
+  apt:
     name: git
     state: present
   become: true

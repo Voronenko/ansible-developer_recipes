@@ -1,0 +1,38 @@
+- name: Get the stable kubectl release version
+  ansible.builtin.uri:
+    url: https://dl.k8s.io/release/stable.txt
+    return_content: yes
+  register: kubectl_version
+
+- debug: var=kubectl_version
+
+- name: Download kubectl binary
+  ansible.builtin.get_url:
+    url: "https://dl.k8s.io/release/{{ kubectl_version.content }}/bin/linux/amd64/kubectl"
+    dest: /usr/local/bin/kubectl
+    mode: '0755'
+  become: yes
+
+
+- name: Download kustomize
+  get_url:
+    url: https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv5.5.0/kustomize_v5.5.0_linux_amd64.tar.gz
+    dest: /tmp/kustomize_v5.5.0_linux_amd64.tar.gz
+
+- name: Extract kustomize binary
+  command: tar -xzvf /tmp/kustomize_v5.5.0_linux_amd64.tar.gz -C /tmp
+  args:
+    creates: /tmp/kustomize
+
+- name: Move kustomize binary to /usr/local/bin
+  copy:
+    src: /tmp/kustomize
+    dest: /usr/local/bin/kustomize
+    mode: '0755'
+    remote_src: yes
+  become: true
+
+- name: Clean up temporary files
+  file:
+    path: /tmp/kustomize
+    state: absent

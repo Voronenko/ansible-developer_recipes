@@ -19,6 +19,16 @@
       -worktools
       -setup
 
+  - name: Worktools | Terminal session share tool
+    apt:
+      state: present
+      pkg:
+        - tmate
+    become: yes
+    tags:
+      -worktools
+      -setup
+
   - name: Worktools | Hardware sensors lm-sensors
     apt:
       state: present
