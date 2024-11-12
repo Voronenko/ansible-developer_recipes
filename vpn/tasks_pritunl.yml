@@ -2,27 +2,51 @@
   - name: Printunl | Check pritunl apt
     command: test -f /etc/apt/sources.list.d/pritunl.list
     register: pritunl_apt_exists
-    ignore_errors: True
+    ignore_errors: true
     tags:
       -pritunl
 
-
   - name: Printunl | Add Pritunl key
     shell: apt-key adv --keyserver hkp://keyserver.ubuntu.com --recv 7568D9BB55FF9E5287D586017AE645C0CF8E292A
-    become: yes
+    become: true
     when: pritunl_apt_exists.rc == 1
     tags:
       -pritunl
 
+  - name: Printunl | Receive GPG key from keyserver
+    ansible.builtin.command:
+      cmd: gpg --batch --keyserver hkp://keyserver.ubuntu.com --recv-keys 7568D9BB55FF9E5287D586017AE645C0CF8E292A
+    become: true
+    when: pritunl_apt_exists.rc == 1
+    tags:
+      -pritunl
+
+  - name: Printunl | Export GPG key and add to trusted keys
+    ansible.builtin.command:
+      cmd: gpg --armor --export 7568D9BB55FF9E5287D586017AE645C0CF8E292A | tee /etc/apt/trusted.gpg.d/pritunl.asc
+    when: pritunl_apt_exists.rc == 1
+    become: true
+    tags:
+      -pritunl
+
+  # generally electron version is only from noble as ansible_distribution_release,  gtk is buee
   - name: Pritunl | Add Pritunl repo
-    copy: content="deb http://repo.pritunl.com/stable/apt {{ansible_distribution_release}} main" dest=/etc/apt/sources.list.d/pritunl.list owner=root group=root mode=644
+    copy:
+      content: "deb http://repo.pritunl.com/stable/apt {{ansible_distribution_release}} main"
+      dest: /etc/apt/sources.list.d/pritunl.list
+      owner: root
+      group: root
+      mode: 644
     become: yes
     when: pritunl_apt_exists.rc == 1
     tags:
       -pritunl
 
   - name: Pritunl | Install Pritunl
-    apt: update_cache=yes pkg=pritunl-client-gtk state=present
+    apt:
+      update_cache: yes
+      pkg: pritunl-client-electron
+      state: present
     become: yes
     when: pritunl_apt_exists.rc == 1
     tags:
