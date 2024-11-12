@@ -24,3 +24,14 @@
   ansible.builtin.file:
     path: "/tmp/aws"
     state: absent
+
+
+- name: Clean up AWS CLI extracted files
+  ansible.builtin.get_url:
+    url: "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb"
+    dest: "/tmp/session-manager-plugin.deb"
+
+- name: Install Session Manager Plugin
+  ansible.builtin.dpkg:
+    name: "/tmp/session-manager-plugin.deb"
+    state: present
