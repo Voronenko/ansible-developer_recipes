@@ -1,0 +1,48 @@
+
+# postgresql-client-17	client libraries and client binaries
+# postgresql-17	core database server
+# postgresql-doc-17	documentation
+# libpq-dev	libraries and headers for C language frontend development
+# postgresql-server-dev-17	libraries and headers for C language backend development
+
+- name: PostgreSQL Client | Ensure necessary packages are installed
+  ansible.builtin.apt:
+    name:
+      - curl
+      - ca-certificates
+    state: present
+    update_cache: yes
+  become: true
+
+- name: PostgreSQL Client | Create directory for PostgreSQL GPG key
+  ansible.builtin.file:
+    path: /usr/share/postgresql-common/pgdg
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: PostgreSQL Client | Download PostgreSQL GPG key
+  ansible.builtin.get_url:
+    url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+    dest: /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc
+    mode: '0644'
+  become: true
+
+- name: PostgreSQL Client | Create PostgreSQL APT source list
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt {{ ansible_distribution_release }}-pgdg main"
+    filename: "pgdg"
+  become: true
+
+- name: PostgreSQL Client | Update package lists
+  ansible.builtin.apt:
+    update_cache: yes
+  become: true
+
+- name: PostgreSQL Client | Install
+  ansible.builtin.apt:
+    name:
+      - postgresql-client-17
+    state: present
+    update_cache: yes
+  become: true
