@@ -1,0 +1,37 @@
+- name: Vivaldi | Check if my_package is installed
+  command: dpkg-query -W Vivaldi
+  register: vivaldi_check_deb
+  become: true
+  failed_when: vivaldi_check_deb.rc > 1
+  changed_when: vivaldi_check_deb.rc == 1
+  tags:
+    -worktools
+    -vivaldi
+
+# todo: parse for latest version to download
+- name: Vivaldi | Download latest package
+  get_url:
+    url: "https://downloads.vivaldi.com/stable/vivaldi-stable_7.0.3495.11-1_amd64.deb"
+    dest: "/tmp/vivaldi.deb"
+  when: vivaldi_version == 'latest' and vivaldi_check_deb.rc != 0
+  tags:
+    - worktools
+    - vivaldi
+
+- name: Vivaldi | Download specific version package
+  get_url:
+    url: "https://downloads.vivaldi.com/stable/vivaldi-stable_{{ vivaldi_version }}_amd64.deb"
+    dest: "/tmp/vivaldi.deb"
+  when: vivaldi_version != 'latest' and vivaldi_check_deb.rc != 0
+  tags:
+    - worktools
+    - vivaldi
+
+- name: Vivaldi | install package
+  apt:
+    deb: "/tmp/vivaldi.deb"
+  become: true
+  when: vivaldi_check_deb.rc == 1
+  tags:
+    -worktools
+    -vivaldi
