@@ -1,0 +1,54 @@
+# # Install the Intel graphics GPG public key
+# wget -qO - https://repositories.intel.com/gpu/intel-graphics.key | \
+#   sudo gpg --yes --dearmor --output /usr/share/keyrings/intel-graphics.gpg
+
+# # Configure the repositories.intel.com package repository
+# echo "deb [arch=amd64,i386 signed-by=/usr/share/keyrings/intel-graphics.gpg] https://repositories.intel.com/gpu/ubuntu jammy client" | \
+#   sudo tee /etc/apt/sources.list.d/intel-gpu-jammy.list
+
+# # Update the package repository meta-data
+# sudo apt update
+
+# # Install the compute-related packages
+# apt-get install -y libze1 intel-level-zero-gpu intel-opencl-icd clinfo
+# The commands listed above install all the essential packages needed for most users, aiming to minimize the installation of unnecessary packages. However, certain scenarios may require you to install additional packages:
+
+# If you plan to build PyTorch, install libze-dev and intel-ocloc additionally.
+
+# If you wish to enable hardware ray tracing support, install intel-level-zero-gpu-raytracing additionally.
+
+# Verifying installation
+# To verify that the kernel and compute drivers are installed and functional, run clinfo:
+
+# clinfo | grep "Device Name"
+
+- name: Add Intel GPG key
+  ansible.builtin.apt_key:
+    url: https://repositories.intel.com/gpu/intel-graphics.key
+    state: present
+  become: true
+
+# jammy
+
+- name: Add Intel GPU repository
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64,i386 signed-by=/etc/apt/trusted.gpg.d/intel-graphics.gpg] https://repositories.intel.com/gpu/ubuntu {{ ansible_distribution_release }} client"
+    state: present
+  become: true
+
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: yes
+  become: true
+
+- name: Install GPU packages
+  ansible.builtin.apt:
+    name:
+      - libze1
+      - intel-level-zero-gpu
+      - intel-opencl-icd
+      - clinfo
+    state: present
+  become: true
+
+- debug: msg="Check for Intel GPU drivers installed and functional by running clinfo | grep \"Device Name\""

@@ -1,38 +1,55 @@
   # https://github.com/Voronenko/chef-developer_recipes/blob/master/recipes/percona_toolkit.rb
 
+  - debug: var=ansible_facts['os_family']
+
   - name: Percona| Check compability
     assert:
-      that: ansible_distribution_release in [ "trusty" ]
+      that: ansible_facts['os_family'] == 'Debian'
     tags:
       -percona
 
   - name: Percona | Check if is present
     command: test -x /usr/bin/pt-deadlock-logger
-    when: ansible_system == "Linux"
     ignore_errors: yes
     register: percona_present
     tags:
         -percona
         -setup
 
-  - name: Percona | Add GPG key to apt keyring
-    shell: gpg --keyserver  hkp://keys.gnupg.net --recv-keys 1C4CBDCDCD2EFD2A
-    when: ansible_os_family == "Debian" and percona_present is failed
-    become: yes
+  - name: Percona | Download percona-release package
+    get_url:
+      url: https://repo.percona.com/apt/percona-release_latest.generic_all.deb
+      dest: /tmp/percona-release_latest.generic_all.deb
+    when: percona_present is failed
     tags:
         -percona
         -setup
 
-  - name: Percona | Add apt repository
-    template: src={{root_dir}}/files/percona/apt_source.j2 dest=/etc/apt/sources.list.d/percona.list mode=644
-    when: ansible_os_family == "Debian" and percona_present is failed
-    become: yes
+  - name: Percona | Install Percona repository package
+    apt:
+      deb: /tmp/percona-release_latest.generic_all.deb
+    when: percona_present is failed
+    become: true
+    tags:
+        -percona
+        -setup
+
+
+  - name: Percona | Update APT package list
+    apt:
+      update_cache: yes
+    become: true
+    when: percona_present is failed
     tags:
         -percona
         -setup
 
   - name: Percona | Install
-    apt: update-cache=yes force=yes state=present pkg=percona-toolkit
+    apt:
+      update-cache: yes
+      force: yes
+      state: present
+      pkg: percona-toolkit
     when: ansible_os_family == "Debian" and percona_present is failed
     become: yes
     tags:

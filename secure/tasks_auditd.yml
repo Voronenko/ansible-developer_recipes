@@ -1,21 +1,29 @@
 ---
   - name: AuditD | Install packages
-    apt: pkg="{{item}}"
-    with_items:
-      - auditd
-    become: yes
+    ansible.builtin.apt:
+      pkg:
+        - auditd
+    become: true
     tags:
       - auditd
 
   - name: AuditD | Patch /etc/audit/auditd.conf
-    lineinfile: dest=/etc/audit/auditd.conf  regexp="{{item.regexp}}" line="{{item.line}}" insertafter="{{item.insertafter | default('EOF')}}"
+    ansible.builtin.lineinfile:
+      dest: /etc/audit/auditd.conf
+      regexp: "{{item.regexp}}"
+      line: "{{item.line}}"
+      insertafter: "{{item.insertafter | default('EOF')}}"
     with_items: "{{auditd_conf_default_props | default([])}}"
-    become: yes
+    become: true
     tags:
       - auditd
 
-  - name: SASLAUTHD |  Restart service
-    service: name=auditd state=restarted enabled=yes
+  - name: AuditD | Restart service
+    ansible.builtin.service:
+      name: auditd
+      state: restarted
+      enabled: yes
     when: docker_test is not defined
+    become: true
     tags:
       - auditd

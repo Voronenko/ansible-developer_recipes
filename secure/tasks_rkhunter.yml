@@ -1,6 +1,7 @@
 ---
   - name: RKHunter | Install package
-    apt: pkg="rkhunter"
-    become: yes
+    apt:
+      pkg: "rkhunter"
+    become: true
     tags: rkhunter
 

@@ -1,6 +1,8 @@
 ---
   - name: DebSums | Install package
-    apt: pkg="debsums"
-    become: yes
-    tags: debsums
+    apt:
+      pkg: "debsums"
+    become: true
+    tags:
+      - debsums
 
