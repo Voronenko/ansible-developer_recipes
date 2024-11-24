@@ -26,6 +26,13 @@
           - containerd
           - runc
 
+      - name: Download docker-credential-pass
+        get_url:
+          url: https://github.com/docker/docker-credential-helpers/releases/download/v0.8.2/docker-credential-pass-v0.8.2.linux-amd64
+          dest: /usr/local/bin/docker-credentials-pass
+          mode: '0755'
+        become: true
+
       - name: Install ca-certificates and curl
         apt:
           name:
