@@ -26,12 +26,21 @@
           - containerd
           - runc
 
-      - name: Download docker-credential-pass
+      - name: Install docker-credential-pass helper
         get_url:
           url: https://github.com/docker/docker-credential-helpers/releases/download/v0.8.2/docker-credential-pass-v0.8.2.linux-amd64
           dest: /usr/local/bin/docker-credentials-pass
           mode: '0755'
         become: true
+
+      # alternatively: https://amazon-ecr-credential-helper-releases.s3.us-east-2.amazonaws.com/0.9.0/linux-amd64/docker-credential-ecr-login
+      - name: Install ECR credentials helper
+        apt:
+          state: present
+          name: "{{ item }}"
+        become: true
+        loop:
+          - amazon-ecr-credential-helper
 
       - name: Install ca-certificates and curl
         apt:

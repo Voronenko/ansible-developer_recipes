@@ -1,0 +1,92 @@
+- name: Remove old packages
+  ansible.builtin.apt:
+    name:
+      - intel-driver-compiler-npu
+      - intel-fw-npu
+      - intel-level-zero-npu
+    state: absent
+    purge: yes
+    become: true
+
+- name: Download Intel NPU packages
+  ansible.builtin.get_url:
+    url: "{{ item }}"
+    dest: "/tmp/{{ item | basename }}"
+  loop:
+    - "https://github.com/intel/linux-npu-driver/releases/download/v1.10.0/intel-driver-compiler-npu_1.10.0.20241107-11729849322_ubuntu22.04_amd64.deb"
+    - "https://github.com/intel/linux-npu-driver/releases/download/v1.10.0/intel-fw-npu_1.10.0.20241107-11729849322_ubuntu22.04_amd64.deb"
+    - "https://github.com/intel/linux-npu-driver/releases/download/v1.10.0/intel-level-zero-npu_1.10.0.20241107-11729849322_ubuntu22.04_amd64.deb"
+
+
+- name: Install libtbb12 dependency
+  ansible.builtin.apt:
+    update_cache: yes
+    name: libtbb12
+    state: present
+  become: true
+
+- name: Install packages
+  ansible.builtin.apt:
+    deb: "/tmp/{{ item | basename }}"
+  loop:
+    - "https://github.com/intel/linux-npu-driver/releases/download/v1.10.0/intel-driver-compiler-npu_1.10.0.20241107-11729849322_ubuntu22.04_amd64.deb"
+    - "https://github.com/intel/linux-npu-driver/releases/download/v1.10.0/intel-fw-npu_1.10.0.20241107-11729849322_ubuntu22.04_amd64.deb"
+    - "https://github.com/intel/linux-npu-driver/releases/download/v1.10.0/intel-level-zero-npu_1.10.0.20241107-11729849322_ubuntu22.04_amd64.deb"
+  become: true
+
+- name: Check if Level Zero is installed
+  ansible.builtin.command:
+    cmd: dpkg -l level-zero
+  register: level_zero_installed
+  failed_when: false
+  changed_when: false
+  become: true
+
+- name: Download and install Level Zero if missing
+  block:
+    - name: Download Level Zero package
+      ansible.builtin.get_url:
+        url: "https://github.com/oneapi-src/level-zero/releases/download/v1.17.44/level-zero_1.17.44+u22.04_amd64.deb"
+        dest: "/tmp/level-zero_1.17.44+u22.04_amd64.deb"
+
+    - name: Install Level Zero package
+      ansible.builtin.apt:
+        deb: "/tmp/level-zero_1.17.44+u22.04_amd64.deb"
+      become: true
+
+  when: level_zero_installed.rc != 0
+
+
+# reboot
+# # if everything works, we should see /dev/accel/accel0 device
+# ls /dev/accel/accel0
+# /dev/accel/accel0
+# # to receive intel_vpu state
+# dmesg
+# User access to the device
+# As a root user, this step can be skipped.
+
+# The new device /dev/accel/accel0 requires manual setting of permissions access.
+# The accel devices should be in the "render" group in Ubuntu:
+
+# # set the render group for accel device
+# sudo chown root:render /dev/accel/accel0
+# sudo chmod g+rw /dev/accel/accel0
+# # add user to the render group
+# sudo usermod -a -G render <user-name>
+# # user needs to restart the session to use the new group (log out and log in)
+# The above steps must be repeated each time module is reloaded or on every reboot.
+# To avoid manual setup of the group for accel device, the udev rules can be used:
+
+# sudo bash -c "echo 'SUBSYSTEM==\"accel\", KERNEL==\"accel*\", GROUP=\"render\", MODE=\"0660\"' > /etc/udev/rules.d/10-intel-vpu.rules"
+# sudo udevadm control --reload-rules
+# sudo udevadm trigger --subsystem-match=accel
+
+
+# In case of NPU is not visible, always check the access to the device with following command:
+
+# $ ls -lah /dev/accel/accel0
+# crw-rw---- 1 root render 261, 0 Mar 22 13:22 /dev/accel/accel0
+# If render is missing, or crw-rw---- is not set, please repeat the steps to set the access to the device.
+
+# Source:  https://github.com/intel/linux-npu-driver/blob/main/README.md
