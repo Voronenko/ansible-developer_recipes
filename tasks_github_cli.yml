@@ -1,0 +1,77 @@
+---
+  - name: GitHub CLI | Ensure wget is installed
+    ansible.builtin.apt:
+      name: wget
+      state: present
+      update_cache: yes
+    become: true
+    tags:
+      - github_cli
+
+  - name: GitHub CLI | Create /etc/apt/keyrings directory
+    ansible.builtin.file:
+      path: /etc/apt/keyrings
+      state: directory
+      mode: '0755'
+    become: true
+    tags:
+      - github_cli
+
+  - name: GitHub CLI | Download GitHub CLI GPG key
+    ansible.builtin.get_url:
+      url: https://cli.github.com/packages/githubcli-archive-keyring.gpg
+      dest: /etc/apt/keyrings/githubcli-archive-keyring.gpg
+      mode: '0644'
+    become: true
+    tags:
+      - github_cli
+
+  - name: GitHub CLI | Ensure GPG key is world-readable
+    ansible.builtin.file:
+      path: /etc/apt/keyrings/githubcli-archive-keyring.gpg
+      mode: '0644'
+    become: true
+    tags:
+      - github_cli
+
+  - name: GitHub CLI | Create /etc/apt/sources.list.d directory
+    ansible.builtin.file:
+      path: /etc/apt/sources.list.d
+      state: directory
+      mode: '0755'
+    become: true
+    tags:
+      - github_cli
+
+  - name: GitHub CLI | Get system architecture
+    ansible.builtin.command:
+      cmd: dpkg --print-architecture
+    register: github_cli_arch
+    changed_when: false
+    tags:
+      - github_cli
+
+  - name: GitHub CLI | Add GitHub CLI repository
+    ansible.builtin.copy:
+      content: |
+        deb [arch={{ github_cli_arch.stdout }} signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main
+      dest: /etc/apt/sources.list.d/github-cli.list
+      mode: '0644'
+    become: true
+    tags:
+      - github_cli
+
+  - name: GitHub CLI | Update apt package index
+    ansible.builtin.apt:
+      update_cache: yes
+    become: true
+    tags:
+      - github_cli
+
+  - name: GitHub CLI | Install GitHub CLI
+    ansible.builtin.apt:
+      name: gh
+      state: present
+    become: true
+    tags:
+      - github_cli
